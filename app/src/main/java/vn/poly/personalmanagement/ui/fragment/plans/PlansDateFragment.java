@@ -1,9 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import java.util.List;
 
@@ -25,9 +24,9 @@ import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Plan;
 
 
-public class PlansTodayFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class PlansDateFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final String FRAG_NAME = PlansTodayFragment.class.getName();
+    public static final String FRAG_NAME = PlansDateFragment.class.getName();
     final String keyName = "fragName";
     TextView tvDateToday, tvDone;
     ListView lvPlansToday;
@@ -39,8 +38,9 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     Mydatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
+    Bundle bundle;
 
-    public PlansTodayFragment() {
+    public PlansDateFragment() {
         // Required empty public constructor
     }
 
@@ -54,19 +54,24 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_plans_today, container, false);
+        View view = inflater.inflate(R.layout.fragment_plans_date, container, false);
         initializeViews(view);
         initializeDatabase();
         tvDateToday.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         lvPlansToday.setOnItemClickListener(this);
-        icAdd.setOnClickListener(this);
 
-        lvResultSearch.setOnItemClickListener(this);
-        tvToSearch.setOnClickListener(this);
-        tvCancelSearch.setOnClickListener(this);
-        countItem();
-        showPlans();
+        bundle=getArguments();
+        if (bundle!=null){
+           String date = bundle.getString("date");
+            countItem();
+            showPlans();
+
+        }
+
+
+
+
 
         return view;
     }
@@ -81,7 +86,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         lvResultSearch = view.findViewById(R.id.lvResultSearch);
         edtSearch = view.findViewById(R.id.edtSearch);
         lvPlansToday = view.findViewById(R.id.lvPlansToday);
-        icAdd = view.findViewById(R.id.icAdd);
+       
         tvCountItem = view.findViewById(R.id.tvCountItem);
     }
 
@@ -122,26 +127,27 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
-        bundle.putSerializable("plan",getPlansToday().get(position));
+        bundle.putSerializable("plan",getPlansList().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
     }
 
-    private List<Plan> getPlansToday() {
-        return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
+    private List<Plan> getPlansList() {
+        return plansDAO.getAllPlansWithDate(bundle.getString("date"));
     }
 
     private void countItem() {
-        if (getPlansToday().size() == 0) {
+
+        if (getPlansList().size() == 0) {
             tvCountItem.setText("Danh sách trống");
-        } else tvCountItem.setText("Tất cả: " + getPlansToday().size());
+        } else tvCountItem.setText("Tất cả: " + getPlansList().size());
 
     }
 
 
     private void showPlans() {
-        planList = getPlansToday();
+        planList = getPlansList();
         final PlansAdapter adapter = new PlansAdapter();
 
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {

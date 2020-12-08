@@ -133,7 +133,7 @@ public class PlansDAO {
         String getData = "SELECT " + InfoTable.COL_PLAN_DATE
                 + ", COUNT(" + InfoTable.COL_PLAN_ID + ") AS '" + InfoTable.COL_AMOUNT + "'"
                 + " FROM " + InfoTable.TABLE_PLANS
-                +" WHERE " + InfoTable.COL_PLAN_DATE + " <'" + currentDate + "'"
+                +" WHERE " + InfoTable.COL_PLAN_DATE + " ='" + currentDate + "'"
                 + " GROUP BY " + InfoTable.COL_PLAN_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);

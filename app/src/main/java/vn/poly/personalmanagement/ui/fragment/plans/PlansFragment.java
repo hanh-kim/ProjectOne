@@ -124,12 +124,13 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
+       PlansDateFragment plansDateFragment = new PlansDateFragment();
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
-        detailPlansFragment.setArguments(bundle);
+        bundle.getString("date",getPlansDate().get(position).getDate());
+        plansDateFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_plans_root, detailPlansFragment).commit();
+                replace(R.id.fragment_plans_root, plansDateFragment).commit();
     }
 
     private void cancelSearch() {

@@ -99,6 +99,8 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             edit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
+        } else if (tvPlanTimeAlarm.equals(v)) {
+            chooseTime(tvPlanTimeAlarm);
         }else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
         }else if (tvDelete.equals(v)) {
@@ -210,9 +212,9 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             tvPlanTime.setText(timeError);
             return;
         }
-        if (timeAlarm.isEmpty()) {
-            tvPlanTimeAlarm.setText(time);
-        }
+//        if (timeAlarm.isEmpty()) {
+//            tvPlanTimeAlarm.setText(time);
+//        }
         if (date.isEmpty() || date.equals(dateError)) {
             tvPlanDate.setText(dateError);
             return;
@@ -250,6 +252,9 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         } else if (getArguments().getString(keyName).equals(PlansFutureFragment.FRAG_NAME)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
+        } else if (getArguments().getString(keyName).equals(PlansDateFragment.FRAG_NAME)) {
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_plans_root, new PlansDateFragment()).commit();
         }
     }
 }

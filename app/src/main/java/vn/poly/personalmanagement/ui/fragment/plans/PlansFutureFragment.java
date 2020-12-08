@@ -80,7 +80,7 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
 
     @Override
     public void initializeViews(View view) {
-        tvDone = view.findViewById(R.id.tvDone);
+        tvDone = view.findViewById(R.id.tvBack);
         tvToSearch = view.findViewById(R.id.tvToSearch);
         tvCancelSearch = view.findViewById(R.id.tvCancelSearch);
         layoutSearch = view.findViewById(R.id.layoutSearch);

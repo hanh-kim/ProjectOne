@@ -85,7 +85,7 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void initializeViews(View view) {
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvDone);
+        tvDone = view.findViewById(R.id.tvBack);
         tvDate = view.findViewById(R.id.tvCurrentDate);
         edtContent = view.findViewById(R.id.edtNoteContent);
         edtTitle = view.findViewById(R.id.edtNoteTitle);

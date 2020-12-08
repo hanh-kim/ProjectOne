@@ -25,9 +25,7 @@ import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.Mydatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.Plan;
-import vn.poly.personalmanagement.ui.fragment.money.incomes.IncomeFragment;
 
 
 public class AddWorkFragment extends Fragment implements View.OnClickListener, Initialize {
@@ -88,7 +86,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
     @Override
     public void initializeViews(View view) {
         tvDateToday = view.findViewById(R.id.tvDateToday);
-        tvDone = view.findViewById(R.id.tvDone);
+        tvDone = view.findViewById(R.id.tvBack);
         tvBack = view.findViewById(R.id.tvBack);
         edtTitle = view.findViewById(R.id.edtPlansTitle);
         edtDescription = view.findViewById(R.id.edtDescription);

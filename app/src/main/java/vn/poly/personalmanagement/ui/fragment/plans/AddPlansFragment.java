@@ -40,7 +40,7 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
     @Override
     public void initializeViews(View view) {
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvDone);
+        tvDone = view.findViewById(R.id.tvBack);
     }
 
     @Override

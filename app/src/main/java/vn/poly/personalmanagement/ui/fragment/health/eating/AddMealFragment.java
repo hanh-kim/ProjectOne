@@ -26,7 +26,6 @@ import vn.poly.personalmanagement.database.dao.EatingDAO;
 import vn.poly.personalmanagement.database.sqlite.Mydatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Meal;
 import vn.poly.personalmanagement.ui.fragment.health.HealthFragment;
 
@@ -125,7 +124,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void initializeViews(View view) {
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvDone);
+        tvDone = view.findViewById(R.id.tvBack);
         tvCurrentDate = view.findViewById(R.id.tvCurrentDate);
         edtTitle = view.findViewById(R.id.edtMealTitle);
         tvDate = view.findViewById(R.id.tvChooseDate);
