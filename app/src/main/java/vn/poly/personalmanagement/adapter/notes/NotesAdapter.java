@@ -94,7 +94,7 @@ public class NotesAdapter extends BaseAdapter {
                 }
             });
         }else {
-            viewHolder.icInfo.setImageResource(R.drawable.ic_outline_highlight_off_24);
+            viewHolder.icInfo.setImageResource(R.drawable.ic_outline_remove);
             viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

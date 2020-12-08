@@ -177,6 +177,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
                     public void onClick(DialogInterface dialog, int which) {
                         plansDAO.deleteDataWithDate(objectDate.getDate());
                         planDateList.remove(position);
+                        adapter.notifyDataSetChanged();
                         countItem();
                         Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
                     }

@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
-import vn.poly.personalmanagement.model.Note;
+import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.model.Plan;
 
 import java.util.List;
@@ -82,17 +81,20 @@ public class PlansAdapter extends BaseAdapter {
             viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications);
         }
 
+        if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())<0){
+            viewHolder.icNotifycation.setImageResource(R.drawable.ic_outline_remove);
+        }
+
         viewHolder.icNotifycation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                onNotificationListener.onClick(plan,position,viewHolder.icNotifycation);
-
-               if (plan.getAlarmed()==0){
-                   viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications_off);
-               }else  if (plan.getAlarmed()==1){
-                   viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications);
-               }
-
+//
+//               if (plan.getAlarmed()==0){
+//                   viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications_off);
+//               }else  if (plan.getAlarmed()==1){
+//                   viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications);
+//               }
             }
         });
 

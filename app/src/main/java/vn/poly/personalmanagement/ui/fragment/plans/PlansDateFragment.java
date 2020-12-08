@@ -86,7 +86,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         lvResultSearch = view.findViewById(R.id.lvResultSearch);
         edtSearch = view.findViewById(R.id.edtSearch);
         lvPlansToday = view.findViewById(R.id.lvPlansToday);
-       
+
         tvCountItem = view.findViewById(R.id.tvCountItem);
     }
 
@@ -149,23 +149,15 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
     private void showPlans() {
         planList = getPlansList();
         final PlansAdapter adapter = new PlansAdapter();
-
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
             public void onClick(Plan plan, int position, ImageView ic) {
-                if (plan.getAlarmed() == 1) {
-                    plan.setAlarmed(0);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
-                } else if (plan.getAlarmed() == 0) {
-                    plan.setAlarmed(1);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications);
-                }
-                plansDAO.updateData(plan);
+                plansDAO.deleteData(plan);
+                planList.remove(position);
                 adapter.notifyDataSetChanged();
                 countItem();
             }
         });
-
         lvPlansToday.setAdapter(adapter);
     }
 
