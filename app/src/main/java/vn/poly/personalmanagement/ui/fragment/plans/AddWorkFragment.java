@@ -71,8 +71,11 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
     public void onClick(View v) {
         if (tvDone.equals(v)) {
               addPlans();
+//            getActivity().getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
         }else if (tvPlanTimeAlarm.equals(v)) {
@@ -139,8 +142,9 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         plan.setAlarmed(isAlarm);
         plansDAO.addData(plan);
         Toast.makeText(getActivity(),"Thêm thành công",Toast.LENGTH_LONG).show();
-        getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_money_root, new PlansTodayFragment()).commit();
+
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
     }
 
     private void chooseTime(final TextView tv) {

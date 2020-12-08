@@ -119,8 +119,10 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
+
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
+        bundle.putSerializable("plan",getPlansToday().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
@@ -158,6 +160,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
             }
         });
 
+        lvPlansToday.setAdapter(adapter);
     }
 
 }

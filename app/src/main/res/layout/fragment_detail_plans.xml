@@ -6,84 +6,103 @@
     tools:context=".ui.fragment.plans.DetailPlansFragment">
 
     <!-- TODO: Update blank fragment layout -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
         android:orientation="vertical">
-        <RelativeLayout
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:padding="10dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tvEdit"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:text="Sửa"
-                android:textColor="#0371C8"
-                android:textStyle="bold" />
+                android:layout_marginTop="5dp"
+                android:padding="10dp">
 
-            <TextView
-                android:id="@+id/tvBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:drawableLeft="@drawable/ic_back_blue"
-                android:gravity="center_vertical"
-                android:text="Quay lại"
-                android:textColor="#0371C8"
-                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_toLeftOf="@+id/tvDelete"
+                    android:text="Sửa"
+                    android:textColor="#0371C8"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/tvEdit"
-                android:text="Xóa"
-                android:textColor="#0371C8"
-                android:textStyle="bold" />
-        </RelativeLayout>
+                <TextView
 
+                    android:id="@+id/tvBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="15dp"
+                    android:drawableLeft="@drawable/ic_back_blue"
+                    android:gravity="center_vertical"
+                    android:text="Quay lại"
+                    android:textColor="#0371C8"
+                    android:textStyle="bold" />
 
+                <TextView
+                    android:id="@+id/tvDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+
+                    android:text="Xóa"
+                    android:textColor="#0371C8"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kế hoạch"
+                    android:textColor="#0371C8"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+            <!--            <TextView-->
+            <!--                android:id="@+id/tvDate"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginLeft="20dp"-->
+            <!--                android:layout_marginTop="5dp"-->
+            <!--                android:text="ngày hôm nay"-->
+            <!--                android:textStyle="bold" />-->
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="5dp">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginRight="15dp"
-                        android:text="Công việc "
-                        android:textColor="#0371C8"
-                        android:textSize="30dp"
-                        android:textStyle="bold" />
-
-                </RelativeLayout>
                 <EditText
                     android:id="@+id/edtPlansTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
                     android:drawablePadding="5dp"
@@ -93,28 +112,46 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tvTime"
+
+                    android:id="@+id/tvPlanTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_watch"
+                    android:drawableRight="@drawable/ic_outline_watch"
                     android:drawablePadding="5dp"
                     android:enabled="false"
-                    android:hint="hh:mm"
+                    android:textStyle="bold"
+                    android:hint="Thời gian   hh:mm"
                     android:inputType="number" />
 
                 <TextView
-                    android:id="@+id/tvChooseDate"
+                    android:id="@+id/tvPlanTimeAlarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:drawableRight="@drawable/ic_baseline_access_alarms"
+                    android:drawablePadding="5dp"
+                    android:enabled="false"
+                    android:hint="Nhắc nhở   hh:mm"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/tvPlanDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
+                    android:textStyle="bold"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_calendar"
+                    android:drawableRight="@drawable/ic_baseline_calendar_orange"
                     android:drawablePadding="5dp"
                     android:enabled="false"
                     android:hint="dd/mmm/yyyy"
@@ -148,6 +185,7 @@
                     android:nestedScrollingEnabled="true" />
             </LinearLayout>
         </ScrollView>
+
     </LinearLayout>
 
 </FrameLayout>
