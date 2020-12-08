@@ -16,7 +16,7 @@ public class Mydatabase extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        InfoTable.createTablePlans(db);
+        InfoTable.createTablePlans(db);
         InfoTable.createTableNotes(db);
         InfoTable.createTableIncome(db);
         InfoTable.createTableExpenses(db);

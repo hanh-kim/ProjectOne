@@ -17,7 +17,7 @@ import vn.poly.personalmanagement.methodclass.Initialize;
 
 public class DetailPlansFragment extends Fragment implements Initialize, View.OnClickListener {
 
-    final String keyName = "idFrag";
+    final String keyName = "fragName";
     TextView tvBack, tvEdit, tvTime, tvDate, tvDelete;
     EditText edtTitle, edtDescibe;
     int isEditing = 0;
@@ -44,7 +44,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         tvDate.setOnClickListener(this);
         tvTime.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
-        if (getArguments().getInt(keyName) == PlansFragment.idFrag) {
+        if (getArguments().getString(keyName).equals( PlansFragment.FRAG_NAME)) {
             tvEdit.setEnabled(false);
         } else {
             tvEdit.setEnabled(true);
@@ -57,13 +57,13 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     public void onClick(View v) {
 
         if (tvBack.equals(v)) {
-            if (getArguments().getInt(keyName) == PlansFragment.idFrag) {
+            if (getArguments().getString(keyName).equals(PlansFragment.FRAG_NAME)) {
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_plans_root, new PlansFragment()).commit();
-            } else if (getArguments().getInt(keyName) == PlansTodayFragment.idFrag) {
+            } else if (getArguments().getString(keyName).equals(PlansTodayFragment.FRAG_NAME)) {
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
-            } else if (getArguments().getInt(keyName) == PlansFutureFragment.idFrag) {
+            } else if (getArguments().getString(keyName).equals(PlansFutureFragment.FRAG_NAME)) {
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
             }

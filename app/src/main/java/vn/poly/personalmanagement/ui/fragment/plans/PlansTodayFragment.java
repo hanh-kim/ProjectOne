@@ -21,8 +21,8 @@ import vn.poly.personalmanagement.methodclass.Initialize;
 
 public class PlansTodayFragment extends Fragment implements Initialize, View.OnClickListener , AdapterView.OnItemClickListener {
 
-    public static final int idFrag=1;
-    final String keyName = "idFrag";
+    public static final String FRAG_NAME = PlansTodayFragment.class.getName();
+    final String keyName = "fragName";
     TextView tvDateToday, tvDone;
     ListView lvPlansToday;
     ImageView icAdd;
@@ -111,7 +111,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(keyName,idFrag);
+        bundle.putString(keyName,FRAG_NAME);
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();

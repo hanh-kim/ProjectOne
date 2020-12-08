@@ -1,20 +1,27 @@
 package vn.poly.personalmanagement.model;
 
-public class Plan {
+import java.io.Serializable;
+
+public class Plan implements Serializable {
     private int id;
     private String planName;
     private  String date;
     private String time;
+    private String timeAlarm;
+    private int isAlarm;
     private String describe;
 
     public Plan() {
     }
 
-    public Plan(int id, String planName, String date, String time,String describe) {
+
+    public Plan(int id, String planName, String date, String time, String timeAlarm, int isAlarmed, String describe) {
         this.id = id;
         this.planName = planName;
         this.date = date;
         this.time = time;
+        this.timeAlarm = timeAlarm;
+        this.isAlarm = isAlarmed;
         this.describe = describe;
     }
 
@@ -56,5 +63,21 @@ public class Plan {
 
     public void setDescribe(String describe) {
         this.describe = describe;
+    }
+
+    public String getTimeAlarm() {
+        return timeAlarm;
+    }
+
+    public void setTimeAlarm(String timeAlarm) {
+        this.timeAlarm = timeAlarm;
+    }
+
+    public int getAlarmed() {
+        return isAlarm;
+    }
+
+    public void setAlarmed(int isAlarmed) {
+        this.isAlarm = isAlarmed;
     }
 }

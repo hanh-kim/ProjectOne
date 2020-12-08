@@ -108,7 +108,7 @@ public class StatisticalFragment extends Fragment implements Initialize, View.On
             for (Expense expense : expenseList){
                 amountExpenses += expense.getAmount();
             }
-            
+
             String aIn = formatCurrency(amountIncomes);
             String aEx = formatCurrency(amountExpenses);
             tvTotalIncomes.setText(aIn);

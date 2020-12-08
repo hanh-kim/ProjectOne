@@ -1,7 +1,9 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -13,10 +15,19 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
+import vn.poly.personalmanagement.adapter.money.incomes.IncomesAdapter;
+import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
+import vn.poly.personalmanagement.database.dao.PlansDAO;
+import vn.poly.personalmanagement.database.sqlite.Mydatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Income;
+import vn.poly.personalmanagement.model.ObjectDate;
+import vn.poly.personalmanagement.model.Plan;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +35,8 @@ import java.util.List;
 
 public class PlansFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final int idFrag=1;
-    final String keyName = "idFrag";
+    public static final String FRAG_NAME = PlansFragment.class.getName();
+    final String keyName = "fragName";
 
     CardView cardPlansToday, cardPlansFuture;
     ListView lvPlans;
@@ -33,9 +44,14 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     TextView tvToSearch, tvCancelSearch;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    TextView tvCurrentDay;
+    TextView tvCurrentDay, tvCountPlansToday, tvCountPlansFuture, tvCountItem;
     List<String> listString = new ArrayList<>();
     String currentDay = CurrentDateTime.getCurrentDate().substring(0, 2);
+    Mydatabase mydatabase;
+    PlansDAO plansDAO;
+
+    List<Plan> planList;
+    List<ObjectDate> planDateList;
 
     public PlansFragment() {
         // Required empty public constructor
@@ -54,6 +70,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_plans, container, false);
         initializeViews(view);
+        initializeDatabase();
         cardPlansToday.setOnClickListener(this);
         cardPlansFuture.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
@@ -61,6 +78,10 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
         lvResultSearch.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
+
+        countItem();
+        showPlanDate();
+
         return view;
     }
 
@@ -75,11 +96,17 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
         lvResultSearch = view.findViewById(R.id.lvResultSearch);
         edtSearch = view.findViewById(R.id.edtSearch);
         tvCurrentDay = view.findViewById(R.id.tvCurrentDay);
+        tvCountPlansFuture = view.findViewById(R.id.tvCountPlansFuture);
+        tvCountPlansToday = view.findViewById(R.id.tvCountPlansToday);
+        tvCountItem = view.findViewById(R.id.tvCountItem);
+
+
     }
 
     @Override
     public void initializeDatabase() {
-
+        mydatabase = new Mydatabase(getActivity());
+        plansDAO = new PlansDAO(mydatabase);
     }
 
     @Override
@@ -89,7 +116,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
                     replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (cardPlansFuture.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
-        }else if (tvToSearch.equals(view)) {
+        } else if (tvToSearch.equals(view)) {
             startSearch();
         } else if (tvCancelSearch.equals(view)) {
             cancelSearch();
@@ -100,11 +127,12 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt(keyName,idFrag);
+        bundle.putString(keyName, FRAG_NAME);
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
     }
+
     private void cancelSearch() {
         layoutSearch.setVisibility(View.GONE);
         edtSearch.setText("");
@@ -114,4 +142,62 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
         layoutSearch.setVisibility(View.VISIBLE);
         edtSearch.setText("");
     }
+
+    private List<Plan> getPlansToday() {
+        return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
+    }
+
+
+    private List<Plan> getPlansFuture() {
+        return plansDAO.getAllPlansFuture();
+    }
+
+    private List<ObjectDate> getPlansDate() {
+        return plansDAO.getAllPlanDate();
+    }
+
+    private void showPlanDate() {
+        planDateList = getPlansDate();
+        final PlanDateAdapter adapter = new PlanDateAdapter();
+        adapter.setDataAdapter(planDateList, new PlanDateAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(final ObjectDate objectDate, final int position) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa những khoản chi trong ngày này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        plansDAO.deleteDataWithDate(objectDate.getDate());
+                        planDateList.remove(position);
+                        countItem();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+                builder.create().show();
+
+            }
+        });
+        lvPlans.setAdapter(adapter);
+    }
+
+    private void countItem() {
+
+        tvCountPlansToday.setText("" + getPlansToday().size());
+        tvCountPlansToday.setText("" + getPlansFuture().size());
+        if (getPlansDate().size() == 0) {
+            tvCountItem.setText("Danh sách trống");
+        } else tvCountItem.setText("Tất cả: " + getPlansDate().size());
+
+
+    }
+
 }

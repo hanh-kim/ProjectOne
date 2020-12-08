@@ -13,7 +13,9 @@ public class InfoTable {
     public static final String COL_PLAN_NAME = "PLAN_NAME";
     public static final String COL_PLAN_DATE = "PLAN_DATE";
     public static final String COL_PLAN_TIME = "PLAN_TIME";
-    public static final String COL_PLAN_DESCRIBE = "PLAN_DESCRIBE";
+    public static final String COL_PLAN_TIME_ALARM = "PLAN_TIME_ALARM";
+    public static final String COL_PLAN_ISALARM = "PLAN_TIME_ISALARM";
+    public static final String COL_PLAN_DESCRIPTION = "PLAN_DESCRIPTION";
 
     public static final String TABLE_NOTES = "NOTES";
     public static final String COL_NOTE_ID = "NOTE_ID";
@@ -65,8 +67,6 @@ public class InfoTable {
     public static final String COL_EATING_AMOUNT_MEAL = "MEAL_AMOUNT";
 
 
-
-
     public static final String TABLE_ACCOUNT = "ACCOUNT";
     public static final String COL_ID = "ID";
     public static final String COL_EMAIL = "EMAIL";
@@ -75,11 +75,13 @@ public class InfoTable {
 
     public static void createTablePlans(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_PLANS + "(" +
-                COL_PLAN_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
+                COL_PLAN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 COL_PLAN_NAME + " NVARCHAR(100) NOT NULL," +
                 COL_PLAN_DATE + " NCHAR(20) NOT NULL," +
                 COL_PLAN_TIME + " NCHAR(20) NOT NULL," +
-                COL_PLAN_DESCRIBE+ " TEXT NOT NULL" +
+                COL_PLAN_TIME_ALARM + " NCHAR(20) NOT NULL," +
+                COL_PLAN_ISALARM + " INTEGER NOT NULL," +
+                COL_PLAN_DESCRIPTION + " TEXT NOT NULL" +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);
@@ -88,13 +90,13 @@ public class InfoTable {
 
     public static void createTableNotes(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_NOTES + "(" +
-                COL_NOTE_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
+                COL_NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 COL_NOTE_TITLE + " NVARCHAR(200) NOT NULL," +
-                COL_NOTE_FOLDER_ID+ " INTEGER NOT NULL," +
+                COL_NOTE_FOLDER_ID + " INTEGER NOT NULL," +
                 COL_NOTE_DATE + " NCHAR(20) NOT NULL," +
                 COL_NOTE_TIME + " NCHAR(20) NOT NULL," +
-                COL_NOTE_CONTENT+ " TEXT ," +
-                COL_NOTE_IS_DELETED+ " INTEGER NOT NULL" +
+                COL_NOTE_CONTENT + " TEXT ," +
+                COL_NOTE_IS_DELETED + " INTEGER NOT NULL" +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);
@@ -102,7 +104,7 @@ public class InfoTable {
 
     public static void createTableIncome(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_IMCOMES + "(" +
-                COL_INCOME_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
+                COL_INCOME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 COL_INCOME_TITLE + " NVARCHAR(100) NOT NULL," +
                 COL_INCOME_DATE + " NCHAR(20) NOT NULL," +
                 COL_INCOME_TIME + " NCHAR(20) NOT NULL," +
