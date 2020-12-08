@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 >
                 <TextView
-                    android:id="@+id/tvBack"
+                    android:id="@+id/tvDone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -68,6 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
                 android:text="ngày hôm nay"
                 android:textStyle="bold" />
 

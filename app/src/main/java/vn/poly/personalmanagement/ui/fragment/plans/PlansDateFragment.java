@@ -10,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -28,8 +29,8 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
     public static final String FRAG_NAME = PlansDateFragment.class.getName();
     final String keyName = "fragName";
-    TextView tvDateToday, tvDone;
-    ListView lvPlansToday;
+    TextView tvDateToday, tvBack, tvDelete;
+    ListView lvPlans;
     ImageView icAdd;
     ListView lvResultSearch;
     TextView tvToSearch, tvCancelSearch, tvCountItem;
@@ -57,21 +58,21 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         View view = inflater.inflate(R.layout.fragment_plans_date, container, false);
         initializeViews(view);
         initializeDatabase();
-        tvDateToday.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
-        tvDone.setOnClickListener(this);
-        lvPlansToday.setOnItemClickListener(this);
+        tvBack.setOnClickListener(this);
+        tvDelete.setOnClickListener(this);
+        lvPlans.setOnItemClickListener(this);
 
         bundle=getArguments();
-        if (bundle!=null){
+        if (getArguments()!= null){
            String date = bundle.getString("date");
+           if (getArguments().getString("date").equals(CurrentDateTime.getCurrentDate())){
+               tvDateToday.setText("Hôm nay, "+date);
+           }else tvDateToday.setText("Ngày "+date);
+
             countItem();
             showPlans();
 
         }
-
-
-
-
 
         return view;
     }
@@ -79,13 +80,14 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
     @Override
     public void initializeViews(View view) {
         tvDateToday = view.findViewById(R.id.tvDateToday);
-        tvDone = view.findViewById(R.id.tvBack);
+        tvBack = view.findViewById(R.id.tvBack);
+        tvDelete = view.findViewById(R.id.tvDelete);
         tvToSearch = view.findViewById(R.id.tvToSearch);
         tvCancelSearch = view.findViewById(R.id.tvCancelSearch);
         layoutSearch = view.findViewById(R.id.layoutSearch);
         lvResultSearch = view.findViewById(R.id.lvResultSearch);
         edtSearch = view.findViewById(R.id.edtSearch);
-        lvPlansToday = view.findViewById(R.id.lvPlansToday);
+        lvPlans = view.findViewById(R.id.lvPlans);
 
         tvCountItem = view.findViewById(R.id.tvCountItem);
     }
@@ -98,28 +100,26 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
     @Override
     public void onClick(View view) {
-        if (tvDone.equals(view)) {
+        if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
-        } else if (tvToSearch.equals(view)) {
-            startSearch();
-        } else if (tvCancelSearch.equals(view)) {
-            cancelSearch();
-        } else if (icAdd.equals(view)) {
+        }  else if (tvDelete.equals(view)) {
+           plansDAO.deleteDataWithDate(bundle.getString("date"));
+            Toast.makeText(getActivity(),"Xóa thành công!",Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_plans_root, new AddWorkFragment()).commit();
+                    .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
         }
     }
 
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
+//    private void cancelSearch() {
+//        layoutSearch.setVisibility(View.GONE);
+//        edtSearch.setText("");
+//    }
+//
+//    private void startSearch() {
+//        layoutSearch.setVisibility(View.VISIBLE);
+//        edtSearch.setText("");
+//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -145,7 +145,6 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
     }
 
-
     private void showPlans() {
         planList = getPlansList();
         final PlansAdapter adapter = new PlansAdapter();
@@ -158,7 +157,9 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
                 countItem();
             }
         });
-        lvPlansToday.setAdapter(adapter);
+        lvPlans.setAdapter(adapter);
     }
+
+
 
 }

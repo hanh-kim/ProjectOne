@@ -86,7 +86,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
     @Override
     public void initializeViews(View view) {
         tvDateToday = view.findViewById(R.id.tvDateToday);
-        tvDone = view.findViewById(R.id.tvBack);
+        tvDone = view.findViewById(R.id.tvDone);
         tvBack = view.findViewById(R.id.tvBack);
         edtTitle = view.findViewById(R.id.edtPlansTitle);
         edtDescription = view.findViewById(R.id.edtDescription);

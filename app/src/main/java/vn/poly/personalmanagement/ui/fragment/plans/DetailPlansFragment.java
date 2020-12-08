@@ -198,11 +198,12 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         String title = edtTitle.getText().toString().trim();
         String time = tvPlanTime.getText().toString().trim();
         String timeAlarm = tvPlanTimeAlarm.getText().toString().trim();
-        String date = CurrentDateTime.getCurrentDate();
+        String date = tvPlanDate.getText().toString().trim();
         String description = edtDescription.getText().toString().trim();
 
         String timeError = "Mời chọn thời gian";
         String dateError = "Mời chọn ngày";
+        String dateError2 = "Mời chọn ngày sau ngày " + CurrentDateTime.getCurrentDate();
         if (title.isEmpty()) {
             edtTitle.setError("Mời nhập tên tên kế hoạch, công việc");
             edtTitle.setFocusable(true);
@@ -215,8 +216,12 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 //        if (timeAlarm.isEmpty()) {
 //            tvPlanTimeAlarm.setText(time);
 //        }
-        if (date.isEmpty() || date.equals(dateError)) {
+        if (date.isEmpty() || date.equals(dateError) || date.equals(dateError2)) {
             tvPlanDate.setText(dateError);
+            return;
+        }
+        if (date.compareTo(CurrentDateTime.getCurrentDate()) < 0) {
+            tvPlanDate.setText(dateError2);
             return;
         }
 

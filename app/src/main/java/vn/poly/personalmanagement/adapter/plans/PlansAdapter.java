@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.adapter.plans;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +55,7 @@ public class PlansAdapter extends BaseAdapter {
         return 0;
     }
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
@@ -74,6 +76,10 @@ public class PlansAdapter extends BaseAdapter {
 
         viewHolder.tvTitle.setText(plan.getPlanName());
         viewHolder.tvDateTime.setText(plan.getTime() + ", " + plan.getDate());
+        if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime())<0){
+            viewHolder.tvDateTime.setTextColor(R.color.colorGreen);
+        }else  viewHolder.tvDateTime.setTextColor(R.color.colorRed);
+
         viewHolder.tvTimeAlarm.setText("Nhắc nhở lúc: "+plan.getTimeAlarm());
         if (plan.getAlarmed()==0){
             viewHolder.icNotifycation.setImageResource(R.drawable.ic_baseline_notifications_off);

@@ -124,10 +124,10 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       PlansDateFragment plansDateFragment = new PlansDateFragment();
+        PlansDateFragment plansDateFragment = new PlansDateFragment();
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
-        bundle.getString("date",getPlansDate().get(position).getDate());
+        bundle.putString("date", planDateList.get(position).getDate());
         plansDateFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, plansDateFragment).commit();
@@ -146,7 +146,6 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     private List<Plan> getPlansToday() {
         return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
     }
-
 
     private List<Plan> getPlansFuture() {
         return plansDAO.getAllPlansFuture();
@@ -193,7 +192,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     private void countItem() {
 
         tvCountPlansToday.setText("" + getPlansToday().size());
-        tvCountPlansToday.setText("" + getPlansFuture().size());
+        tvCountPlansFuture.setText("" + getPlansFuture().size());
         if (getPlansDate().size() == 0) {
             tvCountItem.setText("Danh sách trống");
         } else tvCountItem.setText("Tất cả: " + getPlansDate().size());

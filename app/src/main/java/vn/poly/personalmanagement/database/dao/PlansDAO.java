@@ -72,8 +72,8 @@ public class PlansDAO {
         db = myDatabase.getWritableDatabase();
         List<Plan> planList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS + "" +
-                " WHERE " + InfoTable.COL_PLAN_DATE + " ='" + date + "'";
-        //     + " ORDER BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
+                " WHERE " + InfoTable.COL_PLAN_DATE + " ='" + date + "'"
+             + " ORDER BY " + InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -86,7 +86,7 @@ public class PlansDAO {
                 int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id,plan_name,plan_date,plan_time,plan_time_alarm,plan_isAlarm,plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -101,9 +101,11 @@ public class PlansDAO {
         String currentTime = CurrentDateTime.getCurrentDate();
         db = myDatabase.getWritableDatabase();
         List<Plan> planList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS + "" +
-                " WHERE " + InfoTable.COL_PLAN_DATE + " >='" + currentDate + "'";
-        //     + " ORDER BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS
+                +" WHERE " + InfoTable.COL_PLAN_DATE + " >'" + currentDate + "' "
+//                +" OR (" + InfoTable.COL_PLAN_DATE + " = '" + currentDate + "'"
+//                +" AND " + InfoTable.COL_PLAN_TIME + " > '" + currentTime + "')"
+                +" ORDER BY " + InfoTable.COL_PLAN_DATE+", "+ InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -116,7 +118,7 @@ public class PlansDAO {
                 int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id,plan_name,plan_date,plan_time,plan_time_alarm,plan_isAlarm,plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -133,7 +135,7 @@ public class PlansDAO {
         String getData = "SELECT " + InfoTable.COL_PLAN_DATE
                 + ", COUNT(" + InfoTable.COL_PLAN_ID + ") AS '" + InfoTable.COL_AMOUNT + "'"
                 + " FROM " + InfoTable.TABLE_PLANS
-                +" WHERE " + InfoTable.COL_PLAN_DATE + " ='" + currentDate + "'"
+                + " WHERE " + InfoTable.COL_PLAN_DATE + " <'" + currentDate + "'"
                 + " GROUP BY " + InfoTable.COL_PLAN_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);
@@ -142,7 +144,7 @@ public class PlansDAO {
             while (!cursor.isAfterLast()) {
                 String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_AMOUNT));
-                ObjectDate objectDate = new ObjectDate(date,amount);
+                ObjectDate objectDate = new ObjectDate(date, amount);
                 objectDateList.add(objectDate);
                 cursor.moveToNext();
             }

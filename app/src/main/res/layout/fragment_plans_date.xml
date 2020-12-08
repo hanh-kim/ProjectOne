@@ -127,7 +127,7 @@
                 android:text="Danh sách trống" />
 
             <ListView
-                android:id="@+id/lvPlansToday"
+                android:id="@+id/lvPlans"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dividerHeight="2dp" />
