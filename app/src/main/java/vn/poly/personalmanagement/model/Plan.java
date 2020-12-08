@@ -13,7 +13,14 @@ public class Plan implements Serializable {
 
     public Plan() {
     }
-
+    public Plan( String planName, String date, String time, String timeAlarm, int isAlarmed, String describe) {
+        this.planName = planName;
+        this.date = date;
+        this.time = time;
+        this.timeAlarm = timeAlarm;
+        this.isAlarm = isAlarmed;
+        this.describe = describe;
+    }
 
     public Plan(int id, String planName, String date, String time, String timeAlarm, int isAlarmed, String describe) {
         this.id = id;

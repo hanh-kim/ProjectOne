@@ -14,12 +14,18 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.List;
+
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.plans.PlansAdapter;
+import vn.poly.personalmanagement.database.dao.PlansDAO;
+import vn.poly.personalmanagement.database.sqlite.Mydatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Plan;
 
 
-public class PlansTodayFragment extends Fragment implements Initialize, View.OnClickListener , AdapterView.OnItemClickListener {
+public class PlansTodayFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final String FRAG_NAME = PlansTodayFragment.class.getName();
     final String keyName = "fragName";
@@ -27,9 +33,13 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     ListView lvPlansToday;
     ImageView icAdd;
     ListView lvResultSearch;
-    TextView tvToSearch, tvCancelSearch;
+    TextView tvToSearch, tvCancelSearch, tvCountItem;
     FrameLayout layoutSearch;
     EditText edtSearch;
+    Mydatabase mydatabase;
+    PlansDAO plansDAO;
+    List<Plan> planList;
+
     public PlansTodayFragment() {
         // Required empty public constructor
     }
@@ -46,25 +56,17 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_plans_today, container, false);
         initializeViews(view);
+        initializeDatabase();
         tvDateToday.setText(CurrentDateTime.getCurrentDate());
-        tvDone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root,new PlansFragment()).commit();
-            }
-        });
+        tvDone.setOnClickListener(this);
         lvPlansToday.setOnItemClickListener(this);
-        icAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root,new AddWorkFragment()).commit();
-            }
-        });
+        icAdd.setOnClickListener(this);
 
         lvResultSearch.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
-
+        countItem();
+        showPlans();
 
         return view;
     }
@@ -80,22 +82,28 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         edtSearch = view.findViewById(R.id.edtSearch);
         lvPlansToday = view.findViewById(R.id.lvPlansToday);
         icAdd = view.findViewById(R.id.icAdd);
+        tvCountItem = view.findViewById(R.id.tvCountItem);
     }
 
     @Override
     public void initializeDatabase() {
-
+        mydatabase = new Mydatabase(getActivity());
+        plansDAO = new PlansDAO(mydatabase);
     }
 
     @Override
     public void onClick(View view) {
-       if (tvDone.equals(view)){
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root,new PlansFragment()).commit();
-        }else if (tvToSearch.equals(view)) {
-           startSearch();
-       } else if (tvCancelSearch.equals(view)) {
-           cancelSearch();
-       }
+        if (tvDone.equals(view)) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+        } else if (tvToSearch.equals(view)) {
+            startSearch();
+        } else if (tvCancelSearch.equals(view)) {
+            cancelSearch();
+        } else if (icAdd.equals(view)) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_plans_root, new AddWorkFragment()).commit();
+        }
     }
 
     private void cancelSearch() {
@@ -107,13 +115,49 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         layoutSearch.setVisibility(View.VISIBLE);
         edtSearch.setText("");
     }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
         Bundle bundle = new Bundle();
-        bundle.putString(keyName,FRAG_NAME);
+        bundle.putString(keyName, FRAG_NAME);
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
     }
+
+    private List<Plan> getPlansToday() {
+        return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
+    }
+
+    private void countItem() {
+        if (getPlansToday().size() == 0) {
+            tvCountItem.setText("Danh sách trống");
+        } else tvCountItem.setText("Tất cả: " + getPlansToday().size());
+
+    }
+
+
+    private void showPlans() {
+        planList = getPlansToday();
+        final PlansAdapter adapter = new PlansAdapter();
+
+        adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
+            @Override
+            public void onClick(Plan plan, int position, ImageView ic) {
+                if (plan.getAlarmed() == 1) {
+                    plan.setAlarmed(0);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
+                } else if (plan.getAlarmed() == 0) {
+                    plan.setAlarmed(1);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications);
+                }
+                plansDAO.updateData(plan);
+                adapter.notifyDataSetChanged();
+                countItem();
+            }
+        });
+
+    }
+
 }

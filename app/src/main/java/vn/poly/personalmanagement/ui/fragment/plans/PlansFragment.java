@@ -49,7 +49,6 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     String currentDay = CurrentDateTime.getCurrentDate().substring(0, 2);
     Mydatabase mydatabase;
     PlansDAO plansDAO;
-
     List<Plan> planList;
     List<ObjectDate> planDateList;
 

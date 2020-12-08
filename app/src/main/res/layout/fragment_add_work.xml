@@ -96,11 +96,22 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_watch"
+                    android:drawableRight="@drawable/ic_outline_watch"
                     android:drawablePadding="5dp"
-                    android:hint="hh:mm"
+                    android:hint="Thời gian   hh:mm"
                     android:inputType="number" />
-
+                <TextView
+                    android:id="@+id/tvPlanTimeAlarm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:drawableRight="@drawable/ic_baseline_access_alarms"
+                    android:drawablePadding="5dp"
+                    android:hint="Nhắc nhở   hh:mm"
+                    android:inputType="number" />
                 <TextView
                     android:id="@+id/tvPlanDate"
                     android:layout_width="match_parent"
@@ -109,7 +120,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_calendar"
+                    android:drawableRight="@drawable/ic_baseline_calendar_orange"
                     android:drawablePadding="5dp"
                     android:hint="dd/mmm/yyyy"
                     android:inputType="number" />

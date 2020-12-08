@@ -83,7 +83,7 @@
 
             <ImageView
                 android:id="@+id/icAdd"
-                android:layout_width="30dp"
+                android:layout_width="25dp"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
@@ -99,7 +99,7 @@
             android:padding="20dp">
 
             <TextView
-                android:id="@+id/tvCountFolderPlan"
+                android:id="@+id/tvCountItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -113,13 +113,7 @@
                 android:dividerHeight="2dp" />
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
 
-
-        </RelativeLayout>
 
     </LinearLayout>
     <FrameLayout
