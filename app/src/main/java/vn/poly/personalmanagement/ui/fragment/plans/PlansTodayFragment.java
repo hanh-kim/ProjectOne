@@ -57,7 +57,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         View view = inflater.inflate(R.layout.fragment_plans_today, container, false);
         initializeViews(view);
         initializeDatabase();
-        tvDateToday.setText(CurrentDateTime.getCurrentDate());
+        tvDateToday.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         lvPlansToday.setOnItemClickListener(this);
         icAdd.setOnClickListener(this);
