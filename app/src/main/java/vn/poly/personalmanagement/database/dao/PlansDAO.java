@@ -42,7 +42,7 @@ public class PlansDAO {
         values.put(InfoTable.COL_PLAN_DATE, plan.getDate());
         values.put(InfoTable.COL_PLAN_TIME, plan.getTime());
         values.put(InfoTable.COL_PLAN_TIME_ALARM, plan.getTimeAlarm());
-        values.put(InfoTable.COL_PLAN_TIME_ALARM, plan.getAlarmed());
+        values.put(InfoTable.COL_PLAN_ISALARM, plan.getAlarmed());
         values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescribe());
 
         long query = db.insert(InfoTable.TABLE_PLANS, null, values);
