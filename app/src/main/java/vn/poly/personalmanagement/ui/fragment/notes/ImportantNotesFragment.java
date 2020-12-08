@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Note;
@@ -49,7 +49,7 @@ public class ImportantNotesFragment extends Fragment implements Initialize, View
     FrameLayout layoutSearch;
     EditText edtSearch;
     NotesAdapter adapter;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     NotesDAO notesDAO;
     public ImportantNotesFragment() {
         // Required empty public constructor
@@ -127,7 +127,7 @@ public class ImportantNotesFragment extends Fragment implements Initialize, View
 
     @Override
     public void initializeDatabase() {
-       mydatabase = new Mydatabase(getContext());
+       mydatabase = new MyDatabase(getContext());
        notesDAO = new NotesDAO(mydatabase);
     }
 

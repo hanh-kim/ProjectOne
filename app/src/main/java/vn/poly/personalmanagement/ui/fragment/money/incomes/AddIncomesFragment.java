@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.IncomesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Income;
@@ -29,7 +29,7 @@ public class AddIncomesFragment extends Fragment
 
     TextView tvBack, tvDone, tvDate, tvChooseDate;
     EditText edtTitle, edtAmount, edtDescribe;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     IncomesDAO incomesDAO;
 
     public AddIncomesFragment() {
@@ -87,7 +87,7 @@ public class AddIncomesFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase= new Mydatabase(getActivity());
+        mydatabase= new MyDatabase(getActivity());
         incomesDAO = new IncomesDAO(mydatabase);
     }
 

@@ -16,7 +16,7 @@ import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.IncomesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Income;
@@ -28,7 +28,7 @@ public class DetailIncomeFragment extends Fragment
     TextView tvBack, tvEdit, tvDateTime, tvChooseDate,tvDelete;
     EditText edtTitle, edtAmount, edtDescribe;
     int isEditing = 0;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     IncomesDAO incomesDAO;
     List<Income> incomeList;
     Bundle bundle;
@@ -108,7 +108,7 @@ public class DetailIncomeFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         incomesDAO = new IncomesDAO(mydatabase);
     }
 

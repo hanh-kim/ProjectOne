@@ -69,6 +69,7 @@ public class InfoTable {
 
     public static final String TABLE_ACCOUNT = "ACCOUNT";
     public static final String COL_ID = "ID";
+    public static final String COL_USERNAME = "NAME";
     public static final String COL_EMAIL = "EMAIL";
     public static final String COL_PASSWORD = "PASSWORD";
 
@@ -162,7 +163,8 @@ public class InfoTable {
     public static void createTableAccount(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_ACCOUNT + "(" +
                 COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
-                COL_EMAIL + " NCHAR(100) NOT NULL," +
+                COL_EMAIL + " NCHAR(100) UNIQUE NOT NULL," +
+                COL_USERNAME + " NVARCHAR(100) ," +
                 COL_PASSWORD + " NCHAR(20) NOT NULL" +
                 ")";
         sqLiteDatabase.execSQL(createTable);

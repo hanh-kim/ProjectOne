@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Note;
@@ -40,7 +40,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
     final String keyDate = "date";
     final String keyTime = "time";
     final String keyContent = "content";
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     NotesDAO notesDAO;
     ListView lvResultSearch;
     TextView tvToSearch, tvCancelSearch;
@@ -134,7 +134,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         notesDAO = new NotesDAO(mydatabase);
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Meal;
 
@@ -37,7 +37,7 @@ public class SearchMealFragment extends Fragment implements Initialize, View.OnC
     TextView tvToSearch, tvCancelSearch, tvCountMealToday, tvCountEating;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
     List<Meal> mealList;
     MealAdapter mealAdapter;
@@ -123,7 +123,7 @@ public class SearchMealFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
     private void showMealList(final List<Meal> mealList) {

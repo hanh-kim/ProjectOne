@@ -18,12 +18,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.ui.fragment.health.eating.MealsFragment;
 
 
 public class ExpensesDateFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
@@ -33,7 +30,7 @@ public class ExpensesDateFragment extends Fragment implements Initialize, View.O
     TextView tvBack, tvEdit, tvDate, tvDelete, tvCountItem;
     ImageView icAdd;
     int isEditing = 0;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     ExpensesDAO expensesDAO;
     ListView lvExpenses;
     Bundle bundle;
@@ -86,7 +83,7 @@ public class ExpensesDateFragment extends Fragment implements Initialize, View.O
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         expensesDAO = new ExpensesDAO(mydatabase);
     }
 

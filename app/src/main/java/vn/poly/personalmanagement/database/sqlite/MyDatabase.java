@@ -8,9 +8,9 @@ import androidx.annotation.Nullable;
 
 import vn.poly.personalmanagement.database.table.InfoTable;
 
-public class Mydatabase extends SQLiteOpenHelper {
+public class MyDatabase extends SQLiteOpenHelper {
 
-    public Mydatabase(@Nullable Context context) {
+    public MyDatabase(@Nullable Context context) {
         super(context, "smartdaily.db", null, 1);
     }
 
@@ -23,7 +23,7 @@ public class Mydatabase extends SQLiteOpenHelper {
         InfoTable.createTableMeal(db);
         InfoTable.createTableFitness(db);
         InfoTable.createTableExercises(db);
-//        InfoTable.createTableAccount(db);
+        InfoTable.createTableAccount(db);
     }
 
     @Override

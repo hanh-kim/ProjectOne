@@ -15,17 +15,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.ExerciseDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
-import vn.poly.personalmanagement.methodclass.CurrentDateTime;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Exercise;
-import vn.poly.personalmanagement.ui.fragment.health.eating.AddMealFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +41,7 @@ public class ExercisesFragment extends Fragment
     ListView lvResultSearch;
     TextView tvToSearch, tvCancelSearch;
     FrameLayout layoutSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     ExerciseDAO exerciseDAO;
 
     public ExercisesFragment() {
@@ -135,7 +132,7 @@ public class ExercisesFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         exerciseDAO = new ExerciseDAO(mydatabase);
     }
 

@@ -8,15 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.table.InfoTable;
 import vn.poly.personalmanagement.model.Note;
 
 public class NotesDAO {
-    private Mydatabase myDatabase;
+    private MyDatabase myDatabase;
     private SQLiteDatabase db;
 
-    public NotesDAO(Mydatabase myDatabase) {
+    public NotesDAO(MyDatabase myDatabase) {
         this.myDatabase = myDatabase;
     }
 

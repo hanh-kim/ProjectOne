@@ -13,7 +13,7 @@ import android.widget.TextView;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.ui.fragment.health.eating.AddMealFragment;
@@ -31,7 +31,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
     CardView cardToEating, cardEatingToday, cardAddMeal, cardTofitness,
             cardExercisesToday, cardExercisesList, cardMealList, cardFitnessList;
     TextView tvCountMeal, tvCountExerciseToday;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
     FitnessDAO fitnessDAO;
 
@@ -113,7 +113,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         eatingDAO = new EatingDAO(mydatabase);
         fitnessDAO = new FitnessDAO(mydatabase);
     }

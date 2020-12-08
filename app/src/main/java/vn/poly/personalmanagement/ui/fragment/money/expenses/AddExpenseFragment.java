@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
@@ -25,7 +25,7 @@ public class AddExpenseFragment extends Fragment
 
     TextView tvBack, tvDone, tvCurrentDate;
     EditText edtTitle, edtAmount, edtDescribe;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     ExpensesDAO expensesDAO;
 
     public AddExpenseFragment() {
@@ -84,7 +84,7 @@ public class AddExpenseFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         expensesDAO = new ExpensesDAO(mydatabase);
     }
 

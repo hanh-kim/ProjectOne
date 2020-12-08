@@ -19,7 +19,7 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.plans.PlansAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Plan;
@@ -36,7 +36,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     TextView tvToSearch, tvCancelSearch, tvCountItem;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
 
@@ -87,7 +87,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         plansDAO = new PlansDAO(mydatabase);
     }
 

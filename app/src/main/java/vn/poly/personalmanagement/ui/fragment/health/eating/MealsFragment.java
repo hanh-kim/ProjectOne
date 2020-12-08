@@ -1,7 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.health.eating;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +18,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -29,10 +27,9 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Meal;
 
 public class MealsFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
@@ -45,7 +42,7 @@ public class MealsFragment extends Fragment implements Initialize, View.OnClickL
     ListView lvMeal;
     ImageView icAdd;
     int isEditing = 0;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
     List<Meal> mealList;
     MealAdapter mealAdapter;
@@ -148,7 +145,7 @@ public class MealsFragment extends Fragment implements Initialize, View.OnClickL
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
 

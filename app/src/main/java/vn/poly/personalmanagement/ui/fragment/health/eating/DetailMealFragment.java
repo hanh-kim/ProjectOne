@@ -24,10 +24,9 @@ import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Meal;
 
 
@@ -38,7 +37,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
     int isEditing = 0;
     final String keyName = "idFrag";
     Meal meal;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
 
     public DetailMealFragment() {
@@ -152,7 +151,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
 

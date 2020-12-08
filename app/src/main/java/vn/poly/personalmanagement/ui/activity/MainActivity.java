@@ -1,6 +1,7 @@
 package vn.poly.personalmanagement.ui.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,9 @@ import androidx.navigation.ui.NavigationUI;
 import vn.poly.personalmanagement.R;
 
 public class MainActivity extends AppCompatActivity {
+    private String keyEmail = "email";
+    private String keyPassword = "password";
+    private String keyCheck = "isRemember";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,5 +51,10 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public String getEmailSaved() {
+        SharedPreferences sharedPreferences = getSharedPreferences("my_email", MODE_PRIVATE);
+        return sharedPreferences.getString(keyEmail, "");
     }
 }

@@ -18,14 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.NumberFormat;
-import java.util.Currency;
 import java.util.List;
 import java.util.Locale;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.money.expenses.ExpensesAdapter;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
@@ -43,7 +42,7 @@ public class ExpensesTodayFragment extends Fragment
     TextView tvToSearch, tvCancelSearch;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     ExpensesDAO expensesDAO;
     List<Expense> expenseList;
     Bundle bundle;
@@ -149,7 +148,7 @@ public class ExpensesTodayFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         expensesDAO = new ExpensesDAO(mydatabase);
     }
 

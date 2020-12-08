@@ -21,11 +21,10 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Meal;
-import vn.poly.personalmanagement.model.Note;
 
 
 public class MealsTodayFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
@@ -36,7 +35,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
     EditText edtSearch;
     ListView lvMeal;
     ImageView icAdd;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
     MealAdapter mealAdapter;
     List<Meal> mealList;
@@ -94,7 +93,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
 

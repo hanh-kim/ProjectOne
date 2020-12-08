@@ -1,133 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:app="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent"
-android:orientation="vertical"
-tools:context=".ui.activity.SigninActivity">
-
-<LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="30dp"
-    android:gravity="center">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.activity.SigninActivity">
 
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:src="@drawable/ic_appavatar" />
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="20dp"
-    android:layout_marginTop="50dp"
-    android:gravity="center"
-    android:orientation="vertical">
-
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:src="@drawable/ic_appavatar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:layout_marginTop="50dp"
         android:gravity="center"
-        android:text="Đăng nhập"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edtEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/custom_edt_search"
-        android:drawableLeft="@drawable/ic_email"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:padding="10dp" />
-
-    <EditText
-        android:id="@+id/edtPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/custom_edt_search"
-        android:drawableLeft="@drawable/ic_lock"
-        android:drawablePadding="@dimen/activity_horizontal_margin"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
-        android:maxLength="15"
-        android:padding="10dp" />
-
-    <RelativeLayout
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/cboRemamberAcc"
-            android:text="Ghi nhớ tôi?"
-            android:textColor="#017EE1"
-            android:textSize="12dp"/>
         <TextView
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:id="@+id/tvForgotPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Quên mã mật khẩu?"
-            android:textColor="#017EE1"
-            android:textSize="12dp" />
-    </RelativeLayout>
+            android:gravity="center"
+            android:text="Đăng nhập"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/custom_edt_search"
+            android:drawableLeft="@drawable/ic_email"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/edtPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/custom_edt_search"
+            android:drawableLeft="@drawable/ic_lock"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+            android:maxLength="15"
+            android:padding="10dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_marginTop="5dp">
+
+            <CheckBox
+                android:id="@+id/cboRemamberAcc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ghi nhớ tôi?"
+                android:textColor="#017EE1"
+                android:textSize="12dp" />
+
+            <TextView
+                android:visibility="invisible"
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="Quên mã mật khẩu?"
+                android:textColor="#017EE1"
+                android:textSize="12dp" />
+        </RelativeLayout>
 
 
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:textColor="@color/colorRed" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="40dp"
-        android:background="@drawable/custom_btn"
-        android:text="Đăng nhập"
-        android:textColor="#fff" />
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="25dp"
+            android:background="@drawable/custom_btn"
+            android:text="Đăng nhập"
+            android:textColor="#fff" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="--------------------- Hoặc ---------------------" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="--------------------- Hoặc ---------------------" />
 
-    <TextView
-        android:id="@+id/tvToSignup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="35dp"
-        android:gravity="center"
-        android:text="Chưa có tài khoản? Đăng kí"
-        android:textColor="#000"
-        android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tvToSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="35dp"
+            android:gravity="center"
+            android:text="Chưa có tài khoản? Đăng kí"
+            android:textColor="#000"
+            android:textStyle="bold" />
 
 
-</LinearLayout>
+    </LinearLayout>
 
-<!--<RelativeLayout-->
-<!--    android:layout_width="match_parent"-->
-<!--    android:layout_height="match_parent">-->
+    <!--<RelativeLayout-->
+    <!--    android:layout_width="match_parent"-->
+    <!--    android:layout_height="match_parent">-->
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentBottom="true"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_marginBottom="20dp"-->
-<!--        android:gravity="center"-->
-<!--        android:text="App Name"-->
-<!--        android:textSize="20dp"-->
-<!--        android:textStyle="bold" />-->
-<!--</RelativeLayout>-->
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginBottom="20dp"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="App Name"-->
+    <!--        android:textSize="20dp"-->
+    <!--        android:textStyle="bold" />-->
+    <!--</RelativeLayout>-->
 
 
 </LinearLayout>

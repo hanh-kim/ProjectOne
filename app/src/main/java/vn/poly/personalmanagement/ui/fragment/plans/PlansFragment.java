@@ -18,14 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
-import vn.poly.personalmanagement.adapter.money.incomes.IncomesAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.model.Plan;
 
@@ -47,7 +44,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     TextView tvCurrentDay, tvCountPlansToday, tvCountPlansFuture, tvCountItem;
     List<String> listString = new ArrayList<>();
     String currentDay = CurrentDateTime.getCurrentDate().substring(0, 2);
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
     List<ObjectDate> planDateList;
@@ -104,7 +101,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         plansDAO = new PlansDAO(mydatabase);
     }
 
@@ -163,7 +160,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
             public void onRemove(final ObjectDate objectDate, final int position) {
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Bạn muốn xóa những khoản chi trong ngày này?");
+                builder.setMessage("Bạn muốn xóa những kế hoạch trong ngày này?");
                 builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

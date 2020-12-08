@@ -17,7 +17,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
 
@@ -35,7 +35,7 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
 
     List<String> listString = new ArrayList<>();
     CardView cardNotes, cardNotesImportant, cardDeleted;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     NotesDAO notesDAO;
 
 
@@ -95,7 +95,7 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         notesDAO = new NotesDAO(mydatabase);
     }
 

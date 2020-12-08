@@ -21,7 +21,7 @@ import java.util.Locale;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
 import vn.poly.personalmanagement.database.dao.IncomesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
@@ -34,7 +34,7 @@ public class StatisticalFragment extends Fragment implements Initialize, View.On
             tvCurrentDate, tvStartDate, tvEndDate, tvError;
     Button btnSearch;
 
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     IncomesDAO incomesDAO;
     ExpensesDAO expensesDAO;
     List<Income> incomeList;
@@ -133,7 +133,7 @@ public class StatisticalFragment extends Fragment implements Initialize, View.On
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         incomesDAO = new IncomesDAO(mydatabase);
         expensesDAO = new ExpensesDAO(mydatabase);
     }

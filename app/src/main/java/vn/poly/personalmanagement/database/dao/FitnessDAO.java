@@ -8,19 +8,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.table.InfoTable;
 import vn.poly.personalmanagement.model.DetailExercise;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Fitness;
-import vn.poly.personalmanagement.model.Meal;
 
 public class FitnessDAO {
 
-    private Mydatabase myDatabase;
+    private MyDatabase myDatabase;
     private SQLiteDatabase db;
 
-    public FitnessDAO(Mydatabase myDatabase) {
+    public FitnessDAO(MyDatabase myDatabase) {
         this.myDatabase = myDatabase;
     }
 

@@ -23,7 +23,7 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.fitness.FitnessAdapter;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Fitness;
@@ -44,7 +44,7 @@ public class FitnessFragment extends Fragment
     FrameLayout layoutSearch;
     EditText edtSearch;
     FitnessDAO fitnessDAO;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     List<Fitness> fitnessList;
     public FitnessFragment() {
         // Required empty public constructor
@@ -113,7 +113,7 @@ public class FitnessFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         fitnessDAO = new FitnessDAO(mydatabase);
     }
 

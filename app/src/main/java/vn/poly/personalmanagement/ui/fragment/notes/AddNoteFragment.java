@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -23,7 +23,7 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
     final String keyName = "idFrag";
     TextView tvBack, tvDone, tvDate;
     Bundle bundle;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     NotesDAO notesDAO;
     EditText edtTitle, edtContent;
 
@@ -93,7 +93,7 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         notesDAO = new NotesDAO(mydatabase);
     }
 

@@ -5,21 +5,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.table.InfoTable;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Exercise;
-import vn.poly.personalmanagement.model.Meal;
 
 public class ExerciseDAO {
 
-    private Mydatabase myDatabase;
+    private MyDatabase myDatabase;
     private SQLiteDatabase db;
 
-    public ExerciseDAO(Mydatabase myDatabase) {
+    public ExerciseDAO(MyDatabase myDatabase) {
         this.myDatabase = myDatabase;
     }
 

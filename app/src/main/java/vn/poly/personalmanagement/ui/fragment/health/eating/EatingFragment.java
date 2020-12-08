@@ -1,7 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.health.eating;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -29,7 +28,7 @@ import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.EatingAdapter;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Eating;
@@ -53,7 +52,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
     EatingAdapter eatingAdapter;
     List<Eating> eatingList;
     List<Eating> eatingListSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
     MealAdapter mealAdapter;
     List<Meal> mealList;
@@ -136,7 +135,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
 

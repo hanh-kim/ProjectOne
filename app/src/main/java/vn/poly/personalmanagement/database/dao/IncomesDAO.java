@@ -8,20 +8,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.table.InfoTable;
-import vn.poly.personalmanagement.model.DetailExercise;
-import vn.poly.personalmanagement.model.Expense;
-import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
 
 public class IncomesDAO {
 
-    private Mydatabase myDatabase;
+    private MyDatabase myDatabase;
     private SQLiteDatabase db;
 
-    public IncomesDAO(Mydatabase myDatabase) {
+    public IncomesDAO(MyDatabase myDatabase) {
         this.myDatabase = myDatabase;
     }
 

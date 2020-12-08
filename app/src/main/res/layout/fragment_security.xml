@@ -35,7 +35,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="30dp"
             android:text="Thông tin tài khoản"
             android:textColor="#0371C8"
@@ -49,12 +49,34 @@
             android:background="@drawable/custom_edt_search"
             android:orientation="vertical">
 
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                android:id="@+id/edtlUsername"-->
+
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:hint="Tên người dùng"-->
+<!--                app:hintTextColor="#00457C">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/custom_layout_nocolor"-->
+<!--                    android:drawablePadding="@dimen/activity_horizontal_margin"-->
+<!--                    android:inputType="textEmailAddress"-->
+<!--                    android:padding="10dp"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textStyle="bold" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/edtlEmail"
 
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:hint="Email">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -63,18 +85,22 @@
                     android:drawablePadding="@dimen/activity_horizontal_margin"
                     android:enabled="false"
                     android:inputType="textEmailAddress"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    app:hintTextColor="#00457C" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout
+
                 android:id="@+id/edtlPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                app:passwordToggleEnabled="true"
-                >
+                android:hint="Mật khẩu"
+                app:passwordToggleEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -84,42 +110,26 @@
                     android:enabled="false"
                     android:inputType="textPassword"
                     android:maxLength="15"
-                    android:padding="10dp" />
+                    android:padding="10dp"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    app:hintTextColor="#00457C" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardStatistic"
+
+
+            <TextView
+                android:id="@+id/tvChangePassword"
+                android:background="@drawable/custom_layout_nocolor"
+                android:drawableRight="@drawable/ic_next"
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginTop="20dp"
-                android:padding="10dp"
-                app:cardCornerRadius="10dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="15dp"
-                        android:text="Đổi mật khẩu" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="10dp"
-                        android:text=">"
-                        android:textSize="20dp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:text="Đổi mật khẩu" />
 
         </LinearLayout>
 

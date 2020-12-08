@@ -1,18 +1,26 @@
 package vn.poly.personalmanagement.model;
 
-public class Account {
+public class User {
 
     private int id;
+    private String username;
     private String email;
     private String password;
 
 
 
-    public Account() {
+    public User() {
     }
 
-    public Account(int id, String email, String password) {
+    public User(int id, String username, String email, String password) {
         this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
+    public User(String username, String email, String password) {
+        this.username = username;
         this.email = email;
         this.password = password;
     }
@@ -23,6 +31,14 @@ public class Account {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

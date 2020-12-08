@@ -14,7 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -28,7 +28,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
     int isEditing = 0;
     TextView tvEdit, tvBack, tvDateTime, tvRestore;
     EditText edtTitle, edtContent;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     NotesDAO notesDAO;
 
     public DetailNoteFragment() {
@@ -188,7 +188,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         notesDAO = new NotesDAO(mydatabase);
     }
 

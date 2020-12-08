@@ -20,16 +20,14 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.adapter.money.incomes.IncomesAdapter;
 import vn.poly.personalmanagement.database.dao.IncomesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.ui.fragment.money.MoneyFragment;
-import vn.poly.personalmanagement.ui.fragment.money.expenses.ExpensesTodayFragment;
 
 
 public class IncomeFragment extends Fragment
@@ -43,7 +41,7 @@ public class IncomeFragment extends Fragment
     FrameLayout layoutSearch;
     EditText edtSearch;
 
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     IncomesDAO incomesDAO;
     List<Income> incomeList;
 
@@ -96,7 +94,7 @@ public class IncomeFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         incomesDAO = new IncomesDAO(mydatabase);
     }
 

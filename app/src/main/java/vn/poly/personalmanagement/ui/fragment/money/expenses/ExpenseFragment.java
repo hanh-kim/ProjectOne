@@ -22,7 +22,7 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
@@ -41,7 +41,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     TextView tvToSearch, tvCancelSearch;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     ExpensesDAO expensesDAO;
     List<ObjectDate> objectDateList;
     List<Expense> expenseList;
@@ -96,7 +96,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         expensesDAO = new ExpensesDAO(mydatabase);
     }
 

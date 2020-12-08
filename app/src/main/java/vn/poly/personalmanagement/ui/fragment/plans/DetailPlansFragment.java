@@ -2,10 +2,12 @@ package vn.poly.personalmanagement.ui.fragment.plans;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,7 +24,7 @@ import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Plan;
@@ -34,7 +36,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     TextView tvBack, tvEdit, tvPlanTime, tvDate, tvDelete;
     TextView   tvPlanTimeAlarm, tvPlanDate,tvDateToday;
     EditText edtTitle, edtDescription;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     PlansDAO plansDAO;
     int isEditing = 0;
     Bundle bundle;
@@ -84,7 +86,6 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         }
 
 
-
         return view;
     }
 
@@ -126,10 +127,9 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         plansDAO = new PlansDAO(mydatabase);
     }
-
 
 
     private void edit() {
@@ -151,7 +151,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             tvPlanDate.setEnabled(false);
             isEditing = 0;
             updatePlans();
-            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
+
         }
 
     }
@@ -241,10 +241,29 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     }
 
     private void delete(){
-        Plan plan = (Plan) getArguments().get("plan");
-        plansDAO.deleteData(plan);
-        Toast.makeText(getActivity(),"Xóa thành công",Toast.LENGTH_LONG).show();
-        back();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn muốn xóa công việc  này?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Plan plan = (Plan) getArguments().get("plan");
+                plansDAO.deleteData(plan);
+                Toast.makeText(getActivity(),"Xóa thành công",Toast.LENGTH_LONG).show();
+                back();
+            }
+
+        });
+        builder.create().show();
+
+
     }
 
     private void back(){

@@ -23,7 +23,7 @@ import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
-import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Meal;
@@ -36,7 +36,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     TextView tvBack, tvCurrentDate, tvDone, tvTime, tvDate;
     EditText edtTitle, edtDecription;
     ListView lvMeal;
-    Mydatabase mydatabase;
+    MyDatabase mydatabase;
     EatingDAO eatingDAO;
 
 
@@ -134,7 +134,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
 
     @Override
     public void initializeDatabase() {
-        mydatabase = new Mydatabase(getContext());
+        mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
 
     }
