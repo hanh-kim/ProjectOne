@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Project One</string>
+    <string name="title_activity_bottom_navigation">MainActivity</string>
+    <string name="title_home">Thống kê</string>
+    <string name="title_dashboard">kế hoạch</string>
+    <string name="title_notifications">Ghi chú</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="gioi_thieu">
+        Quy định nộp bài Assignment:
+
+ Một bản mềm kết quả bài làm assignment của bạn phải được upload trước nửa đêm (giờ địa phương) vào ngày hạn nộp. Quá hạn nộp hệ thống sẽ khóa lại và sinh viên không còn quyền nộp bài.  Phiên bản upload lên cuối cùng sẽ được chấm điểm. Sinh viên có quyền upload đè file nhiều lần trước khi hết hạn nộp.  Tất cả những file tài liệu văn bản phải để ở dạng file gốc chứ không file dạng file được xuất ra từ định dạng khác (ví dụ pdf được xuất từ doc).   Đối với bài assignment này bạn cũng phải đưa các bằng chứng hay sản phẩm khác vào trong file nén dạng zip.
+
+MOB1013 – Lập trình Android cơ bản Assignment
+
+ Kích thước file cần tuân thủ theo giới hạn trên hệ thống nộp bài (thông thường là nhỏ hơn 50M).  Hãy đảm bảo các file được upload lên không bị nhiễm virus (điều này có thể dẫn đến file bị hệ thống xóa mất) và không đặt mật khẩu mở file. Nếu vi phạm những điều này, bài coi như chưa được nộp.   Hãy chú ý xem thông báo sau khi upload để chắc chắn bài của bạn đã được nộp lên hệ thống chưa.    Bạn không phải gửi lại file đề bài của assignment (file này).
+
+Quy định đánh giá Assignment:
+
+1. Sinh viên không có bài assignment trên hệ thống sẽ bị 0 điểm bài assignment. 2. Sau hạn nộp bài một tuần, sinh viên nộp muộn có quyền nộp đơn kiến nghị xin được chấp nhận gia hạn nộp. Hội đồng Nhà trường sẽ xét duyệt từng trường hợp. Nếu kiến nghị không được chấp nhận, bài giữ nguyên điểm 0. Nếu quá một tuần không có kiến nghị thì bài cũng sinh viên không nộp mặc nhiên nhận điểm 0. 3. Ngay cả trường hợp bài của sinh viên bị phát hiện gian lận sau khi có điểm, sinh viên sẽ không được công nhận bài đó và chịu mức kỷ luật như quy định của Nhà trường.
+    </string>
+</resources>

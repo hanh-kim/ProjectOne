@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_plan_root">
+
+
+    <fragment
+        android:id="@+id/navigation_plan_root"
+        android:name="vn.poly.personalmanagement.ui.fragment.plans.PlansRootFragment"
+
+        tools:layout="@layout/fragment_plans_root"/>
+
+    <fragment
+        android:id="@+id/navigation_note_root"
+        android:name="vn.poly.personalmanagement.ui.fragment.notes.NotesRootFragment"
+
+        tools:layout="@layout/fragment_notes_root">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_money_root"
+        android:name="vn.poly.personalmanagement.ui.fragment.money.MoneyRootFragment"
+
+        tools:layout="@layout/fragment_money_root" >
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_heath_root"
+        android:name="vn.poly.personalmanagement.ui.fragment.health.HealthRootFragment"
+
+        tools:layout="@layout/fragment_health_root" >
+    </fragment>
+    <fragment
+
+        android:id="@+id/navigation_security_root"
+        android:name="vn.poly.personalmanagement.ui.fragment.security.SecurityFragment"
+        tools:layout="@layout/fragment_security_root" >
+
+    </fragment>
+
+
+
+
+
+
+
+
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_timetable_root"-->
+<!--        android:name="vn.poly.personalmanagement.ui.fragment.timetable.TimetableRootFragment"-->
+
+<!--        tools:layout="@layout/fragment_timetable_root" >-->
+
+<!--    </fragment>-->
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_statistic"-->
+<!--        android:name="vn.poly.personalmanagement.ui.fragment.StatisticalFragment"-->
+<!--        android:label="Thống kê"-->
+<!--        tools:layout="@layout/fragment_statistical">-->
+
+<!--    </fragment>-->
+
+</navigation>

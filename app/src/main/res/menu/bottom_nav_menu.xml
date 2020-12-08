@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navigation_plan_root"
+        android:icon="@drawable/ic_notes"
+        android:title="Kế hoạch" />
+
+    <item
+        android:id="@+id/navigation_note_root"
+        android:icon="@drawable/ic_plan"
+        android:title="Ghi chú" />
+
+    <item
+        android:id="@+id/navigation_money_root"
+        android:icon="@drawable/ic_monetization"
+        android:title="Chi thu" />
+<!--    <item-->
+<!--        android:id="@+id/navigation_timetable_root"-->
+<!--        android:icon="@drawable/ic_timetable"-->
+<!--        android:title="Thời gian biểu" />-->
+    <item
+        android:id="@+id/navigation_heath_root"
+        android:icon="@drawable/ic_health"
+        android:title="Sức khỏe" />
+    <item
+        android:id="@+id/navigation_security_root"
+        android:icon="@drawable/ic_security"
+        android:title="Bảo mật" />
+
+</menu>

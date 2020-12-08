@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:id="@+id/item_plan"
+    android:title="Kế hoạch"
+    />
+
+    <item android:id="@+id/item_note"
+        android:title="Ghi chú"
+        />
+    <item android:id="@+id/item_money"
+        android:title="Chi thu"
+        />
+    <item android:id="@+id/item_health"
+        android:title="Ăn uống &amp; luyện tập"
+        />
+    <item android:id="@+id/item_statistic"
+        android:title="Thống kê"
+        />
+    <item android:id="@+id/item_settings"
+        android:title="Cài đặt"
+        >
+        <menu>
+            <item android:id="@+id/item_security"
+                android:title="Bảo mật"
+                />
+        </menu>
+    </item>
+</menu>

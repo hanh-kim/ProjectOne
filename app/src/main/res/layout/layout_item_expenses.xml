@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/custom_layout_nocolor"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvExpensesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="Tiêu đề"
+        android:textStyle="bold"
+        android:textColor="#000"
+        android:textSize="20dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvDateTimeExpenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_outline_watch"
+            android:drawablePadding="@dimen/activity_horizontal_margin"
+            android:padding="3dp"
+            android:text="hh:mm, dd/mm/yyyy" />
+
+        <ImageView
+            android:id="@+id/icDeleteExpenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/ic_outline_highlight_off_24" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvAmountExpenses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_outline_monetization"
+        android:drawablePadding="@dimen/activity_horizontal_margin"
+        android:gravity="center_vertical"
+        android:padding="3dp"
+        android:text="Amount Money" />
+</LinearLayout>

@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragment.notes.DetailNoteFragment">
+
+
+    <LinearLayout
+        android:layout_above="@+id/tvRestore"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:text="Sửa"
+                android:textColor="#0371C8"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="5dp"
+                android:text="Ghi chú"
+                android:textColor="#0371C8"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvBack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="15dp"
+                android:drawableLeft="@drawable/ic_back_blue"
+                android:gravity="center_vertical"
+                android:text="Quay lại"
+                android:textColor="#0371C8"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:minHeight="400dp"
+                android:nestedScrollingEnabled="true"
+                android:orientation="vertical">
+                <!--                    <RelativeLayout-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="45dp"-->
+                <!--                        android:layout_marginLeft="15dp"-->
+                <!--                        android:layout_marginTop="5dp">-->
+
+                <!--                        <TextView-->
+                <!--                            android:layout_width="wrap_content"-->
+                <!--                            android:layout_height="wrap_content"-->
+                <!--                            android:layout_marginRight="15dp"-->
+                <!--                            android:text="Ghi chú"-->
+                <!--                            android:textColor="#0371C8"-->
+                <!--                            android:textSize="30dp"-->
+                <!--                            android:textStyle="bold" />-->
+
+                <!--                    </RelativeLayout>-->
+
+                <TextView
+                    android:id="@+id/tvDateTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:text="Thêm lúc hh:mm, dd/mm/yyyy"
+                    android:textColor="#000"
+                    android:textStyle="bold" />
+
+                <!--            <TextView-->
+                <!--                android:layout_width="wrap_content"-->
+                <!--                android:layout_height="wrap_content"-->
+                <!--                android:layout_marginLeft="20dp"-->
+                <!--                android:layout_marginTop="20dp"-->
+                <!--                android:text="Nội dung"-->
+                <!--                android:textColor="#0371C8"-->
+                <!--                android:textSize="20dp"-->
+                <!--                android:textStyle="bold" />-->
+
+                <EditText
+                    android:id="@+id/edtNoteTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:drawablePadding="5dp"
+                    android:enabled="false"
+                    android:gravity="left|top"
+                    android:hint="Tiêu đề:"
+                    android:inputType="textMultiLine"
+                    android:nestedScrollingEnabled="true"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/edtNoteContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:enabled="false"
+                    android:gravity="left|top"
+                    android:hint="Nội dung(*)"
+                    android:inputType="text|textMultiLine"
+                    android:isScrollContainer="true"
+                    android:minHeight="500dp"
+                    android:nestedScrollingEnabled="true" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+
+
+
+
+            <TextView
+                android:padding="10dp"
+                android:id="@+id/tvRestore"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:background="@android:color/background_light"
+                android:gravity="center_horizontal"
+                android:text="Khôi phục"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="20dp" />
+
+
+</RelativeLayout>
