@@ -33,7 +33,7 @@ import vn.poly.personalmanagement.ui.fragment.money.incomes.IncomeFragment;
 public class AddWorkFragment extends Fragment implements View.OnClickListener, Initialize {
 
 
-    TextView tvDone, tvBack, tvPlanTime, tvPlanTimeAlarm, tvPlanDate,tvDateToday;
+    TextView tvDone, tvBack, tvPlanTime, tvPlanTimeAlarm, tvPlanDate, tvDateToday;
     EditText edtTitle, edtDescription;
     Mydatabase mydatabase;
     PlansDAO plansDAO;
@@ -55,7 +55,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         View view = inflater.inflate(R.layout.fragment_add_work, container, false);
         initializeViews(view);
         initializeDatabase();
-        tvDateToday.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
+        tvDateToday.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         tvPlanTimeAlarm.setOnClickListener(this);
@@ -70,7 +70,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
     @Override
     public void onClick(View v) {
         if (tvDone.equals(v)) {
-              addPlans();
+            addPlans();
 //            getActivity().getSupportFragmentManager().beginTransaction()
 //                    .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvBack.equals(v)) {
@@ -78,9 +78,9 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
                     .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
-        }else if (tvPlanTimeAlarm.equals(v)) {
+        } else if (tvPlanTimeAlarm.equals(v)) {
             chooseTime(tvPlanTimeAlarm);
-        }  else if (tvPlanDate.equals(v)) {
+        } else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
         }
     }
@@ -123,6 +123,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         }
         if (timeAlarm.isEmpty()) {
             tvPlanTimeAlarm.setText(time);
+            timeAlarm=time;
         }
 //        if (date.isEmpty() || date.equals(dateError)) {
 //            tvPlanDate.setText(dateError);
@@ -132,6 +133,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         if (description.isEmpty()) {
             description = " ";
         }
+
         int isAlarm = 1;
         Plan plan = new Plan();
         plan.setPlanName(title);
@@ -141,7 +143,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         plan.setDescribe(description);
         plan.setAlarmed(isAlarm);
         plansDAO.addData(plan);
-        Toast.makeText(getActivity(),"Thêm thành công",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Thêm thành công", Toast.LENGTH_LONG).show();
 
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();

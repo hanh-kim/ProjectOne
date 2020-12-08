@@ -107,6 +107,7 @@
                     android:drawableRight="@drawable/ic_outline_watch"
                     android:drawablePadding="5dp"
                     android:hint="Thời gian   hh:mm"
+                    android:textColor="#000"
                     android:inputType="number" />
                 <TextView
                     android:id="@+id/tvPlanTimeAlarm"
@@ -119,6 +120,7 @@
                     android:drawableRight="@drawable/ic_baseline_access_alarms"
                     android:drawablePadding="5dp"
                     android:hint="Nhắc nhở   hh:mm"
+                    android:textColor="#000"
                     android:inputType="number" />
                 <TextView
                     android:id="@+id/tvPlanDate"
@@ -158,6 +160,7 @@
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="400dp"
+                    android:textColor="#000"
                     android:nestedScrollingEnabled="true" />
             </LinearLayout>
         </ScrollView>

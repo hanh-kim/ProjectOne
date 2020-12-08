@@ -230,7 +230,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         plan.setDescribe(description);
         plansDAO.updateData(plan);
         Toast.makeText(getActivity(),"Cập nhật thành công",Toast.LENGTH_LONG).show();
-        
+
     }
 
     private void delete(){

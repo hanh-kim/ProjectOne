@@ -124,6 +124,7 @@
                     android:drawablePadding="5dp"
                     android:enabled="false"
                     android:textStyle="bold"
+                    android:textColor="#000"
                     android:hint="Thời gian   hh:mm"
                     android:inputType="number" />
 
@@ -139,6 +140,7 @@
                     android:drawableRight="@drawable/ic_baseline_access_alarms"
                     android:drawablePadding="5dp"
                     android:enabled="false"
+                    android:textColor="#000"
                     android:hint="Nhắc nhở   hh:mm"
                     android:inputType="number" />
 
@@ -155,6 +157,7 @@
                     android:drawablePadding="5dp"
                     android:enabled="false"
                     android:hint="dd/mmm/yyyy"
+                    android:textColor="#000"
                     android:inputType="number" />
 
 
@@ -182,6 +185,7 @@
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="400dp"
+                    android:textColor="#000"
                     android:nestedScrollingEnabled="true" />
             </LinearLayout>
         </ScrollView>
