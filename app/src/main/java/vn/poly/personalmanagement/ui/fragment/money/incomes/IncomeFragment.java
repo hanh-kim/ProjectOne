@@ -69,7 +69,7 @@ public class IncomeFragment extends Fragment
         icAdd.setOnClickListener(this);
         tv.setOnClickListener(this);
 
-        lvResultSearch.setOnItemClickListener(this);
+        lvIncomes.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
 
@@ -105,7 +105,7 @@ public class IncomeFragment extends Fragment
         Income income = incomeList.get(position);
         DetailIncomeFragment detailIncomeFragment = new DetailIncomeFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("income", position);
+        bundle.putSerializable("income", income);
         detailIncomeFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_money_root, detailIncomeFragment).commit();

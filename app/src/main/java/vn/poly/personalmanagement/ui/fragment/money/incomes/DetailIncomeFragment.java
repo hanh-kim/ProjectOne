@@ -82,9 +82,7 @@ public class DetailIncomeFragment extends Fragment
         } else if (tvChooseDate.equals(v)) {
             chooseDate();
         }else if (tvDelete.equals(v)) {
-            Toast.makeText(getActivity(),"Xóa thành công!",Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_money_root, new IncomeFragment()).commit();
+            deleteIncome();
         }
     }
 
@@ -129,10 +127,48 @@ public class DetailIncomeFragment extends Fragment
             edtAmount.setEnabled(false);
             edtDescribe.setEnabled(false);
             isEditing=0;
+            updateIncome();
             Toast.makeText(getActivity(),"Cập nhật thành công!",Toast.LENGTH_LONG).show();
         }
 
     }
+    private void updateIncome(){
+        Income income= (Income) bundle.get("income");
+        String title =edtTitle.getText().toString().trim();
+        String sAmount = edtAmount.getText().toString().trim();
+        long amount =0;
+        String description = edtDescribe.getText().toString().trim();
+        String date = CurrentDateTime.getCurrentDate();
+        String time = CurrentDateTime.getCurrentTime();
+        if (title.isEmpty()){
+            edtTitle.setError("Mời nhập tên khoản thu");
+            edtTitle.setFocusable(true);
+            return;
+        }
+        if (sAmount.isEmpty()){
+            edtAmount.setError("Mời nhập số tiền đã thu");
+            edtAmount.setFocusable(true);
+            return;
+        }else amount= Long.parseLong(sAmount);
+        if (description.isEmpty()){
+            description="";
+        }
 
+        income.setTitle(title);
+//        income.setTime(time);
+//        income.setDate(date);
+        income.setAmount(amount);
+        income.setDescription(description);
+        incomesDAO.updateData(income);
+
+    }
+
+    private void deleteIncome(){
+        Income income= (Income) bundle.get("income");
+        incomesDAO.deleteData(income);
+        Toast.makeText(getActivity(),"Xóa thành công!",Toast.LENGTH_LONG).show();
+        getActivity().getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_money_root, new IncomeFragment()).commit();
+    }
 
 }

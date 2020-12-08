@@ -113,7 +113,7 @@ public class AddIncomesFragment extends Fragment
     private void addIncome(){
         String title =edtTitle.getText().toString().trim();
         String sAmount = edtAmount.getText().toString().trim();
-        double amount =0;
+        long amount =0;
         String description = edtDescribe.getText().toString().trim();
         String date = CurrentDateTime.getCurrentDate();
         String time = CurrentDateTime.getCurrentTime();
@@ -126,7 +126,7 @@ public class AddIncomesFragment extends Fragment
             edtAmount.setError("Mời nhập số tiền đã thu");
             edtAmount.setFocusable(true);
             return;
-        }else amount= Double.parseDouble(sAmount);
+        }else amount= Long.parseLong(sAmount);
         if (description.isEmpty()){
             description=" ";
         }

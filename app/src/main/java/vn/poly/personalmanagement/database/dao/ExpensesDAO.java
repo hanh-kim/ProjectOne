@@ -90,7 +90,7 @@ public class ExpensesDAO {
                 String expense_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TITLE));
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
-                double expense_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
+                long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
                 String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
 
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
@@ -106,7 +106,7 @@ public class ExpensesDAO {
     public List<Expense> getAllExpenses() {
         db = myDatabase.getWritableDatabase();
         List<Expense> expenseList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES ;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -115,7 +115,7 @@ public class ExpensesDAO {
                 String expense_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TITLE));
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
-                double expense_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
+                long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
                 String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
 
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
@@ -128,6 +128,33 @@ public class ExpensesDAO {
         return expenseList;
     }
 
+
+
+    public List<Expense> getAllExpenses(String from,  String to) {
+        db = myDatabase.getWritableDatabase();
+        List<Expense> expenseList = new ArrayList<>();
+        String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES
+                + " WHERE " + InfoTable.COL_EXPENSE_DATE + " BETWEEN '" + from + "' AND '" + to + "'";
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int expense_id = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EXPENSE_ID));
+                String expense_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TITLE));
+                String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
+                String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
+                long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
+                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
+
+                Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
+                expenseList.add(expense);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+//        Collections.reverse(mealList);
+        return expenseList;
+    }
 
     public List<Expense> getResultSearchedWithDate(String date) {
         db = myDatabase.getWritableDatabase();
@@ -144,7 +171,7 @@ public class ExpensesDAO {
                 String expense_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TITLE));
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
-                double expense_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
+                Long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
                 String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
 
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
@@ -156,6 +183,7 @@ public class ExpensesDAO {
 //        Collections.reverse(mealList);
         return expenseList;
     }
+
 
     public List<ObjectDate> getExpensetDateList() {
         db = myDatabase.getWritableDatabase();
@@ -171,7 +199,7 @@ public class ExpensesDAO {
             while (!cursor.isAfterLast()) {
                 String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_AMOUNT));
-                ObjectDate objectDate = new ObjectDate(date,amount);
+                ObjectDate objectDate = new ObjectDate(date, amount);
                 objectDateList.add(objectDate);
                 cursor.moveToNext();
             }

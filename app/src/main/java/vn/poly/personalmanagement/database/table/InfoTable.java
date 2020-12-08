@@ -106,7 +106,7 @@ public class InfoTable {
                 COL_INCOME_TITLE + " NVARCHAR(100) NOT NULL," +
                 COL_INCOME_DATE + " NCHAR(20) NOT NULL," +
                 COL_INCOME_TIME + " NCHAR(20) NOT NULL," +
-                COL_INCOME_AMOUNT + " DOUBLE NOT NULL," +
+                COL_INCOME_AMOUNT + " LONG NOT NULL," +
                 COL_INCOME_DESCRIPTION + " TEXT NOT NULL" +
                 ")";
 
@@ -119,7 +119,7 @@ public class InfoTable {
                 COL_EXPENSE_TITLE + " NVARCHAR(100) NOT NULL," +
                 COL_EXPENSE_DATE + " NCHAR(20) NOT NULL," +
                 COL_EXPENSE_TIME + " NCHAR(20) NOT NULL," +
-                COL_EXPENSE_AMOUNT + " DOUBLE NOT NULL," +
+                COL_EXPENSE_AMOUNT + " LONG NOT NULL," +
                 COL_EXPENSE_DESCRIPTION + " TEXT NOT NULL" +
                 ")";
 

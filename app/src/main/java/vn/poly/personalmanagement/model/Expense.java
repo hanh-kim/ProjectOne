@@ -7,7 +7,7 @@ public class Expense extends Money implements Serializable {
     public Expense() {
     }
 
-    public Expense(int id, String title, String date, String time, double amount, String note) {
+    public Expense(int id, String title, String date, String time, long amount, String note) {
         super(id, title, date, time, amount, note);
     }
 
@@ -52,12 +52,12 @@ public class Expense extends Money implements Serializable {
     }
 
     @Override
-    public double getAmount() {
+    public long getAmount() {
         return super.getAmount();
     }
 
     @Override
-    public void setAmount(double amount) {
+    public void setAmount(long amount) {
         super.setAmount(amount);
     }
 

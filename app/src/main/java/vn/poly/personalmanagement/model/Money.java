@@ -7,13 +7,13 @@ public class Money implements Serializable {
     private String title;
     private String date;
     private String time;
-    private double amount;
+    private long amount;
     private String description;
 
     public Money() {
     }
 
-    public Money(int id, String title, String date, String time, double amount, String description) {
+    public Money(int id, String title, String date, String time, long amount, String description) {
         this.id = id;
         this.title = title;
         this.date = date;
@@ -54,11 +54,11 @@ public class Money implements Serializable {
         this.time = time;
     }
 
-    public double getAmount() {
+    public long getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(long amount) {
         this.amount = amount;
     }
 

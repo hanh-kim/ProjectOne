@@ -13,7 +13,9 @@ import vn.poly.personalmanagement.adapter.money.expenses.ExpensesAdapter;
 import vn.poly.personalmanagement.model.Expense;
 import vn.poly.personalmanagement.model.Income;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class IncomesAdapter extends BaseAdapter {
     Context context;
@@ -61,9 +63,12 @@ public class IncomesAdapter extends BaseAdapter {
         }
 
        final   Income income = incomeList.get(position);
+        Locale locale = new Locale("vi", "VN");
+        NumberFormat format = NumberFormat.getCurrencyInstance(locale);
+        String amount = format.format(income.getAmount());
         viewHolder.tvTitle.setText(income.getTitle());
         viewHolder.tvDateTime.setText(income.getTime() + ", " + income.getDate());
-        viewHolder.tvAmountMoney.setText("Số tiền thu: "+ income.getAmount());
+        viewHolder.tvAmountMoney.setText("Số tiền thu: "+ amount);
         viewHolder.icDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -152,7 +152,7 @@ public class DetailExpenseFragment extends Fragment
     private void updateExpenses() {
         String title = edtTitle.getText().toString().trim();
         String sAmount = edtAmount.getText().toString().trim();
-        double amount = Double.parseDouble(sAmount);
+        long amount = Long.parseLong(sAmount);
         String description = edtDescribe.getText().toString().trim();
         String date = CurrentDateTime.getCurrentDate();
         String time = CurrentDateTime.getCurrentTime();

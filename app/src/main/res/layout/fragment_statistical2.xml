@@ -53,61 +53,76 @@
             android:id="@+id/tvCurrentDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-           android:layout_marginLeft="20dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
             android:text="Hôm nay, dd/mm/yyyy"
             android:textColor="#000"
             android:textStyle="bold" />
 
-        <LinearLayout
-            android:layout_marginTop="10dp"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tvStartDate"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/custom_edt_search"
-                android:drawableRight="@drawable/ic_calendar"
-                android:drawablePadding="5dp"
-                android:hint="Từ ngày: dd/mmm/yyyy"
-                android:inputType="number" />
-
-            <TextView
-                android:id="@+id/tvEndDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="15dp"
-                android:background="@drawable/custom_edt_search"
-                android:drawableRight="@drawable/ic_calendar"
-                android:drawablePadding="5dp"
-                android:hint="Đến ngày: dd/mmm/yyyy"
-                android:inputType="number" />
-
-            <Button
-                android:id="@+id/btnStatisticSearch"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="20dp"
-
-                android:background="@drawable/custom_btn"
                 android:gravity="center"
-                android:text="Thống kê"
-                android:textColor="#ffff"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-                />
+                <TextView
+                    android:id="@+id/tvStartDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:drawableRight="@drawable/ic_calendar"
+                    android:drawablePadding="5dp"
+                    android:hint="Từ ngày: dd/mmm/yyyy"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/tvEndDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@drawable/custom_edt_search"
+                    android:drawableRight="@drawable/ic_calendar"
+                    android:drawablePadding="5dp"
+                    android:hint="Đến ngày: dd/mmm/yyyy"
+                    android:inputType="number" />
+
+                <TextView
+                    android:id="@+id/tvError"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textColor="#ff0000" />
+
+                <Button
+                    android:id="@+id/btnStatisticSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+
+                    android:background="@drawable/custom_btn"
+                    android:gravity="center"
+                    android:text="Thống kê"
+                    android:textColor="#ffff"
+
+                    />
 
 
-        </LinearLayout>
+            </LinearLayout>
+
+
+        </ScrollView>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -124,13 +139,14 @@
 
         </RelativeLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:padding="10dp"
             android:background="@drawable/custom_edt_search"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardStatisticIncomes"
@@ -239,6 +255,7 @@
 
 
         </LinearLayout>
+
 
     </LinearLayout>
 

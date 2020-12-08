@@ -11,6 +11,7 @@ import java.util.List;
 import vn.poly.personalmanagement.database.sqlite.Mydatabase;
 import vn.poly.personalmanagement.database.table.InfoTable;
 import vn.poly.personalmanagement.model.DetailExercise;
+import vn.poly.personalmanagement.model.Expense;
 import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
@@ -91,7 +92,7 @@ public class IncomesDAO {
                 String income_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TITLE));
                 String income_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DATE));
                 String income_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TIME));
-                double income_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
+                long income_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
                 String income_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DESCRIPTION));
 
                 Income income = new Income(income_id, income_title, income_date, income_time, income_amount, income_description);
@@ -116,7 +117,7 @@ public class IncomesDAO {
                 String income_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TITLE));
                 String income_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DATE));
                 String income_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TIME));
-                double income_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
+                long income_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
                 String income_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DESCRIPTION));
 
                 Income income = new Income(income_id, income_title, income_date, income_time, income_amount, income_description);
@@ -144,7 +145,7 @@ public class IncomesDAO {
                 String income_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TITLE));
                 String income_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DATE));
                 String income_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TIME));
-                double income_amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
+                long income_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
                 String income_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DESCRIPTION));
 
                 Income income = new Income(income_id, income_title, income_date, income_time, income_amount, income_description);
@@ -179,6 +180,34 @@ public class IncomesDAO {
         }
         Collections.reverse(objectDateList);
         return objectDateList;
+    }
+
+
+
+    public List<Income> getAllIncomes(String from,  String to) {
+        db = myDatabase.getWritableDatabase();
+        List<Income> incomeList = new ArrayList<>();
+        String getData = "SELECT * FROM " + InfoTable.TABLE_IMCOMES
+                + " WHERE " + InfoTable.COL_INCOME_DATE + " BETWEEN '" + from + "' AND '" + to + "'";
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int income_id = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_INCOME_ID));
+                String income_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TITLE));
+                String income_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DATE));
+                String income_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_TIME));
+                long income_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_INCOME_AMOUNT));
+                String income_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DESCRIPTION));
+
+                Income income = new Income(income_id, income_title, income_date, income_time, income_amount, income_description);
+                incomeList.add(income);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+//        Collections.reverse(mealList);
+        return incomeList;
     }
 
 

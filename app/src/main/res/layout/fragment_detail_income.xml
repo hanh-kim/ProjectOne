@@ -161,7 +161,7 @@
                     android:hint="Nội dung(*)"
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
-                    android:minHeight="400dp"
+                    android:minHeight="500dp"
                     android:nestedScrollingEnabled="true" />
             </LinearLayout>
         </ScrollView>
