@@ -12,16 +12,26 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.database.dao.IncomesDAO;
+import vn.poly.personalmanagement.database.sqlite.Mydatabase;
+import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Income;
 
 
 public class DetailIncomeFragment extends Fragment
         implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+
     TextView tvBack, tvEdit, tvDateTime, tvChooseDate,tvDelete;
     EditText edtTitle, edtAmount, edtDescribe;
     int isEditing = 0;
-
+    Mydatabase mydatabase;
+    IncomesDAO incomesDAO;
+    List<Income> incomeList;
+    Bundle bundle;
     public DetailIncomeFragment() {
         // Required empty public constructor
     }
@@ -44,6 +54,19 @@ public class DetailIncomeFragment extends Fragment
         tvEdit.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
+
+        bundle = getArguments();
+        if (bundle!=null){
+            Income income = (Income) bundle.get("income");
+            if (income.getDate().equals(CurrentDateTime.getCurrentDate())){
+                tvDateTime.setText("Hôm nay, "+income.getTime());
+            }else  tvDateTime.setText(income.getTime()+", ngày "+income.getDate());
+            edtTitle.setText(income.getTitle());
+            edtAmount.setText(""+income.getAmount());
+            edtDescribe.setText(income.getDescription());
+        }
+
+
         return view;
     }
 
@@ -87,7 +110,8 @@ public class DetailIncomeFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-
+        mydatabase = new Mydatabase(getActivity());
+        incomesDAO = new IncomesDAO(mydatabase);
     }
 
     private void edit() {

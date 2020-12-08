@@ -29,6 +29,7 @@ import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.ui.fragment.money.MoneyFragment;
+import vn.poly.personalmanagement.ui.fragment.money.expenses.ExpensesTodayFragment;
 
 
 public class IncomeFragment extends Fragment
@@ -101,6 +102,13 @@ public class IncomeFragment extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Income income = incomeList.get(position);
+        DetailIncomeFragment detailIncomeFragment = new DetailIncomeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("income", position);
+        detailIncomeFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_money_root, detailIncomeFragment).commit();
 
     }
 
@@ -149,7 +157,7 @@ public class IncomeFragment extends Fragment
 
     private void showIncomeDate() {
         incomeList = getIncomeList();
-       final IncomesAdapter adapter = new IncomesAdapter();
+        final IncomesAdapter adapter = new IncomesAdapter();
         adapter.setDataAdapter(incomeList, new IncomesAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(final Income income, final int position) {

@@ -1,6 +1,8 @@
 package vn.poly.personalmanagement.model;
 
-public class Income extends Money {
+import java.io.Serializable;
+
+public class Income extends Money implements Serializable {
 
     public Income() {
     }
