@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.health.eating;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +72,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void onClick(View v) {
         if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new EatingFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (icAdd.equals(v)) {
             AddMealFragment addMealFragment = new AddMealFragment();
             Bundle bundle = new Bundle();
@@ -151,5 +153,14 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
 
     private void countItem() {
         tvCount.setText("Số bữa ăn: " + getMealList().size());
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 }

@@ -90,9 +90,9 @@ public class SearchMealFragment extends Fragment implements Initialize, View.OnC
     public void onClick(View v) {
 
         if (tvCancelSearch.equals(v)){
-            if (getArguments().getInt(keyName)==EatingFragment.ID_FRAG){
+            if (getArguments().getInt(keyName)== MainEatingFragment.ID_FRAG){
                 getActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_health_root,new EatingFragment()).commit();
+                        .replace(R.id.fragment_health_root,new MainEatingFragment()).commit();
             }
 
         }
@@ -126,6 +126,7 @@ public class SearchMealFragment extends Fragment implements Initialize, View.OnC
         mydatabase = new MyDatabase(getContext());
         eatingDAO = new EatingDAO(mydatabase);
     }
+
     private void showMealList(final List<Meal> mealList) {
         mealAdapter = new MealAdapter();
         mealAdapter.setDataAdapter(mealList, new MealAdapter.OnItemRemoveListener() {

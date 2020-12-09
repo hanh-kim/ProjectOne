@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.health.fitness;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -7,9 +8,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -21,11 +25,13 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.health.eating.EatingAdapter;
 import vn.poly.personalmanagement.adapter.health.fitness.FitnessAdapter;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.ui.fragment.health.HealthFragment;
 
@@ -72,6 +78,7 @@ public class FitnessFragment extends Fragment
         tvCurrentDate.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         tvBack.setOnClickListener(this);
         lvFitness.setOnItemClickListener(this);
+        lvResultSearch.setOnItemClickListener(this);
         cardToday.setOnClickListener(this);
         cardExercisesList.setOnClickListener(this);
         countExercisedToday();
@@ -92,6 +99,7 @@ public class FitnessFragment extends Fragment
         }else if (tvToSearch.equals(v)) {
             startSearch();
         } else if (tvCancelSearch.equals(v)) {
+            hideSoftKeyboard();
             cancelSearch();
         }
     }
@@ -109,6 +117,8 @@ public class FitnessFragment extends Fragment
         tvCountExerciseToday= view.findViewById(R.id.tvCountExerciseToday);
         tvToSearch= view.findViewById(R.id.tvToSearch);
         tvCancelSearch= view.findViewById(R.id.tvCancelSearch);
+        layoutSearch = view.findViewById(R.id.layoutSearch);
+        lvResultSearch = view.findViewById(R.id.lvResultSearch);
     }
 
     @Override
@@ -134,14 +144,66 @@ public class FitnessFragment extends Fragment
     }
 
     private void startSearch() {
+        edtSearch.setHint("Nhập ngày dd/mm/yyyy");
         layoutSearch.setVisibility(View.VISIBLE);
         edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String date) {
+        final FitnessAdapter fitnessAdapter = new FitnessAdapter();
+        fitnessList = getFitnessList(date);
+        fitnessAdapter.setDataAdapter(fitnessList, new FitnessAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(final Fitness fitness, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa ngày tập này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        fitnessDAO.deleteDataWithDate(fitness.getDate());
+                        fitnessList.remove(position);
+                        fitnessAdapter.notifyDataSetChanged();
+                        countItem();
+                        countExercisedToday();
+                        showFitness();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+                builder.create().show();
+            }
+        });
+        lvResultSearch.setAdapter(fitnessAdapter);
     }
 
     private List<Fitness> getFitnessList(){
         return fitnessDAO.getFitnessList();
     }
-
+    private List<Fitness> getFitnessList(String date){
+        return fitnessDAO.getFitnessList(date);
+    }
     private void showFitness(){
         final FitnessAdapter fitnessAdapter = new FitnessAdapter();
         fitnessList = getFitnessList();
@@ -183,8 +245,18 @@ public class FitnessFragment extends Fragment
         }else  tvCountItem.setText("Số ngày tập luyện: "+getFitnessList().size());
 
     }
+
     private void countExercisedToday(){
         tvCountExerciseToday.setText("" + fitnessDAO.getAllExerciseWithDate(CurrentDateTime.getCurrentDate()).size());
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 
 }

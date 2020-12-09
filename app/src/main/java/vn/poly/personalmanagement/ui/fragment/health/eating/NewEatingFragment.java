@@ -52,7 +52,7 @@ public class NewEatingFragment extends Fragment implements Initialize, View.OnCl
     @Override
     public void onClick(View v) {
         if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new EatingFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (icAdd.equals(v)) {
             AddMealFragment addMealFragment = new AddMealFragment();
             Bundle bundle = new Bundle();
@@ -60,7 +60,7 @@ public class NewEatingFragment extends Fragment implements Initialize, View.OnCl
             addMealFragment.setArguments(bundle);
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, addMealFragment).commit();
         } else if (tvDone.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new EatingFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         }
     }
 

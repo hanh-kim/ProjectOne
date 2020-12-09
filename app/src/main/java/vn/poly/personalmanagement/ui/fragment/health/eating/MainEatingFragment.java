@@ -36,14 +36,14 @@ import vn.poly.personalmanagement.model.Meal;
 import vn.poly.personalmanagement.ui.fragment.health.HealthFragment;
 
 
-public class EatingFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainEatingFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
     TextView tvBack, tvCurrentDate, tvCountItem;
     CardView cardToday;
     ListView lvEating;
     ImageView icAdd;
     final String keyName = "idFrag";
     public static final int ID_FRAG = 0;
-    public static final String NAME_FRAG = EatingFragment.class.getName();
+    public static final String NAME_FRAG = MainEatingFragment.class.getName();
 
     ListView lvResultSearch;
     TextView tvToSearch, tvCancelSearch, tvCountMealToday, tvCountEating;
@@ -57,7 +57,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
     MealAdapter mealAdapter;
     List<Meal> mealList;
 
-    public EatingFragment() {
+    public MainEatingFragment() {
         // Required empty public constructor
     }
 
@@ -91,27 +91,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
     }
 
 
-    @Override
-    public void onClick(View v) {
-        if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new HealthFragment()).commit();
-        } else if (cardToday.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MealsTodayFragment()).commit();
-        } else if (icAdd.equals(v)) {
-            AddMealFragment addMealFragment = new AddMealFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt(keyName, ID_FRAG);
-            addMealFragment.setArguments(bundle);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, addMealFragment).commit();
 
-        } else if (tvToSearch.equals(v)) {
-            startSearch();
-        } else if (tvCancelSearch.equals(v)) {
-            hideSoftKeyboard();
-            cancelSearch();
-        }
-
-    }
 
 
     @Override
@@ -140,11 +120,32 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
     }
 
     @Override
+    public void onClick(View v) {
+        if (tvBack.equals(v)) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new HealthFragment()).commit();
+        } else if (cardToday.equals(v)) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MealsTodayFragment()).commit();
+        } else if (icAdd.equals(v)) {
+            AddMealFragment addMealFragment = new AddMealFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(keyName, ID_FRAG);
+            addMealFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, addMealFragment).commit();
+
+        } else if (tvToSearch.equals(v)) {
+            startSearch();
+        } else if (tvCancelSearch.equals(v)) {
+            hideSoftKeyboard();
+            cancelSearch();
+        }
+
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
         Bundle bundle = new Bundle();
-        MealsFragment mealsFragment = new MealsFragment();
+        MealsDateFragment mealsFragment = new MealsDateFragment();
         bundle.putString("date", eatingList.get(position).getDate());
         mealsFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, mealsFragment).commit();
@@ -168,6 +169,8 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
         edtSearch.setHint("Nhập ngày dd/mm/yyyy");
         layoutSearch.setVisibility(View.VISIBLE);
         edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -178,7 +181,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
                 String sDate = edtSearch.getText().toString().trim();
 //                mealList = getMealList(sDate);
 //                showMealList(mealList);
-                showEatingListSearch(sDate);
+                showResultSearch(sDate);
             }
 
             @Override
@@ -188,19 +191,7 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
 
     }
 
-    private List<Meal> getMealList(String s) {
-        return eatingDAO.getResultSearchedWithDate(s);
-    }
-
-    private List<Eating> getEatingList() {
-        return eatingDAO.getEatingList();
-    }
-
-    private List<Eating> getEatingList(String date) {
-        return eatingDAO.getEatingList(date);
-    }
-
-    private void showEatingListSearch(String date) {
+    private void showResultSearch(String date) {
         eatingList = getEatingList(date);
         eatingAdapter.setDataAdapter(eatingList, new EatingAdapter.OnItemRemoveListener() {
             @Override
@@ -229,6 +220,19 @@ public class EatingFragment extends Fragment implements Initialize, View.OnClick
             }
         });
         lvResultSearch.setAdapter(eatingAdapter);
+    }
+
+
+    private List<Meal> getMealList(String s) {
+        return eatingDAO.getResultSearchedWithDate(s);
+    }
+
+    private List<Eating> getEatingList() {
+        return eatingDAO.getEatingList();
+    }
+
+    private List<Eating> getEatingList(String date) {
+        return eatingDAO.getEatingList(date);
     }
 
     private void showEatingList() {

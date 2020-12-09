@@ -106,17 +106,6 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         return view;
     }
 
-    private List<Note> getList() {
-        List<Note> noteList = notesDAO.getAllData(FRAG_ID);
-        return noteList;
-    }
-
-    private void countItem() {
-        if (noteList.size() == 0) {
-            tvCount.setText("Không có ghi chú nào");
-        } else tvCount.setText("Có " + noteList.size() + " ghi chú");
-    }
-
 
     @Override
     public void initializeViews(View view) {
@@ -181,6 +170,17 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         fragmentTransaction.replace(R.id.fragment_notes_root, detailNoteFragment).commit();
     }
 
+    private List<Note> getList() {
+        List<Note> noteList = notesDAO.getAllData(FRAG_ID);
+        return noteList;
+    }
+
+    private void countItem() {
+        if (noteList.size() == 0) {
+            tvCount.setText("Không có ghi chú nào");
+        } else tvCount.setText("Có " + noteList.size() + " ghi chú");
+    }
+
     private void removeItem(final Note note, final int position) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -209,11 +209,12 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
 
 
     }
-    private void hideSoftKeyboard(){
+
+    private void hideSoftKeyboard() {
         View view = getActivity().getCurrentFocus();
-        if (view != null){
+        if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
     }

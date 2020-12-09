@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -32,12 +34,13 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     ImageView icAdd;
     ListView lvPlans;
     ListView lvResultSearch;
-    TextView tvToSearch, tvCancelSearch,tvCountItem;
+    TextView tvToSearch, tvCancelSearch, tvCountItem;
     FrameLayout layoutSearch;
     EditText edtSearch;
     MyDatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
+
     public PlansFutureFragment() {
         // Required empty public constructor
     }
@@ -69,24 +72,15 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     @Override
     public void onClick(View view) {
         if (tvDone.equals(view)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
         } else if (icAdd.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_plans_root, new AddPlansFragment()).commit();
-        }else if (tvToSearch.equals(view)) {
+        } else if (tvToSearch.equals(view)) {
             startSearch();
         } else if (tvCancelSearch.equals(view)) {
+            hideSoftKeyboard();
             cancelSearch();
         }
-    }
-
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setFocusable(true);
     }
 
 
@@ -121,6 +115,16 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
     }
 
+    private void cancelSearch() {
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void startSearch() {
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setFocusable(true);
+    }
+
     private List<Plan> getPlansFuture() {
         return plansDAO.getAllPlansFuture();
     }
@@ -153,5 +157,14 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
         });
 
         lvPlans.setAdapter(adapter);
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 }

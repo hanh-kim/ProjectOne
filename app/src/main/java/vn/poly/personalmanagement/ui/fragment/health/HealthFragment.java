@@ -17,7 +17,7 @@ import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.ui.fragment.health.eating.AddMealFragment;
-import vn.poly.personalmanagement.ui.fragment.health.eating.EatingFragment;
+import vn.poly.personalmanagement.ui.fragment.health.eating.MainEatingFragment;
 import vn.poly.personalmanagement.ui.fragment.health.eating.MealsTodayFragment;
 import vn.poly.personalmanagement.ui.fragment.health.fitness.ExercisesFragment;
 import vn.poly.personalmanagement.ui.fragment.health.fitness.ExercisesTodayFragment;
@@ -71,7 +71,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
 
         if (cardToEating.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new EatingFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (cardTofitness.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_health_root, new FitnessFragment()).commit();

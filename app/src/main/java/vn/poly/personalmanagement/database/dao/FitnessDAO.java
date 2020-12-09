@@ -126,8 +126,8 @@ public class FitnessDAO {
         List<Fitness> fitnessList = new ArrayList<>();
         String getData = "SELECT " + InfoTable.COL_DETAIL_EXERCISE_DATE + ", COUNT(" + InfoTable.COL_DETAIL_EXERCISE_ID + ") AS '" + InfoTable.COL_DETAIL_EXERCISE_AMOUNT + "'"
                 + " FROM " + InfoTable.TABLE_DETAIL_EXERCISE
-                + " GROUP BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
-
+                + " GROUP BY " + InfoTable.COL_DETAIL_EXERCISE_DATE
+               + " ORDER BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -146,6 +146,32 @@ public class FitnessDAO {
         return fitnessList;
     }
 
+    public List<Fitness> getFitnessList(String sDate) {
+
+        db = myDatabase.getWritableDatabase();
+        List<Fitness> fitnessList = new ArrayList<>();
+        String getData = "SELECT " + InfoTable.COL_DETAIL_EXERCISE_DATE + ", COUNT(" + InfoTable.COL_DETAIL_EXERCISE_ID + ") AS '" + InfoTable.COL_DETAIL_EXERCISE_AMOUNT + "'"
+                + " FROM " + InfoTable.TABLE_DETAIL_EXERCISE
+                + " WHERE " + InfoTable.COL_DETAIL_EXERCISE_DATE + " LIKE '" + sDate + "%'"
+                + " GROUP BY " + InfoTable.COL_DETAIL_EXERCISE_DATE
+                + " ORDER BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_DETAIL_EXERCISE_DATE));
+                int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_DETAIL_EXERCISE_AMOUNT));
+                Fitness fitness = new Fitness();
+                fitness.setDate(date);
+                fitness.setAmountExercises(amount);
+                fitnessList.add(fitness);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        Collections.reverse(fitnessList);
+        return fitnessList;
+    }
 
 //    public Meal getMeal(int mealID) {
 //        db = myDatabase.getWritableDatabase();

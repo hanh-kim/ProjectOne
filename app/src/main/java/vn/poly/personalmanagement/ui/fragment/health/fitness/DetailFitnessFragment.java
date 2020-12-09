@@ -74,7 +74,7 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new FitnessFragment()).commit();
             } else if (tvDelete.equals(v)) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Bạn muốn xóa hay sửa?");
+                builder.setMessage("Bạn muốn xóa ngày tập này?");
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

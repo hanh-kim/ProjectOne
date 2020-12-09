@@ -69,7 +69,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         tvEdit.setOnClickListener(this);
         bundle = getArguments();
         if (bundle!=null){
-//            if (getArguments().getString(keyName).equals(PlansFragment.FRAG_NAME)) {
+//            if (getArguments().getString(keyName).equals(MainPlansFragment.FRAG_NAME)) {
 //                tvEdit.setEnabled(false);
 //                tvEdit.setVisibility(View.GONE);
 //            } else {
@@ -267,9 +267,9 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     }
 
     private void back(){
-        if (getArguments().getString(keyName).equals(PlansFragment.FRAG_NAME)) {
+        if (getArguments().getString(keyName).equals(MainPlansFragment.FRAG_NAME)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+                    replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
         } else if (getArguments().getString(keyName).equals(PlansTodayFragment.FRAG_NAME)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();

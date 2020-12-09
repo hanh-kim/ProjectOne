@@ -108,6 +108,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
 
     }
+
     private void save(User user) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(SignupActivity.this);
         final View view1 = getLayoutInflater().inflate(R.layout.layout_progress_dialog, null);
@@ -119,7 +120,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         final ImageView icDone = view1.findViewById(R.id.icDone);
         // Set transparent background
 
-        accountDAO.addData(user);
+      //  accountDAO.addData(user);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -130,6 +131,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                 progressBar.setVisibility(View.GONE);
                 icDone.setVisibility(View.VISIBLE);
                 tvProgress.setText("Đăng kí thành công");
+                dismissProgress();
                 builder.create().cancel();
             }
         }, 2000);

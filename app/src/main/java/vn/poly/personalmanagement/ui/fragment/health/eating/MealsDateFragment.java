@@ -32,10 +32,10 @@ import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Meal;
 
-public class MealsFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class MealsDateFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final int ID_FRAG = 3;
-    public static final String NAME_FRAG = MealsFragment.class.getName();
+    public static final String NAME_FRAG = MealsDateFragment.class.getName();
     final String keyName = "idFrag";
 
     TextView tvBack, tvEdit, tvDate, tvDelete, tvCountItem;
@@ -48,7 +48,7 @@ public class MealsFragment extends Fragment implements Initialize, View.OnClickL
     MealAdapter mealAdapter;
     Bundle bundle;
 
-    public MealsFragment() {
+    public MealsDateFragment() {
         // Required empty public constructor
     }
 
@@ -93,14 +93,14 @@ public class MealsFragment extends Fragment implements Initialize, View.OnClickL
     public void onClick(View v) {
         if (tvBack.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new EatingFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (tvEdit.equals(v)) {
             edit();
         } else if (tvDelete.equals(v)) {
             eatingDAO.deleteDataWithDate(tvDate.getText().toString().trim());
             Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new EatingFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (icAdd.equals(v)) {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             AddMealFragment addMealFragment = new AddMealFragment();

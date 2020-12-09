@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -30,9 +32,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PlansFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainPlansFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final String FRAG_NAME = PlansFragment.class.getName();
+    public static final String FRAG_NAME = MainPlansFragment.class.getName();
     final String keyName = "fragName";
 
     CardView cardPlansToday, cardPlansFuture;
@@ -49,7 +51,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     List<Plan> planList;
     List<ObjectDate> planDateList;
 
-    public PlansFragment() {
+    public MainPlansFragment() {
         // Required empty public constructor
     }
 
@@ -64,7 +66,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_plans, container, false);
+        View view = inflater.inflate(R.layout.fragment_plans_main, container, false);
         initializeViews(view);
         initializeDatabase();
         cardPlansToday.setOnClickListener(this);
@@ -115,6 +117,7 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
         } else if (tvToSearch.equals(view)) {
             startSearch();
         } else if (tvCancelSearch.equals(view)) {
+            hideSoftKeyboard();
             cancelSearch();
         }
     }
@@ -194,6 +197,15 @@ public class PlansFragment extends Fragment implements Initialize, View.OnClickL
             tvCountItem.setText("Danh sách trống");
         } else tvCountItem.setText("Tất cả: " + getPlansDate().size());
 
+
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
     }
 

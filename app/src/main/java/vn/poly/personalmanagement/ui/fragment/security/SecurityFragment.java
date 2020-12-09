@@ -1,16 +1,16 @@
 package vn.poly.personalmanagement.ui.fragment.security;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.AccountDAO;
@@ -62,13 +62,12 @@ public class SecurityFragment extends Fragment
         edtLEmail.getEditText().setText(emailSaved);
         edtLPassword.getEditText().setText(user.getPassword());
         tvChangePassword.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_security_root,new ChangePasswordFragment()).commit();
 
-                transaction.replace(R.id.fragment_security_root, new ChangePasswordFragment());
-                transaction.commit();
-          //      Toast.makeText(getActivity(),"toasssssssssss",Toast.LENGTH_SHORT).show();
             }
         });
         return view;

@@ -37,7 +37,7 @@
     <fragment
 
         android:id="@+id/navigation_security_root"
-        android:name="vn.poly.personalmanagement.ui.fragment.security.SecurityFragment"
+        android:name="vn.poly.personalmanagement.ui.fragment.security.SecurityRootFragment"
         tools:layout="@layout/fragment_security_root" >
 
     </fragment>

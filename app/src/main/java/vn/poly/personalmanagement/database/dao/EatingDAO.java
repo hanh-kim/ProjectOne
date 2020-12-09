@@ -25,6 +25,7 @@ public class EatingDAO {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_MEALS, InfoTable.COL_MEAL_ID + " = ?", new String[]{String.valueOf(meal.getId())});
     }
+
     public long deleteDataWithDate(String date) {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_MEALS, InfoTable.COL_MEAL_DATE + " = ?", new String[]{date});
@@ -70,11 +71,12 @@ public class EatingDAO {
         } else return 0;
 
     }
+
     public List<Meal> getAllMealWithDate(String date) {
         db = myDatabase.getWritableDatabase();
         List<Meal> mealList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_MEALS + " WHERE " + InfoTable.COL_MEAL_DATE + " ='" + date + "'"
-                + "ORDER BY " + InfoTable.COL_MEAL_DATE ;
+                + "ORDER BY " + InfoTable.COL_MEAL_DATE;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -128,7 +130,7 @@ public class EatingDAO {
                 String meal_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_TIME));
                 String meal_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DATE));
                 String meal_detail = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DETAIL));
-                Meal meal = new Meal(meal_id, meal_title, meal_date,meal_time, meal_detail);
+                Meal meal = new Meal(meal_id, meal_title, meal_date, meal_time, meal_detail);
                 mealList.add(meal);
                 cursor.moveToNext();
             }
@@ -137,6 +139,7 @@ public class EatingDAO {
 
         return mealList;
     }
+
     public List<Eating> getEatingList() {
         db = myDatabase.getWritableDatabase();
         List<Eating> eatingList = new ArrayList<>();
@@ -166,7 +169,6 @@ public class EatingDAO {
         db = myDatabase.getWritableDatabase();
         List<Eating> eatingList = new ArrayList<>();
         String getData = "SELECT " + InfoTable.COL_MEAL_ID + "," + InfoTable.COL_MEAL_DATE + ", COUNT(" + InfoTable.COL_MEAL_ID + ") AS '" + InfoTable.COL_EATING_AMOUNT_MEAL + "'"
-
                 + " FROM " + InfoTable.TABLE_MEALS
                 + " WHERE " + InfoTable.COL_MEAL_DATE + " LIKE '" + date + "%'"
                 + " GROUP BY " + InfoTable.COL_MEAL_DATE;

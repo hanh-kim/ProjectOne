@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -57,7 +59,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         View view = inflater.inflate(R.layout.fragment_plans_today, container, false);
         initializeViews(view);
         initializeDatabase();
-        tvDateToday.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
+        tvDateToday.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         lvPlansToday.setOnItemClickListener(this);
         icAdd.setOnClickListener(this);
@@ -95,25 +97,16 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     public void onClick(View view) {
         if (tvDone.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+                    .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
         } else if (tvToSearch.equals(view)) {
             startSearch();
         } else if (tvCancelSearch.equals(view)) {
+            hideSoftKeyboard();
             cancelSearch();
         } else if (icAdd.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_plans_root, new AddWorkFragment()).commit();
         }
-    }
-
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
     }
 
     @Override
@@ -122,10 +115,21 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
-        bundle.putSerializable("plan",getPlansToday().get(position));
+        bundle.putSerializable("plan", getPlansToday().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
+    }
+
+    private void cancelSearch() {
+
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void startSearch() {
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setText("");
     }
 
     private List<Plan> getPlansToday() {
@@ -161,6 +165,15 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         });
 
         lvPlansToday.setAdapter(adapter);
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 
 }

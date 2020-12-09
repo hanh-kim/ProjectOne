@@ -82,8 +82,8 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
     public void onClick(View v) {
 
         if (tvBack.equals(v)) {
-            if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
-                MealsFragment mealsFragment = new MealsFragment();
+            if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
+                MealsDateFragment mealsFragment = new MealsDateFragment();
                 Bundle bundle = new Bundle();
                 bundle.putString("date", meal.getDate());
                 mealsFragment.setArguments(bundle);
@@ -96,21 +96,21 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
                 mealsTodayFragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_health_root, mealsTodayFragment).commit();
-            }else if (getArguments().getInt(keyName) == EatingFragment.ID_FRAG) {
+            }else if (getArguments().getInt(keyName) == MainEatingFragment.ID_FRAG) {
 
                 getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fragment_health_root, new EatingFragment()).commit();
+                        replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
             }
 
         } else if (tvEdit.equals(v)) {
-            if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
-                edit(new MealsFragment());
+            if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
+                edit(new MealsDateFragment());
 
             } else if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG) {
                 edit(new MealsTodayFragment());
 
-            } else if (getArguments().getInt(keyName) == EatingFragment.ID_FRAG) {
-                edit(new EatingFragment());
+            } else if (getArguments().getInt(keyName) == MainEatingFragment.ID_FRAG) {
+                edit(new MainEatingFragment());
 
             }
 
@@ -121,12 +121,12 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
 
         } else if (tvDelete.equals(v)) {
 
-            if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
-                delete(meal,new MealsFragment());
+            if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
+                delete(meal,new MealsDateFragment());
             } else if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG) {
                 delete(meal, new MealsTodayFragment());
-            }else if (getArguments().getInt(keyName) == EatingFragment.ID_FRAG) {
-                delete(meal, new EatingFragment());
+            }else if (getArguments().getInt(keyName) == MainEatingFragment.ID_FRAG) {
+                delete(meal, new MainEatingFragment());
             }
 
         }

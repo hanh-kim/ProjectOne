@@ -31,14 +31,14 @@ public class AccountDAO {
         values.put(InfoTable.COL_USERNAME, user.getUsername());
         values.put(InfoTable.COL_EMAIL, user.getEmail());
         values.put(InfoTable.COL_PASSWORD, user.getPassword());
-        return db.update(InfoTable.TABLE_ACCOUNT, values, InfoTable.COL_USERNAME + " = ?", new String[]{user.getUsername()});
+        return db.update(InfoTable.TABLE_ACCOUNT, values, InfoTable.COL_EMAIL + " = ?", new String[]{user.getEmail()});
     }
 
-    public long changePassword(String username, String password) {
+    public long changePassword(String email, String password) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(InfoTable.COL_PASSWORD, password);
-        return db.update(InfoTable.TABLE_ACCOUNT, values, InfoTable.COL_USERNAME + " = ?", new String[]{username});
+        return db.update(InfoTable.TABLE_ACCOUNT, values, InfoTable.COL_EMAIL + " = ?", new String[]{email});
     }
 
     public long addData(User user) {

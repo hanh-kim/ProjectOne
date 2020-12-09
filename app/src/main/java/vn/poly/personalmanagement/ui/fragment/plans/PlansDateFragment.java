@@ -102,12 +102,12 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
     public void onClick(View view) {
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+                    .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
         }  else if (tvDelete.equals(view)) {
            plansDAO.deleteDataWithDate(bundle.getString("date"));
             Toast.makeText(getActivity(),"Xóa thành công!",Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_plans_root, new PlansFragment()).commit();
+                    .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
         }
     }
 

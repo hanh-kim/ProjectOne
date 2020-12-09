@@ -2,6 +2,7 @@ package vn.poly.personalmanagement.ui.fragment.security;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -51,6 +52,13 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
         View view = inflater.inflate(R.layout.fragment_change_password, container, false);
         initializeDatabase();
         initializeViews(view);
+        tvBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_security_root,new SecurityFragment()).commit();
+            }
+        });
         mainActivity = (MainActivity) getActivity();
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,7 +92,7 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
     private void savePass() {
         String email = mainActivity.getEmailSaved();
         tvError.setText("");
-        tvError.setTextColor(R.color.colorRed);
+      //  tvError.setTextColor(R.color.colorRed);
         User user = accountDAO.getUserWithEmail(email);
         String oldPass = edtOldPassword.getText().toString().trim();
         String newPass = edtNewPassword.getText().toString().trim();
@@ -95,24 +103,26 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
         }
 
         if (!oldPass.equals(user.getPassword())) {
-            tvError.setText("Mật khẩu của không chính xác!");
+            edtOldPassword.setError("");
+            tvError.setText("Mật khẩu cũ không chính xác!");
             return;
         }
 
         if (newPass.length() < 6) {
-            tvError.setText("Mật khẩu gồm ít nhất 6 kí tự!");
+            edtNewPassword.setError("");
+            tvError.setText("Mật khẩu mới gồm ít nhất 6 kí tự!");
             return;
         }
         if (!confirmPass.equals(newPass)) {
+            edtConfirmPassword.setError("");
             tvError.setText("Mật khẩu nhập lại không khớp!");
             return;
         }
 
-        tvError.setTextColor(R.color.colorGreen);
+        tvError.setTextColor(Color.parseColor("#019807"));
         tvError.setText("Đổi mật khẩu thành công!");
 
-        user.setPassword(newPass);
-        accountDAO.updateData(user);
+        accountDAO.changePassword(email,newPass);
         Toast.makeText(getActivity(),"Đổi mật khẩu thành công!",Toast.LENGTH_SHORT).show();
         getActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_security_root,new SecurityFragment())

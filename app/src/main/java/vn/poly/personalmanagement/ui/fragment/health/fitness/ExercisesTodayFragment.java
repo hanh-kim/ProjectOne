@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.health.fitness;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -89,6 +91,7 @@ public class ExercisesTodayFragment extends Fragment
         } else if (tvToSearch.equals(v)) {
             startSearch();
         } else if (tvCancelSearch.equals(v)) {
+            hideSoftKeyboard();
             cancelSearch();
         }
     }
@@ -220,5 +223,14 @@ public class ExercisesTodayFragment extends Fragment
         if (getDetailExercisesList().size() == 0) {
             tvCountItem.setText("Danh sách trống ");
         } else tvCountItem.setText("Số bài tập: " + getDetailExercisesList().size());
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 }

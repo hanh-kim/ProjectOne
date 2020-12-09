@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.money.expenses;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -111,6 +113,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
         } else if (tvToSearch.equals(view)) {
             startSearch();
         } else if (tvCancelSearch.equals(view)) {
+            hideSoftKeyboard();
             cancelSearch();
         }
     }
@@ -189,5 +192,14 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
             }
         });
         lvExpenses.setAdapter(adapter);
+    }
+
+    private void hideSoftKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
     }
 }

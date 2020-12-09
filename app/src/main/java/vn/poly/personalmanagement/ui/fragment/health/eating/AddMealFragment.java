@@ -66,13 +66,13 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
         //.........
         if (getArguments()!=null){
             if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG ||
-                    getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
+                    getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
                 tvDate.setVisibility(View.GONE);
             } else {
                 tvDate.setVisibility(View.VISIBLE);
             }
             //.............
-            if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
+            if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
                 tvCurrentDate.setText("Ngày "+getArguments().getString("date"));
             }
         }
@@ -97,18 +97,18 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
             } else if (tvDone.equals(v)) {
                 addMeal(new MealsTodayFragment());
             }
-        } else if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
+        } else if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
             if (tvBack.equals(v)) {
-              back(new MealsFragment());
+              back(new MealsDateFragment());
             } else if (tvDone.equals(v)) {
-                addMeal(new MealsFragment());
+                addMeal(new MealsDateFragment());
 
             }
-        } else if (getArguments().getInt(keyName) == EatingFragment.ID_FRAG||getArguments().getInt(keyName) == HealthFragment.ID_FRAG) {
+        } else if (getArguments().getInt(keyName) == MainEatingFragment.ID_FRAG||getArguments().getInt(keyName) == HealthFragment.ID_FRAG) {
             if (tvBack.equals(v)) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new EatingFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
             } else if (tvDone.equals(v)) {
-                addMeal( new MealsFragment());
+                addMeal( new MealsDateFragment());
             }
         }
 
@@ -154,7 +154,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
         }
         if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG) {
             date = CurrentDateTime.getCurrentDate();
-        }else  if (getArguments().getInt(keyName) == MealsFragment.ID_FRAG) {
+        }else  if (getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
 
             date = getArguments().getString("date");
         }
