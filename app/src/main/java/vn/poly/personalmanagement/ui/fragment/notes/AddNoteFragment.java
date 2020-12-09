@@ -53,39 +53,25 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
 
     @Override
     public void onClick(View v) {
-
-        if (bundle.getInt(keyName) == NotesFragment.FRAG_ID) {
-            // id =1 : notes fragment
-
-            if (tvBack.equals(v)) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new NotesFragment()).commit();
-            } else if (tvDone.equals(v)) {
+        if (tvBack.equals(v)) {
+            back();
+        } else if (tvDone.equals(v)) {
+            if (bundle.getInt(keyName) == NotesFragment.FRAG_ID) {
+                // id =1 : notes fragment
                 addNote(NotesFragment.FRAG_ID);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new NotesFragment()).commit();
-            }
-
-
-        } else if (bundle.getInt(keyName) == ImportantNotesFragment.FRAG_ID) {
-            //id=2:  important notes fragment
-
-            if (tvBack.equals(v)) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new ImportantNotesFragment()).commit();
-            } else if (tvDone.equals(v)) {
+            } else if (bundle.getInt(keyName) == ImportantNotesFragment.FRAG_ID) {
+                //id=2:  important notes fragment
                 addNote(ImportantNotesFragment.FRAG_ID);
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new ImportantNotesFragment()).commit();
-
             }
-
 
         }
-
 
     }
 
     @Override
     public void initializeViews(View view) {
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvBack);
+        tvDone = view.findViewById(R.id.tvDone);
         tvDate = view.findViewById(R.id.tvCurrentDate);
         edtContent = view.findViewById(R.id.edtNoteContent);
         edtTitle = view.findViewById(R.id.edtNoteTitle);
@@ -96,6 +82,17 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
         mydatabase = new MyDatabase(getContext());
         notesDAO = new NotesDAO(mydatabase);
     }
+
+    private void back() {
+        if (bundle.getInt(keyName) == NotesFragment.FRAG_ID) {
+            // id =1 : notes fragment
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new NotesFragment()).commit();
+        } else if (bundle.getInt(keyName) == ImportantNotesFragment.FRAG_ID) {
+            //id=2:  important notes fragment
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_notes_root, new ImportantNotesFragment()).commit();
+        }
+    }
+
 
     private void addNote(int fragId) {
         String title = edtTitle.getText().toString().trim();
@@ -110,11 +107,13 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
         note.setDate(CurrentDateTime.getCurrentDate());
         note.setTime(CurrentDateTime.getCurrentTime());
         if (content.isEmpty()) {
-            note.setContent(" ");
+            note.setContent("");
         } else note.setContent(content);
 
         note.setIsDeleted(0);
         notesDAO.addData(note);
         Toast.makeText(getActivity(), "Lưu thông tin thành công", Toast.LENGTH_SHORT).show();
+        back();
+
     }
 }

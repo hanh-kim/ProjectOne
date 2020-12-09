@@ -64,11 +64,11 @@ public class SecurityFragment extends Fragment
         tvChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
-//
-//                transaction.replace(R.id.fragment_security_root, new ChangePasswordFragment());
-//                transaction.commit();
-                Toast.makeText(getActivity(),"toasssssssssss",Toast.LENGTH_SHORT).show();
+                FragmentTransaction transaction = mainActivity.getSupportFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.fragment_security_root, new ChangePasswordFragment());
+                transaction.commit();
+          //      Toast.makeText(getActivity(),"toasssssssssss",Toast.LENGTH_SHORT).show();
             }
         });
         return view;

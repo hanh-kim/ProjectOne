@@ -124,7 +124,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void initializeViews(View view) {
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvBack);
+        tvDone = view.findViewById(R.id.tvDone);
         tvCurrentDate = view.findViewById(R.id.tvCurrentDate);
         edtTitle = view.findViewById(R.id.edtMealTitle);
         tvDate = view.findViewById(R.id.tvChooseDate);
