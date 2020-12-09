@@ -93,11 +93,19 @@ public class StatisticalFragment extends Fragment implements Initialize, View.On
         String from = tvStartDate.getText().toString().trim();
         String to = tvEndDate.getText().toString().trim();
 
+
         if (from.isEmpty() || to.isEmpty()){
             tvError.setText("Mời nhập đủ ngày");
             return;
         }else {
             tvError.setText("");
+            if (from.compareTo(to)>0){
+                from = tvEndDate.getText().toString().trim();
+                to = tvStartDate.getText().toString().trim();
+                tvStartDate.setText(from);
+                tvEndDate.setText(to);
+            }
+
             List<Income> incomeList = incomesDAO.getAllIncomes(from,to);
             List<Expense> expenseList = expensesDAO.getAllExpenses(from,to);
             long amountIncomes =0;

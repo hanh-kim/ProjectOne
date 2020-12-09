@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +24,14 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.health.fitness.FitnessAdapter;
 import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
+import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.ui.fragment.money.MoneyFragment;
 
@@ -123,10 +127,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
         edtSearch.setText("");
     }
 
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
+
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -201,5 +202,59 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
+    }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập ngày dd/mm/yyyy");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String date) {
+        final MoneyAdapter adapter = new MoneyAdapter();
+        objectDateList = expensesDAO.getResultSearched(date);
+       adapter.setDataAdapter(objectDateList, new MoneyAdapter.OnItemRemoveListener() {
+           @Override
+           public void onRemove(final ObjectDate objectDate, final int position) {
+               AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+               builder.setMessage("Bạn muốn xóa ngày tập này?");
+               builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       dialog.cancel();
+                   }
+               });
+               builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                   @Override
+                   public void onClick(DialogInterface dialog, int which) {
+                       expensesDAO.deleteDataWithDate(objectDate.getDate());
+                       objectDateList.remove(position);
+                       adapter.notifyDataSetChanged();
+                       countItem();
+                       showExpenseDate();
+                       Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                   }
+
+               });
+               builder.create().show();
+           }
+       });
+        lvResultSearch.setAdapter(adapter);
     }
 }

@@ -46,6 +46,7 @@ public class ExpensesTodayFragment extends Fragment
     ExpensesDAO expensesDAO;
     List<Expense> expenseList;
     Bundle bundle;
+
     public ExpensesTodayFragment() {
         // Required empty public constructor
     }
@@ -75,8 +76,15 @@ public class ExpensesTodayFragment extends Fragment
 
         bundle = getArguments();
         if (bundle != null) {
-            tvCurrentDate.setText("Ngày " + bundle.getString("date"));
-            icAdd.setVisibility(View.GONE);
+            String sDate = bundle.getString("date");
+            if (sDate.equals(CurrentDateTime.getCurrentDate())) {
+                tvCurrentDate.setText("Hôm nay, " + sDate);
+                icAdd.setVisibility(View.VISIBLE);
+            } else {
+                tvCurrentDate.setText("Ngày " + sDate);
+                icAdd.setVisibility(View.GONE);
+            }
+
         }
 
         countItem();
@@ -97,11 +105,8 @@ public class ExpensesTodayFragment extends Fragment
             if (bundle != null) {
                 if (getArguments().getString(keyName).equals(ExpenseFragment.FRAG_NAME)) {
                     deleteAll(getArguments().getString("date"));
-                    getActivity().getSupportFragmentManager().beginTransaction().
-                            replace(R.id.fragment_money_root, new ExpenseFragment()).commit();
-                } else  deleteAll(CurrentDateTime.getCurrentDate());
-            }
-            else  deleteAll(CurrentDateTime.getCurrentDate());
+                } else deleteAll(CurrentDateTime.getCurrentDate());
+            } else deleteAll(CurrentDateTime.getCurrentDate());
 
         }
     }
@@ -231,9 +236,17 @@ public class ExpensesTodayFragment extends Fragment
                 totalExpenses();
                 showExpenses();
                 Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                if (bundle != null) {
+                    if (getArguments().getString(keyName).equals(ExpenseFragment.FRAG_NAME)) {
+                        getActivity().getSupportFragmentManager().beginTransaction().
+                                replace(R.id.fragment_money_root, new ExpenseFragment()).commit();
+                    }
+                }
             }
 
         });
         builder.create().show();
+
+
     }
 }
