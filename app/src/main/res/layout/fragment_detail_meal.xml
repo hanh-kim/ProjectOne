@@ -21,9 +21,9 @@
                 android:id="@+id/tvEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@+id/tvDelete"
                 android:text="Sửa"
                 android:textColor="#0371C8"
                 android:textStyle="bold" />
@@ -44,9 +44,9 @@
                 android:id="@+id/tvDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/tvEdit"
+                android:layout_marginRight="15dp"
                 android:text="Xóa"
                 android:textColor="#0371C8"
                 android:textStyle="bold" />
@@ -159,10 +159,11 @@
                     android:background="@drawable/custom_edt_search"
                     android:enabled="false"
                     android:gravity="left|top"
-                    android:hint="Thực đơn(*):"
+                    android:hint="Chi tiết(*):"
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="400dp"
+                    android:textColor="#000"
                     android:nestedScrollingEnabled="true" />
             </LinearLayout>
         </ScrollView>

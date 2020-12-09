@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
@@ -133,15 +136,7 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
                 replace(R.id.fragment_plans_root, plansDateFragment).commit();
     }
 
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
 
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
 
     private List<Plan> getPlansToday() {
         return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
@@ -190,7 +185,6 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
     }
 
     private void countItem() {
-
         tvCountPlansToday.setText("" + getPlansToday().size());
         tvCountPlansFuture.setText("" + getPlansFuture().size());
         if (getPlansDate().size() == 0) {
@@ -208,5 +202,68 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         }
 
     }
+
+    private void cancelSearch() {
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập ngày dd/mm/yyyy");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String date) {
+      //  planDateList = getPlansDate();
+        planDateList = plansDAO.getAllPlanDate(date);
+        final PlanDateAdapter adapter = new PlanDateAdapter();
+        adapter.setDataAdapter(planDateList, new PlanDateAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(final ObjectDate objectDate, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa những kế hoạch trong ngày này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        plansDAO.deleteDataWithDate(objectDate.getDate());
+                        planDateList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        countItem();
+                        showPlanDate();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+                builder.create().show();
+
+            }
+        });
+
+        lvResultSearch.setAdapter(adapter);
+    }
+
 
 }

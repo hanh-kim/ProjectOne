@@ -21,9 +21,9 @@
                 android:id="@+id/tvEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="25dp"
+                android:layout_toLeftOf="@+id/tvDelete"
                 android:text="Sửa"
                 android:textColor="#0371C8"
                 android:textStyle="bold" />
@@ -44,9 +44,9 @@
                 android:id="@+id/tvDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
-                android:layout_toLeftOf="@+id/tvEdit"
+                android:layout_marginRight="15dp"
                 android:text="Xóa"
                 android:textColor="#0371C8"
                 android:textStyle="bold" />
@@ -59,8 +59,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-               android:layout_marginTop="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -79,6 +80,7 @@
 
 
                 </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tvDateTime"
                     android:layout_width="wrap_content"
@@ -90,6 +92,7 @@
                     android:layout_marginBottom="10dp"
                     android:text=" hh:mm, ngày dd/mm/yyyy"
                     android:textColor="#000" />
+
                 <EditText
                     android:id="@+id/edtExpenseTitle"
                     android:layout_width="match_parent"
@@ -130,9 +133,9 @@
                     android:drawableRight="@drawable/ic_calendar"
                     android:drawablePadding="5dp"
                     android:enabled="false"
-                    android:visibility="gone"
                     android:hint="dd/mmm/yyyy"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:visibility="gone" />
 
 
                 <TextView
@@ -154,7 +157,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="15dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="10dp"
                     android:background="@drawable/custom_edt_search"
                     android:enabled="false"
                     android:gravity="left|top"
@@ -162,7 +165,8 @@
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="500dp"
-                    android:nestedScrollingEnabled="true" />
+                    android:nestedScrollingEnabled="true"
+                    android:textColor="#000" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

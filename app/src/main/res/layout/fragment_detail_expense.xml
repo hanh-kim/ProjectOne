@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -21,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="25dp"
                 android:layout_toLeftOf="@+id/tvDelete"
                 android:text="Sửa"
                 android:textColor="#0371C8"
@@ -40,12 +41,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:layout_alignParentRight="true"
                 android:id="@+id/tvDelete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="15dp"
                 android:text="Xóa"
                 android:textColor="#0371C8"
                 android:textStyle="bold" />
@@ -57,10 +58,11 @@
             android:layout_height="match_parent">
 
             <LinearLayout
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -78,6 +80,7 @@
 
 
                 </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tvDateTime"
                     android:layout_width="wrap_content"
@@ -89,6 +92,7 @@
                     android:layout_marginBottom="10dp"
                     android:text=" hh:mm, ngày dd/mm/yyyy"
                     android:textColor="#000" />
+
                 <EditText
                     android:id="@+id/edtExpenseTitle"
                     android:layout_width="match_parent"
@@ -140,6 +144,7 @@
                     android:enabled="false"
                     android:gravity="left|top"
                     android:hint="Nội dung(*)"
+                    android:textColor="#000"
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="450dp"

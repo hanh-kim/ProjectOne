@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,13 +70,13 @@ public class IncomeFragment extends Fragment
         tvBack.setOnClickListener(this);
         icAdd.setOnClickListener(this);
         tv.setOnClickListener(this);
-
+        lvResultSearch.setOnItemClickListener(this);
         lvIncomes.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
 
         countItem();
-        showIncomeDate();
+        showIncomes();
         return view;
     }
 
@@ -137,8 +139,59 @@ public class IncomeFragment extends Fragment
     }
 
     private void startSearch() {
+        edtSearch.setHint("Nhập tên khoản thu, dd/mm/yyyy");
         layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
         edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String date) {
+        incomeList = incomesDAO.getResultSearched(date);
+        final IncomesAdapter adapter = new IncomesAdapter();
+        adapter.setDataAdapter(incomeList, new IncomesAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(final Income income, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa khoản thu này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        incomesDAO.deleteData(income);
+                        incomeList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        countItem();
+                        showIncomes();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+
+                });
+                builder.create().show();
+            }
+        });
+        lvIncomes.setAdapter(adapter);
+        lvResultSearch.setAdapter(adapter);
     }
 
     private List<ObjectDate> getMoneytDateList() {
@@ -156,7 +209,7 @@ public class IncomeFragment extends Fragment
 
     }
 
-    private void showIncomeDate() {
+    private void showIncomes() {
         incomeList = getIncomeList();
         final IncomesAdapter adapter = new IncomesAdapter();
         adapter.setDataAdapter(incomeList, new IncomesAdapter.OnItemRemoveListener() {

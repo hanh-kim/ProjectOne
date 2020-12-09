@@ -63,18 +63,6 @@ public class ExpensesDAO {
 
     }
 
-    public long updateExpensesDate(String oldDate, String newDate) {
-        db = myDatabase.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(InfoTable.COL_EXPENSE_DATE, newDate);
-        long query = db.update(InfoTable.TABLE_EXPENSES, values, InfoTable.COL_EXPENSE_DATE + " = ?",
-                new String[]{oldDate});
-        if (query > 0) {
-            return query;
-        } else return 0;
-
-    }
-
     public List<Expense> getAllExpensesWithDate(String date) {
         db = myDatabase.getWritableDatabase();
         List<Expense> expenseList = new ArrayList<>();
@@ -127,7 +115,6 @@ public class ExpensesDAO {
         return expenseList;
     }
 
-
     public List<Expense> getAllExpenses(String from, String to) {
         db = myDatabase.getWritableDatabase();
         List<Expense> expenseList = new ArrayList<>();
@@ -154,7 +141,6 @@ public class ExpensesDAO {
         return expenseList;
     }
 
-
     public List<ObjectDate> getResultSearched(String date) {
         db = myDatabase.getWritableDatabase();
         List<ObjectDate> objectDateList = new ArrayList<>();
@@ -180,7 +166,6 @@ public class ExpensesDAO {
         return objectDateList;
     }
 
-
     public List<ObjectDate> getExpensetDateList() {
         db = myDatabase.getWritableDatabase();
         List<ObjectDate> objectDateList = new ArrayList<>();
@@ -205,74 +190,5 @@ public class ExpensesDAO {
         return objectDateList;
     }
 
-
-//    public Meal getMeal(int mealID) {
-//        db = myDatabase.getWritableDatabase();
-//        String getData = "SELECT * FROM " + InfoTable.TABLE_MEALS + " WHERE " + InfoTable.COL_MEAL_ID + " = " + mealID + "";
-//        Cursor cursor = db.rawQuery(getData, null);
-//        if (cursor.getCount() > 0) {
-//            cursor.moveToFirst();
-//            int meal_id = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_MEAL_ID));
-//            String meal_title = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_TITLE));
-//            String meal_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_TIME));
-//            String meal_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DATE));
-//            String meal_detail = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DETAIL));
-//            Meal meal = new Meal(meal_id, meal_title, meal_time, meal_date, meal_detail);
-//            cursor.close();
-//            return meal;
-//        }
-//        return null;
-//    }
-//    public List<Eating> getEatingList() {
-//        db = myDatabase.getWritableDatabase();
-//        List<Eating> eatingList = new ArrayList<>();
-//        String getData = "SELECT " + InfoTable.COL_MEAL_ID + "," + InfoTable.COL_MEAL_DATE + ", COUNT(" + InfoTable.COL_MEAL_ID + ") AS '" + InfoTable.COL_EATING_AMOUNT_MEAL + "'"
-//                + " FROM " + InfoTable.TABLE_MEALS
-//                + " GROUP BY " + InfoTable.COL_MEAL_DATE;
-//
-//        Cursor cursor = db.rawQuery(getData, null);
-//        if (cursor.getCount() > 0) {
-//            cursor.moveToFirst();
-//            while (!cursor.isAfterLast()) {
-//                int eating_id = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_MEAL_ID));
-//                String eating_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DATE));
-//                int amount_meal = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EATING_AMOUNT_MEAL));
-//
-//                Eating eating = new Eating(eating_id, eating_date, amount_meal);
-//                eatingList.add(eating);
-//                cursor.moveToNext();
-//            }
-//            cursor.close();
-//        }
-//        Collections.reverse(eatingList);
-//        return eatingList;
-//    }
-//
-//    public List<Eating> getEatingList(String date) {
-//        db = myDatabase.getWritableDatabase();
-//        List<Eating> eatingList = new ArrayList<>();
-//        String getData = "SELECT " + InfoTable.COL_MEAL_ID + "," + InfoTable.COL_MEAL_DATE + ", COUNT(" + InfoTable.COL_MEAL_ID + ") AS '" + InfoTable.COL_EATING_AMOUNT_MEAL + "'"
-//
-//                + " FROM " + InfoTable.TABLE_MEALS
-//                + " WHERE " + InfoTable.COL_MEAL_DATE + " LIKE '" + date + "%'"
-//                + " GROUP BY " + InfoTable.COL_MEAL_DATE;
-//
-//        Cursor cursor = db.rawQuery(getData, null);
-//        if (cursor.getCount() > 0) {
-//            cursor.moveToFirst();
-//            while (!cursor.isAfterLast()) {
-//                int eating_id = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_MEAL_ID));
-//                String eating_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_MEAL_DATE));
-//                int amount_meal = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_EATING_AMOUNT_MEAL));
-//
-//                Eating eating = new Eating(eating_id, eating_date, amount_meal);
-//                eatingList.add(eating);
-//                cursor.moveToNext();
-//            }
-//            cursor.close();
-//        }
-//        Collections.reverse(eatingList);
-//        return eatingList;
-//    }
 
 }

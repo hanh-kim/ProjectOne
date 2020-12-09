@@ -151,10 +151,24 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
             public void onClick(Plan plan, int position, ImageView ic) {
-                plansDAO.deleteData(plan);
-                planList.remove(position);
-                adapter.notifyDataSetChanged();
-                countItem();
+
+                if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())<0){
+                    plansDAO.deleteData(plan);
+                    planList.remove(position);
+                    adapter.notifyDataSetChanged();
+                    countItem();
+                }else {
+                    if (plan.getAlarmed() == 1) {
+                        plan.setAlarmed(0);
+                        ic.setImageResource(R.drawable.ic_baseline_notifications_off);
+                    } else if (plan.getAlarmed() == 0) {
+                        plan.setAlarmed(1);
+                        ic.setImageResource(R.drawable.ic_baseline_notifications);
+                    }
+                    plansDAO.updateData(plan);
+                    adapter.notifyDataSetChanged();
+                    countItem();
+                }
             }
         });
         lvPlans.setAdapter(adapter);

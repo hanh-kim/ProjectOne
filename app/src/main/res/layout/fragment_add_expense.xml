@@ -124,7 +124,7 @@
                     android:layout_marginBottom="5dp"
                     android:background="@drawable/custom_edt_search"
                     android:gravity="left|top"
-                    android:hint="Nội dung(*)"
+                    android:hint="Nội dung chi tiết(*)"
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="450dp"

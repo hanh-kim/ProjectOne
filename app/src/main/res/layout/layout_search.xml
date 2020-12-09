@@ -47,6 +47,7 @@
         </RelativeLayout>
 
         <ListView
+            android:padding="3dp"
             android:id="@+id/lvResultSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

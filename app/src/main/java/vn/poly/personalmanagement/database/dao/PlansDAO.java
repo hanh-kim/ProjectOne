@@ -135,7 +135,8 @@ public class PlansDAO {
                 + ", COUNT(" + InfoTable.COL_PLAN_ID + ") AS '" + InfoTable.COL_AMOUNT + "'"
                 + " FROM " + InfoTable.TABLE_PLANS
                 + " WHERE " + InfoTable.COL_PLAN_DATE + " <'" + currentDate + "'"
-                + " GROUP BY " + InfoTable.COL_PLAN_DATE;
+                + " GROUP BY " + InfoTable.COL_PLAN_DATE
+                + " ORDER BY " + InfoTable.COL_PLAN_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
@@ -144,6 +145,33 @@ public class PlansDAO {
                 String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_AMOUNT));
                 ObjectDate objectDate = new ObjectDate(date, amount);
+                objectDateList.add(objectDate);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        Collections.reverse(objectDateList);
+        return objectDateList;
+    }
+
+    public List<ObjectDate> getAllPlanDate(String date) {
+
+        db = myDatabase.getWritableDatabase();
+        List<ObjectDate> objectDateList = new ArrayList<>();
+        String getData = "SELECT " + InfoTable.COL_PLAN_DATE
+                + ", COUNT(" + InfoTable.COL_PLAN_ID + ") AS '" + InfoTable.COL_AMOUNT + "'"
+                + " FROM " + InfoTable.TABLE_PLANS
+                + " WHERE " + InfoTable.COL_PLAN_DATE + " LIKE '" + date + "'"
+                + " GROUP BY " + InfoTable.COL_PLAN_DATE
+                + " ORDER BY " + InfoTable.COL_PLAN_DATE;
+
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String sDate = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
+                int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_AMOUNT));
+                ObjectDate objectDate = new ObjectDate(sDate, amount);
                 objectDateList.add(objectDate);
                 cursor.moveToNext();
             }
