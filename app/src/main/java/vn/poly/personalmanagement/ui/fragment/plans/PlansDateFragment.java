@@ -149,13 +149,28 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         final PlansAdapter adapter = new PlansAdapter(plansDAO);
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
-            public void onClick(Plan plan, int position, ImageView ic) {
+            public void onClick(final Plan plan, final int position, ImageView ic) {
 
                 if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
-                    plansDAO.deleteData(plan);
-                    planList.remove(position);
-                    adapter.notifyDataSetChanged();
-                    countItem();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Bạn muốn tiếp tục xóa kế hoạch này?");
+                    builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            plansDAO.deleteData(plan);
+                            planList.remove(position);
+                            adapter.notifyDataSetChanged();
+                            countItem();
+                        }
+                    });
+                    builder.create().show();
+
                 } else {
                     if (plan.getAlarmed() == 1) {
                         plan.setAlarmed(0);

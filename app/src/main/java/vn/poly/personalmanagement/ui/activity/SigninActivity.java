@@ -180,7 +180,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                             startActivity(new Intent(SigninActivity.this, MainActivity.class));
                             SigninActivity.this.finish();
                         }
-                    }, 1000);
+                    }, 800);
                 }
             }, 2000);
 

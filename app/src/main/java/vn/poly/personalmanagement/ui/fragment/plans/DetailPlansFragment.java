@@ -142,15 +142,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             edtDescription.setEnabled(true);
             isEditing = 1;
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            edtTitle.setEnabled(false);
-            tvPlanTime.setEnabled(false);
-            edtDescription.setEnabled(false);
-            tvPlanTimeAlarm.setEnabled(false);
-            tvPlanDate.setEnabled(false);
-            isEditing = 0;
             updatePlans();
-
         }
 
     }
@@ -214,16 +206,17 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             tvPlanDate.setText(dateError);
             return;
         }
-        if (date.compareTo(CurrentDateTime.getCurrentDate()) < 0) {
-            tvPlanDate.setText(dateError2);
-            return;
-        }
+
+
+//        if (date.compareTo(CurrentDateTime.getCurrentDate()) < 0) {
+//            tvPlanDate.setText(dateError2);
+//            return;
+//        }
 
         if (time.isEmpty() || time.equals(timeError)) {
             tvPlanTime.setText(timeError);
             return;
         }
-
 
         if (description.isEmpty()) {
             description = " ";
@@ -233,7 +226,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         Plan plan = (Plan) getArguments().get("plan");
         assert plan != null;
 
-        // ktra tgian gian thay dooi
+        // ktra tgian gian ke hoach thay doi
         if (!time.equals(plan.getTime())) {
             if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
                 if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
@@ -248,7 +241,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             }
         }
 
-
+        //ktra tgian nhắc nhở
         if (!timeAlarm.equals(plan.getTimeAlarm())) {
             if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
 
@@ -260,6 +253,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
                     } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) < 0) {
                         plan.setAlarmed(0);
                     }
+
                 }
 
 
@@ -267,6 +261,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
                 plan.setAlarmed(1);
             }
         }
+
         plan.setPlanName(title);
         plan.setDate(date);
         plan.setTime(time);
@@ -274,7 +269,13 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         plan.setDescribe(description);
         plansDAO.updateData(plan);
         Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_LONG).show();
-
+        tvEdit.setText("Sửa");
+        edtTitle.setEnabled(false);
+        tvPlanTime.setEnabled(false);
+        edtDescription.setEnabled(false);
+        tvPlanTimeAlarm.setEnabled(false);
+        tvPlanDate.setEnabled(false);
+        isEditing = 0;
     }
 
     private void delete() {
@@ -314,8 +315,30 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
         } else if (getArguments().getString(keyName).equals(PlansDateFragment.FRAG_NAME)) {
-            getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_plans_root, new PlansDateFragment()).commit();
+            Plan mPlan = (Plan) getArguments().get("plan");
+
+            if (mPlan.getDate().equals(CurrentDateTime.getCurrentDate())) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_plans_root, new PlansTodayFragment())
+                        .commit();
+            } else if (mPlan.getDate().compareTo(CurrentDateTime.getCurrentDate()) > 0) {
+                getActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_plans_root, new PlansFutureFragment())
+                        .commit();
+            } else {
+                PlansDateFragment plansDateFragment = new PlansDateFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString("date", mPlan.getDate());
+                plansDateFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_plans_root, plansDateFragment)
+                        .commit();
+            }
+
         }
     }
+
+
 }
