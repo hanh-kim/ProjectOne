@@ -123,7 +123,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             user.setEmail(email);
             user.setPassword(password);
 
-            // accountDAO.addData(user);
+             accountDAO.addData(user);
 
             Handler handler = new Handler();
             handler.postDelayed(new Runnable() {
@@ -134,18 +134,19 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                     progressBar.setVisibility(View.INVISIBLE);
                     icSuccessful.setVisibility(View.VISIBLE);
                     Toast.makeText(SignupActivity.this, "Đăng kí thành công", Toast.LENGTH_LONG).show();
+                    Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            startActivity(new Intent(SignupActivity.this,SigninActivity.class));
+                            SignupActivity.this.finish();
+                        }
+                    }, 2000);
 
                 }
             }, 3000);
-            startActivity(new Intent(SignupActivity.this,SigninActivity.class));
-            SignupActivity.this.finish();
-            Handler handler1 = new Handler();
-            handler1.postDelayed(new Runnable() {
-                @Override
-                public void run() {
 
-                }
-            }, 2000);
+
 
 
 //            tvSignup.setText("ĐĂNG KÝ...");
