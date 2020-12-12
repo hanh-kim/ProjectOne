@@ -22,6 +22,7 @@ public class PlansAdapter extends BaseAdapter {
     List<Plan> planList;
     PlansDAO plansDAO;
 
+
     public PlansAdapter() {
     }
 
@@ -73,12 +74,25 @@ public class PlansAdapter extends BaseAdapter {
         }
 
         final Plan plan = planList.get(position);
+         if (plan.getDate().equals(CurrentDateTime.getCurrentDate())){
+             if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime())<0){
+                 plan.setAlarmed(0);
+                 plansDAO.updateData(plan);
+             }else if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime())>0
+                     && plan.getTimeAlarm().compareTo(CurrentDateTime.getCurrentTime())<=0){
+                 plan.setAlarmed(0);
+                 plansDAO.updateData(plan);
+             }
+         }
+
 
         viewHolder.tvTitle.setText(plan.getPlanName());
-        viewHolder.tvDateTime.setText(plan.getTime() + ", " + plan.getDate());
-        if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime())<0){
-            viewHolder.tvDateTime.setTextColor(R.color.colorGreen);
-        }else  viewHolder.tvDateTime.setTextColor(R.color.colorRed);
+        viewHolder.tvDateTime.setText(plan.getTime() + ", ngày " + plan.getDate());
+
+
+//        if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime())<0){
+//            viewHolder.tvTitle.setTextColor(R.color.colorGreen);
+//        }else  viewHolder.tvTitle.setTextColor(R.color.colorRed);
 
         viewHolder.tvTimeAlarm.setText("Nhắc nhở lúc: "+plan.getTimeAlarm());
         if (plan.getAlarmed()==0){

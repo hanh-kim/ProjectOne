@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "320977018380",
+    "project_id": "projectone-3f6a7",
+    "storage_bucket": "projectone-3f6a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:320977018380:android:7e29092aed7e753b05d829",
+        "android_client_info": {
+          "package_name": "vn.poly.personalmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "320977018380-v8fhmv2dee1g2bgkianmm0ck6dh0g4ah.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.poly.personalmanagement",
+            "certificate_hash": "22c5dcb39c0df3fae6f732e23ddf99912fd5637e"
+          }
+        },
+        {
+          "client_id": "320977018380-arqtokkk71f2cfdj6irov24jvc9umg3b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6839-b08LPRkuQ72uOLCw5oYmtbFW5Es"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "320977018380-arqtokkk71f2cfdj6irov24jvc9umg3b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

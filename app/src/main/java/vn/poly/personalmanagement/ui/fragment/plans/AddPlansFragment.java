@@ -115,45 +115,43 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
             edtTitle.setError("Mời nhập tên tên kế hoạch, công việc");
             edtTitle.setFocusable(true);
             return;
-        }
-        if (date.isEmpty() || date.equals(dateError) || date.equals(dateError2)) {
+        } else if (date.isEmpty() || date.equals(dateError) || date.equals(dateError2)) {
             tvPlanDate.setText(dateError);
             return;
-        }
-        if (date.compareTo(CurrentDateTime.getCurrentDate()) < 0) {
+        } else if (date.compareTo(CurrentDateTime.getCurrentDate()) < 0) {
             tvPlanDate.setText(dateError2);
             return;
-        }
-        if (time.isEmpty() || time.equals(timeError)) {
+        } else if (time.isEmpty() || time.equals(timeError)) {
             tvPlanTime.setText(timeError);
             return;
-        }
-        if (date.equalsIgnoreCase(CurrentDateTime.getCurrentDate()) && time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+        } else if (date.equalsIgnoreCase(CurrentDateTime.getCurrentDate()) && time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
             tvPlanTime.setText(timeError);
             return;
+        } else {
+            if (timeAlarm.isEmpty()) {
+                tvPlanTimeAlarm.setText(time);
+                timeAlarm = time;
+            }
+
+            if (description.isEmpty()) {
+                description = " ";
+            }
+
+            int isAlarm = 1;
+            Plan plan = new Plan();
+            plan.setPlanName(title);
+            plan.setDate(date);
+            plan.setTime(time);
+            plan.setTimeAlarm(timeAlarm);
+            plan.setDescribe(description);
+            plan.setAlarmed(isAlarm);
+            plansDAO.addData(plan);
+            Toast.makeText(getActivity(), "Thêm thành công", Toast.LENGTH_LONG).show();
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
         }
 
-        if (timeAlarm.isEmpty()) {
-            tvPlanTimeAlarm.setText(time);
-            timeAlarm = time;
-        }
 
-        if (description.isEmpty()) {
-            description = " ";
-        }
-
-        int isAlarm = 1;
-        Plan plan = new Plan();
-        plan.setPlanName(title);
-        plan.setDate(date);
-        plan.setTime(time);
-        plan.setTimeAlarm(timeAlarm);
-        plan.setDescribe(description);
-        plan.setAlarmed(isAlarm);
-        plansDAO.addData(plan);
-        Toast.makeText(getActivity(), "Thêm thành công", Toast.LENGTH_LONG).show();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_plans_root, new PlansFutureFragment()).commit();
     }
 
     private void chooseTime(final TextView tv) {

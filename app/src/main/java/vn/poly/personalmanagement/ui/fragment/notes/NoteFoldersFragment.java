@@ -1,11 +1,15 @@
 package vn.poly.personalmanagement.ui.fragment.notes;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,19 +19,24 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Note;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class NoteFoldersFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
-    public static final int idFrag = 0;
+
+    public static final int FRAG_ID = 0;
     final String keyName = "idFrag";
+    final String keyNote = "note";
     ListView lvResultSearch;
     TextView tvToSearch, tvCancelSearch, tvCountNotes1, tvCountNotes2, tvCountNotes3;
     FrameLayout layoutSearch;
@@ -37,6 +46,8 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
     CardView cardNotes, cardNotesImportant, cardDeleted;
     MyDatabase mydatabase;
     NotesDAO notesDAO;
+    List<Note> resultList;
+    NotesAdapter adapter;
 
 
     public NoteFoldersFragment() {
@@ -69,9 +80,9 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
 
 
     private void countNotes() {
-        tvCountNotes1.setText(""+notesDAO.countNotes(NotesFragment.FRAG_ID));
-        tvCountNotes2.setText(""+notesDAO.countNotes(ImportantNotesFragment.FRAG_ID));
-        tvCountNotes3.setText(""+notesDAO.countNoteDeleted());
+        tvCountNotes1.setText("" + notesDAO.countNotes(NotesFragment.FRAG_ID));
+        tvCountNotes2.setText("" + notesDAO.countNotes(ImportantNotesFragment.FRAG_ID));
+        tvCountNotes3.setText("" + notesDAO.countNoteDeleted());
 
     }
 
@@ -90,7 +101,7 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
         cardNotes = view.findViewById(R.id.card_note);
         cardNotesImportant = view.findViewById(R.id.card_note_important);
         cardDeleted = view.findViewById(R.id.card_deleted);
-
+        adapter = new NotesAdapter(getActivity());
     }
 
     @Override
@@ -121,33 +132,92 @@ public class NoteFoldersFragment extends Fragment implements Initialize, View.On
     private void cancelSearch() {
         layoutSearch.setVisibility(View.GONE);
         edtSearch.setText("");
+        countNotes();
     }
 
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        DetailNoteFragment detailNoteFragment = new DetailNoteFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt(keyName,idFrag);
-//        Note note = noteList.get(position);
-//        bundle.putString(keyNoteTitle,note.getTitle());
-//        bundle.putString(keyContent,note.getContent());
-//        bundle.putString(keyDate,note.getDate());
-//        bundle.putString(keyTime,note.getTime());
-//        detailNoteFragment.setArguments(bundle);
-//        getActivity().getSupportFragmentManager().beginTransaction().
-//                replace(R.id.fragment_notes_root, detailNoteFragment).commit();
+        DetailNoteFragment detailNoteFragment = new DetailNoteFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(keyName, FRAG_ID);
+        Note note = resultList.get(position);
+        bundle.putSerializable(keyNote, note);
+        detailNoteFragment.setArguments(bundle);
+        getActivity().getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_notes_root, detailNoteFragment).commit();
     }
-    private void hideSoftKeyboard(){
+
+    private void hideSoftKeyboard() {
         View view = getActivity().getCurrentFocus();
-        if (view != null){
+        if (view != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
     }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập tên ghi chú...");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = edtSearch.getText().toString().trim();
+                showResultSearch(name);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void removeItem(final Note note, final int position, final List<Note> list) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn muốn xóa ghi chú này?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Note nt = note;
+                nt.setIsDeleted(1);
+                notesDAO.updateData(nt);
+                list.remove(position);
+                // noteList= getList();
+                adapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), "Ghi chú được chuyển đến thùng rác!", Toast.LENGTH_LONG).show();
+
+            }
+        });
+        builder.create().show();
+    }
+
+
+    private void showResultSearch(String name) {
+        resultList = notesDAO.getResultSearched(name);
+        adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(Note note, int position) {
+                removeItem(note, position, resultList);
+            }
+        });
+        lvResultSearch.setAdapter(adapter);
+    }
+
 }

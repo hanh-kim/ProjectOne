@@ -66,8 +66,9 @@ public class IncomesAdapter extends BaseAdapter {
         Locale locale = new Locale("vi", "VN");
         NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         String amount = format.format(income.getAmount());
+
         viewHolder.tvTitle.setText(income.getTitle());
-        viewHolder.tvDateTime.setText(income.getTime() + ", " + income.getDate());
+        viewHolder.tvDateTime.setText(income.getTime() + ", ngày " + income.getDate());
         viewHolder.tvAmountMoney.setText("Số tiền thu: "+ amount);
         viewHolder.icDelete.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -108,7 +108,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         String date = CurrentDateTime.getCurrentDate();
         String description = edtDescription.getText().toString().trim();
 
-        String timeError = "Mời chọn thời gian";
+        String timeError = "Mời chọn thời gian tới";
         String dateError = "Mời chọn ngày";
         if (title.isEmpty()) {
             edtTitle.setError("Mời nhập tên tên kế hoạch, công việc");
@@ -119,9 +119,13 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
             tvPlanTime.setText(timeError);
             return;
         }
+        if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+            tvPlanTime.setText(timeError);
+            return;
+        }
         if (timeAlarm.isEmpty()) {
             tvPlanTimeAlarm.setText(time);
-            timeAlarm=time;
+            timeAlarm = time;
         }
 //        if (date.isEmpty() || date.equals(dateError)) {
 //            tvPlanDate.setText(dateError);

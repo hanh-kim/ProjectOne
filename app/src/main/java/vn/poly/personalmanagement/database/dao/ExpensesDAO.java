@@ -93,7 +93,9 @@ public class ExpensesDAO {
     public List<Expense> getAllExpenses() {
         db = myDatabase.getWritableDatabase();
         List<Expense> expenseList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES
+                +" ORDER BY "+InfoTable.COL_EXPENSE_DATE;
+
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();

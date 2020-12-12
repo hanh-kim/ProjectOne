@@ -87,7 +87,7 @@ public class MealAdapter extends BaseAdapter {
 
         final Meal meal = mealList.get(position);
         viewHolder.tvMain.setText(meal.getTitle());
-        viewHolder.tvSub.setText(meal.getTime()+" ngày"+meal.getDate());
+        viewHolder.tvSub.setText(meal.getTime()+", ngày "+meal.getDate());
         viewHolder.icRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

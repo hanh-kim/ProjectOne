@@ -111,6 +111,20 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
             } else if (tvRestore.equals(v)) {
                 restoreNote();
             }
+        }else if (getArguments().getInt(keyName) == NoteFoldersFragment.FRAG_ID) {
+            //id=2:  important notes fragment
+
+            if (tvEdit.equals(v)) {
+                edit();
+            } else if (tvBack.equals(v)) {
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_notes_root, new NoteFoldersFragment()).commit();
+            } else if (tvRestore.equals(v)) {
+                removeNote(new NoteFoldersFragment());
+
+            }
+
+
         }
     }
 

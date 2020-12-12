@@ -25,7 +25,8 @@ public class CurrentDateTime {
         /* format hour:  00:00:00 */
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
-        time += simpleDateFormat.format( calendar.getTime());// có định dang: hh:mm:ss
+        simpleDateFormat.applyPattern("HH:mm");
+        time += simpleDateFormat.format( calendar.getTime());
 
         return time;
 

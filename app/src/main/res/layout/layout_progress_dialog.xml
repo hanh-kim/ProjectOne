@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    android:background="@android:color/transparent"
     android:orientation="vertical">
 
     <LinearLayout
@@ -26,7 +27,7 @@
                 android:progressDrawable="@drawable/ic_done_green" />
 
             <ImageView
-                android:id="@+id/icDone"
+                android:id="@+id/icSuccessful"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="center"

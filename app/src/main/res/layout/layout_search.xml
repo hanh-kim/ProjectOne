@@ -41,7 +41,7 @@
                 android:background="@drawable/custom_layout_nocolor"
                 android:drawableLeft="@drawable/ic_search"
                 android:drawablePadding="5dp"
-                android:hint="Tìm kiếm"
+                android:hint="Tìm kiếm..."
                 android:padding="10dp" />
 
         </RelativeLayout>

@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -17,6 +18,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.AccountDAO;
@@ -37,6 +44,8 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     MyDatabase myDatabase;
     AccountDAO accountDAO;
 
+    FirebaseAuth mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,9 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         // views on click
         btnLogin.setOnClickListener(this);
         tvToSignup.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
+
         //  tvForgotPassword.setOnClickListener(this);
 
     }
@@ -55,7 +67,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v == btnLogin) {
             hideSoftKeyboard();
+          //  signin(); // sign in with firebase
+
             login();
+
         } else if (v == tvToSignup) {
             startActivity(new Intent(SigninActivity.this, SignupActivity.class));
         }
@@ -72,6 +87,28 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         progressBar = findViewById(R.id.progressBar);
         myDatabase = new MyDatabase(SigninActivity.this);
         accountDAO = new AccountDAO(myDatabase);
+    }
+
+    private void signin(){
+        String email = edtEmail.getText().toString().trim();
+        String password = edtPassword.getText().toString().trim();
+
+        mAuth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener(this,new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(SigninActivity.this,"Đăng nhập thành công!",Toast.LENGTH_LONG).show();
+                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            startActivity(new Intent(SigninActivity.this, MainActivity.class));
+                            SigninActivity.this.finish();
+                        }else {
+                            Toast.makeText(SigninActivity.this,"Đăng nhập thất bại!",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
     }
 
     private void login() {
@@ -157,31 +194,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void loading() {
-        progressDialog = new ProgressDialog(SigninActivity.this);
-        progressDialog.show();
-        // Set content view
-        View view = getLayoutInflater().inflate(R.layout.layout_progress_dialog, null);
-        progressDialog.setContentView(view);
-        TextView tvProgress = view.findViewById(R.id.tvProgress);
-        tvProgress.setText("Đăng nhập...");
-        // Set transparent background
-        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
-
-    }
-
-    private void loadingProgress() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SigninActivity.this);
-        View view = getLayoutInflater().inflate(R.layout.layout_progress_dialog, null);
-        builder.setView(view);
-        TextView tvProgress = view.findViewById(R.id.tvProgress);
-        tvProgress.setText("Đăng nhập...");
-        // Set transparent background
-        getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        builder.create().show();
-
-
-    }
 
 }

@@ -24,10 +24,12 @@ public class NotesDAO {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_NOTES, InfoTable.COL_NOTE_ID + " = ?", new String[]{String.valueOf(note.getId())});
     }
+
     public long clearData() {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_NOTES, InfoTable.COL_NOTE_IS_DELETED + " = ?", new String[]{String.valueOf(1)});
     }
+
     public long addData(Note note) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -140,7 +142,35 @@ public class NotesDAO {
         db = myDatabase.getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_TITLE + " LIKE '" + text + "%' " +
-                "AND "+InfoTable.COL_NOTE_IS_DELETED +"=0 ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
+                "AND "+InfoTable.COL_NOTE_IS_DELETED +"= 0 ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int noteId = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_ID));
+                String noteTitle = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_TITLE));
+                int folderId = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_FOLDER_ID));
+                String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_DATE));
+                String time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_TIME));
+                String content = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_CONTENT));
+                int isDeleted = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_IS_DELETED));
+                Note note = new Note(noteId, noteTitle, folderId, date, time, content, isDeleted);
+                noteList.add(note);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+
+        return noteList;
+    }
+
+    public List<Note> getResultSearchedNotesDeleted(String text) {
+        db = myDatabase.getWritableDatabase();
+        List<Note> noteList = new ArrayList<>();
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + ""
+                +" WHERE " + InfoTable.COL_NOTE_TITLE + " LIKE '" + text + "%' "
+                +" AND "+InfoTable.COL_NOTE_IS_DELETED +" = 1 "
+                +" ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -197,34 +227,5 @@ public class NotesDAO {
     }
 
 
-//    // check exist
-//    public boolean checkExist(InfoUser user) {
-//        db = myDatabase.getWritableDatabase();
-//        String check = "SELECT * FROM " + InfoTable.TABLE_ACCOUNT + " WHERE " + InfoTable.COL_USERNAME + "= '" + user.username + "'";
-//        Cursor cursor = db.rawQuery(check, null);
-//
-//        if (cursor.getCount() > 0) {
-//            db.close();
-//            return true;
-//        } else {
-//            db.close();
-//            return false;
-//        }
-//    }
-//
-//    public boolean checkExist(String username, String password) {
-//        db = myDatabase.getWritableDatabase();
-//        String check = "SELECT * FROM " + InfoTable.TABLE_ACCOUNT + " WHERE " + InfoTable.COL_USERNAME + "= '" + username + "' AND " +
-//                InfoTable.COL_PASSWORD + " = '" + password + "'";
-//        Cursor cursor = db.rawQuery(check, null);
-//
-//        if (cursor.getCount() > 0) {
-//            db.close();
-//            return true;
-//        } else {
-//            db.close();
-//            return false;
-//        }
-//    }
 
 }

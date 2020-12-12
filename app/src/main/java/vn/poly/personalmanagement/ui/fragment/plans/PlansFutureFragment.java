@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +42,7 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     MyDatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
-
+    List<Plan> rerultList;
     public PlansFutureFragment() {
         // Required empty public constructor
     }
@@ -57,15 +59,27 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
         View view = inflater.inflate(R.layout.fragment_plans_future, container, false);
         initializeViews(view);
         initializeDatabase();
-        lvResultSearch.setOnItemClickListener(this);
+
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
         tvDone.setOnClickListener(this);
         icAdd.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
+        lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(keyName, FRAG_NAME);
+                bundle.putSerializable("plan", rerultList.get(position));
+                detailPlansFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fragment_plans_root, detailPlansFragment).commit();
+            }
+        });
 
         countItem();
-        showPlans();
+        showPlansFuture();
         return view;
     }
 
@@ -106,23 +120,12 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
         bundle.putSerializable("plan", getPlansFuture().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
-    }
-
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setFocusable(true);
     }
 
     private List<Plan> getPlansFuture() {
@@ -136,10 +139,9 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
 
     }
 
-
-    private void showPlans() {
+    private void showPlansFuture() {
         planList = getPlansFuture();
-        final PlansAdapter adapter = new PlansAdapter();
+        final PlansAdapter adapter = new PlansAdapter(plansDAO);
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
             public void onClick(Plan plan, int position, ImageView ic) {
@@ -166,5 +168,56 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
+    }
+
+    private void cancelSearch() {
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập tên công việc, kế hoạch...");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String name) {
+        rerultList = plansDAO.getPlansFutureSearched(name);
+        final PlansAdapter adapter = new PlansAdapter(plansDAO);
+        adapter.setDataAdapter(rerultList, new PlansAdapter.OnNotificationListener() {
+            @Override
+            public void onClick(Plan plan, int position, ImageView ic) {
+                if (plan.getAlarmed() == 1) {
+                    plan.setAlarmed(0);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
+                } else if (plan.getAlarmed() == 0) {
+                    plan.setAlarmed(1);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications);
+                }
+                plansDAO.updateData(plan);
+                adapter.notifyDataSetChanged();
+                countItem();
+                showPlansFuture();
+            }
+        });
+
+
+        lvResultSearch.setAdapter(adapter);
     }
 }

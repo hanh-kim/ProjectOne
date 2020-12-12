@@ -49,8 +49,9 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="15dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp">
 
                 <TextView
@@ -70,6 +71,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="10dp"
                 android:text="ngày hôm nay"
+                android:visibility="gone"
                 android:textStyle="bold" />
 
         </LinearLayout>

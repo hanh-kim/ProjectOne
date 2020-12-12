@@ -83,7 +83,7 @@ public class NotesAdapter extends BaseAdapter {
             folderName = "Ghi chú quan trọng";
         }
         viewHolder.tvTitle.setText(note.getTitle());
-        viewHolder.tvDateTime.setText(note.getTime() + ", " + note.getDate());
+        viewHolder.tvDateTime.setText(note.getTime() + ", ngày " + note.getDate());
         viewHolder.tvFolderName.setText(folderName);
         if(note.getIsDeleted()==1){
             viewHolder.icInfo.setImageResource(R.drawable.ic_info);

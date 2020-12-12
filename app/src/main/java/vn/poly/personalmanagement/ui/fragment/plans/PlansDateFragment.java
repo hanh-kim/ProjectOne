@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.util.List;
@@ -62,12 +64,12 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         tvDelete.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
 
-        bundle=getArguments();
-        if (getArguments()!= null){
-           String date = bundle.getString("date");
-           if (getArguments().getString("date").equals(CurrentDateTime.getCurrentDate())){
-               tvDateToday.setText("Hôm nay, "+date);
-           }else tvDateToday.setText("Ngày "+date);
+        bundle = getArguments();
+        if (getArguments() != null) {
+            String date = bundle.getString("date");
+            if (getArguments().getString("date").equals(CurrentDateTime.getCurrentDate())) {
+                tvDateToday.setText("Hôm nay, " + date);
+            } else tvDateToday.setText("Ngày " + date);
 
             countItem();
             showPlans();
@@ -103,11 +105,8 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
-        }  else if (tvDelete.equals(view)) {
-           plansDAO.deleteDataWithDate(bundle.getString("date"));
-            Toast.makeText(getActivity(),"Xóa thành công!",Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
+        } else if (tvDelete.equals(view)) {
+            delete();
         }
     }
 
@@ -127,7 +126,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
-        bundle.putSerializable("plan",getPlansList().get(position));
+        bundle.putSerializable("plan", getPlansList().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
@@ -147,17 +146,17 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
     private void showPlans() {
         planList = getPlansList();
-        final PlansAdapter adapter = new PlansAdapter();
+        final PlansAdapter adapter = new PlansAdapter(plansDAO);
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
             public void onClick(Plan plan, int position, ImageView ic) {
 
-                if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())<0){
+                if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
                     plansDAO.deleteData(plan);
                     planList.remove(position);
                     adapter.notifyDataSetChanged();
                     countItem();
-                }else {
+                } else {
                     if (plan.getAlarmed() == 1) {
                         plan.setAlarmed(0);
                         ic.setImageResource(R.drawable.ic_baseline_notifications_off);
@@ -174,6 +173,29 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         lvPlans.setAdapter(adapter);
     }
 
+    private void delete() {
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn muốn xóa những kế hoạch trong ngày này?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                plansDAO.deleteDataWithDate(bundle.getString("date"));
+                Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
+            }
+
+        });
+        builder.create().show();
+
+
+    }
 
 }

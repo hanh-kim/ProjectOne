@@ -1,10 +1,14 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,15 +19,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlansAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.model.Plan;
 
 
@@ -41,7 +48,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     MyDatabase mydatabase;
     PlansDAO plansDAO;
     List<Plan> planList;
-
+    List<Plan> resultList;
     public PlansTodayFragment() {
         // Required empty public constructor
     }
@@ -63,12 +70,24 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         tvDone.setOnClickListener(this);
         lvPlansToday.setOnItemClickListener(this);
         icAdd.setOnClickListener(this);
-
-        lvResultSearch.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
+
+        lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(keyName, FRAG_NAME);
+                bundle.putSerializable("plan", resultList.get(position));
+                detailPlansFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fragment_plans_root, detailPlansFragment).commit();
+            }
+        });
+
         countItem();
-        showPlans();
+        showPlansToday();
 
         return view;
     }
@@ -112,24 +131,12 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         DetailPlansFragment detailPlansFragment = new DetailPlansFragment();
-
         Bundle bundle = new Bundle();
         bundle.putString(keyName, FRAG_NAME);
         bundle.putSerializable("plan", getPlansToday().get(position));
         detailPlansFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, detailPlansFragment).commit();
-    }
-
-    private void cancelSearch() {
-
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
     }
 
     private List<Plan> getPlansToday() {
@@ -143,11 +150,9 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
     }
 
-
-    private void showPlans() {
+    private void showPlansToday() {
         planList = getPlansToday();
-        final PlansAdapter adapter = new PlansAdapter();
-
+        final PlansAdapter adapter = new PlansAdapter(plansDAO);
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
             public void onClick(Plan plan, int position, ImageView ic) {
@@ -176,4 +181,55 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
     }
 
+    private void cancelSearch() {
+
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập tên công việc, kế hoạch...");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String sDate = edtSearch.getText().toString().trim();
+                showResultSearch(sDate);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String name) {
+        resultList = plansDAO.getPlansTodaySearched(name);
+        final PlansAdapter adapter = new PlansAdapter(plansDAO);
+        adapter.setDataAdapter(resultList, new PlansAdapter.OnNotificationListener() {
+            @Override
+            public void onClick(Plan plan, int position, ImageView ic) {
+                if (plan.getAlarmed() == 1) {
+                    plan.setAlarmed(0);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
+                } else if (plan.getAlarmed() == 0) {
+                    plan.setAlarmed(1);
+                    ic.setImageResource(R.drawable.ic_baseline_notifications);
+                }
+                plansDAO.updateData(plan);
+                adapter.notifyDataSetChanged();
+                countItem();
+                showPlansToday();
+            }
+        });
+
+
+        lvResultSearch.setAdapter(adapter);
+    }
 }

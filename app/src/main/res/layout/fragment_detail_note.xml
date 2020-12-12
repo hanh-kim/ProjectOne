@@ -7,9 +7,9 @@
 
 
     <LinearLayout
-        android:layout_above="@+id/tvRestore"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/tvRestore"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -116,6 +116,7 @@
                     android:hint="Tiêu đề:"
                     android:inputType="textMultiLine"
                     android:nestedScrollingEnabled="true"
+                    android:textColor="#000"
                     android:textSize="20dp"
                     android:textStyle="bold" />
 
@@ -134,26 +135,24 @@
                     android:inputType="text|textMultiLine"
                     android:isScrollContainer="true"
                     android:minHeight="500dp"
-                    android:nestedScrollingEnabled="true" />
+                    android:nestedScrollingEnabled="true"
+                    android:textColor="#000" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
 
 
-
-
-
-            <TextView
-                android:padding="10dp"
-                android:id="@+id/tvRestore"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:background="@android:color/background_light"
-                android:gravity="center_horizontal"
-                android:text="Khôi phục"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="20dp" />
+    <TextView
+        android:id="@+id/tvRestore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/background_light"
+        android:gravity="center_horizontal"
+        android:padding="10dp"
+        android:text="Khôi phục"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="20dp" />
 
 
 </RelativeLayout>

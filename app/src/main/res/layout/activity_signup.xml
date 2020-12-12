@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,105 +10,136 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center">
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/ic_appavatar" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="20dp"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_appavatar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="20dp"
+            android:layout_marginTop="50dp"
             android:gravity="center"
-            android:text="Đăng ký"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Đăng ký"
+                android:textSize="25dp"
+                android:textStyle="bold" />
 
 
-        <EditText
-            android:id="@+id/edtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/custom_edt_search"
-            android:drawableLeft="@drawable/ic_email"
-            android:drawablePadding="@dimen/activity_vertical_margin"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:padding="10dp" />
+            <EditText
+                android:id="@+id/edtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/custom_edt_search"
+                android:drawableLeft="@drawable/ic_email"
+                android:drawablePadding="@dimen/activity_vertical_margin"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp" />
 
 
-        <EditText
-            android:id="@+id/edtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/custom_edt_search"
-            android:drawableLeft="@drawable/ic_lock"
-            android:drawablePadding="@dimen/activity_vertical_margin"
-            android:hint="Mật khẩu"
-            android:inputType="textPassword"
-            android:maxLength="15"
-            android:padding="10dp" />
+            <EditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/custom_edt_search"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="@dimen/activity_vertical_margin"
+                android:hint="Mật khẩu"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:padding="10dp" />
 
 
-        <Button
-            android:id="@+id/btnSignup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="40dp"
-            android:background="@drawable/custom_btn"
-            android:text="Đăng ký"
-            android:textColor="#fff" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="30dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="--------------------- Hoặc ---------------------" />
-
-        <TextView
-            android:id="@+id/tvToLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="35dp"
-            android:gravity="center"
-            android:text="Đã có tài khoản? Đăng nhập"
-            android:textColor="#000"
-            android:textStyle="bold" />
+                <RelativeLayout
+                    android:id="@+id/btnSignup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/custom_btn"
+                    android:padding="10dp">
 
 
+                    <ImageView
+                        android:visibility="invisible"
+                        android:id="@+id/icSuccessful"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_check_done_circle_green" />
 
 
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:visibility="invisible"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+
+                        />
+
+                    <TextView
+                        android:id="@+id/tvSignup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="ĐĂNG KÝ"
+                        android:textColor="#ffff"
+                        android:textSize="17dp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="--------------------- Hoặc ---------------------" />
+
+            <TextView
+                android:id="@+id/tvToLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="35dp"
+                android:gravity="center"
+                android:text="Đã có tài khoản? Đăng nhập"
+                android:textColor="#000"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
     </LinearLayout>
 
-    <!--    <RelativeLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
 
-    <!--        <TextView-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_alignParentBottom="true"-->
-    <!--            android:layout_centerHorizontal="true"-->
-    <!--            android:layout_marginBottom="20dp"-->
-    <!--            android:gravity="center"-->
-    <!--            android:text="App Name"-->
-    <!--            android:textSize="20dp"-->
-    <!--            android:textStyle="bold" />-->
-    <!--    </RelativeLayout>-->
-
-
-</LinearLayout>
+</RelativeLayout>

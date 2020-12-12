@@ -8,6 +8,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +23,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.adapter.money.incomes.IncomesAdapter;
 import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.Note;
 
 import java.util.List;
@@ -33,13 +37,9 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
 
     public static final int FRAG_ID = 1;
     public static final String TAG_NAME = DetailNoteFragment.class.getName();
-    public static final String FRAG_NAME = "Ghi chú";
+
     final String keyNote = "note";
     final String keyName = "idFrag";
-    final String keyNoteTitle = "title";
-    final String keyDate = "date";
-    final String keyTime = "time";
-    final String keyContent = "content";
     MyDatabase mydatabase;
     NotesDAO notesDAO;
     ListView lvResultSearch;
@@ -50,6 +50,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
     TextView tvBack, tvCount;
     int id = FRAG_ID;
     List<Note> noteList;
+    List<Note> resultList=null;
     ListView lvNotes;
     NotesAdapter adapter;
 
@@ -73,10 +74,11 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         icAddNote.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         lvNotes.setOnItemClickListener(this);
-        lvResultSearch.setOnItemClickListener(this);
+
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
-        noteList = getList();
+
+
 //        for (int i = 0; i < 10; i++) {
 //            Note note = new Note();
 //            note.setTitle("Ghi chú " + (i + 1));
@@ -93,16 +95,23 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
 //        }
 
         //   noteList = getList();
-        countItem();
-
-        adapter.setDataAdapter(noteList, new NotesAdapter.OnItemRemoveListener() {
+        lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onRemove(Note note, int position) {
-                removeItem(note, position);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                DetailNoteFragment detailNoteFragment = new DetailNoteFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt(keyName, FRAG_ID);
+                Note note = resultList.get(position);
+                bundle.putSerializable(keyNote, note);
+                detailNoteFragment.setArguments(bundle);
+                fragmentTransaction.addToBackStack(NotesFragment.TAG_NAME);
+                fragmentTransaction.replace(R.id.fragment_notes_root, detailNoteFragment).commit();
             }
         });
+        countItem();
+        showNotes();
 
-        lvNotes.setAdapter(adapter);
         return view;
     }
 
@@ -146,16 +155,6 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         }
     }
 
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -171,17 +170,16 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
     }
 
     private List<Note> getList() {
-        List<Note> noteList = notesDAO.getAllData(FRAG_ID);
-        return noteList;
+        return notesDAO.getAllData(FRAG_ID);
     }
 
     private void countItem() {
-        if (noteList.size() == 0) {
+        if (getList().size() == 0) {
             tvCount.setText("Không có ghi chú nào");
-        } else tvCount.setText("Có " + noteList.size() + " ghi chú");
+        } else tvCount.setText("Có " + getList().size() + " ghi chú");
     }
 
-    private void removeItem(final Note note, final int position) {
+    private void removeItem(final Note note, final int position, final List<Note> list) {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Bạn muốn xóa ghi chú này");
@@ -198,7 +196,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
                 Note nt = note;
                 nt.setIsDeleted(1);
                 notesDAO.updateData(nt);
-                noteList.remove(position);
+                list.remove(position);
                 adapter.notifyDataSetChanged();
                 countItem();
                 Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
@@ -217,6 +215,57 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
             inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
 
+    }
+
+    private void cancelSearch() {
+        layoutSearch.setVisibility(View.GONE);
+        edtSearch.setText("");
+    }
+
+    private void showNotes(){
+        noteList = getList();
+        adapter.setDataAdapter(noteList, new NotesAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(Note note, int position) {
+                removeItem(note, position,noteList);
+            }
+        });
+
+        lvNotes.setAdapter(adapter);
+    }
+
+    private void startSearch() {
+        edtSearch.setHint("Nhập tên ghi chú...");
+        layoutSearch.setVisibility(View.VISIBLE);
+        edtSearch.setEnabled(true);
+        edtSearch.setText("");
+        showResultSearch("");
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String name = edtSearch.getText().toString().trim();
+                showResultSearch(name);
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
+    }
+
+    private void showResultSearch(String name) {
+        resultList= notesDAO.getResultSearched(name);
+        adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(Note note, int position) {
+                removeItem(note, position,resultList);
+            }
+        });
+
+        lvResultSearch.setAdapter(adapter);
     }
 
 }

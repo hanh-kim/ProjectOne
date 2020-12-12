@@ -47,17 +47,15 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
     FrameLayout layoutSearch;
     EditText edtSearch;
     TextView tvCurrentDay, tvCountPlansToday, tvCountPlansFuture, tvCountItem;
-    List<String> listString = new ArrayList<>();
     String currentDay = CurrentDateTime.getCurrentDate().substring(0, 2);
     MyDatabase mydatabase;
     PlansDAO plansDAO;
-    List<Plan> planList;
     List<ObjectDate> planDateList;
+    List<ObjectDate> resultList;
 
     public MainPlansFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,10 +74,21 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         cardPlansFuture.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
         tvCurrentDay.setText(currentDay);
-        lvResultSearch.setOnItemClickListener(this);
+
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
-
+        lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                PlansDateFragment plansDateFragment = new PlansDateFragment();
+                Bundle bundle = new Bundle();
+                bundle.putString(keyName, FRAG_NAME);
+                bundle.putString("date", resultList.get(position).getDate());
+                plansDateFragment.setArguments(bundle);
+                getActivity().getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fragment_plans_root, plansDateFragment).commit();
+            }
+        });
         countItem();
         showPlanDate();
 
@@ -232,9 +241,9 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
 
     private void showResultSearch(String date) {
       //  planDateList = getPlansDate();
-        planDateList = plansDAO.getAllPlanDate(date);
+        resultList = plansDAO.getAllPlanDate(date);
         final PlanDateAdapter adapter = new PlanDateAdapter();
-        adapter.setDataAdapter(planDateList, new PlanDateAdapter.OnItemRemoveListener() {
+        adapter.setDataAdapter(resultList, new PlanDateAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(final ObjectDate objectDate, final int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -249,7 +258,7 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         plansDAO.deleteDataWithDate(objectDate.getDate());
-                        planDateList.remove(position);
+                        resultList.remove(position);
                         adapter.notifyDataSetChanged();
                         countItem();
                         showPlanDate();

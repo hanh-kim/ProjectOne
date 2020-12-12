@@ -34,13 +34,12 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 
     final String keyName = "fragName";
     TextView tvBack, tvEdit, tvPlanTime, tvDate, tvDelete;
-    TextView   tvPlanTimeAlarm, tvPlanDate,tvDateToday;
+    TextView tvPlanTimeAlarm, tvPlanDate, tvDateToday;
     EditText edtTitle, edtDescription;
     MyDatabase mydatabase;
     PlansDAO plansDAO;
     int isEditing = 0;
     Bundle bundle;
-
 
 
     public DetailPlansFragment() {
@@ -68,7 +67,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         tvDelete.setOnClickListener(this);
         tvEdit.setOnClickListener(this);
         bundle = getArguments();
-        if (bundle!=null){
+        if (bundle != null) {
 //            if (getArguments().getString(keyName).equals(MainPlansFragment.FRAG_NAME)) {
 //                tvEdit.setEnabled(false);
 //                tvEdit.setVisibility(View.GONE);
@@ -94,7 +93,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     public void onClick(View v) {
 
         if (tvBack.equals(v)) {
-           back();
+            back();
 
         } else if (tvEdit.equals(v)) {
             edit();
@@ -102,10 +101,10 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             chooseTime(tvPlanTime);
         } else if (tvPlanTimeAlarm.equals(v)) {
             chooseTime(tvPlanTimeAlarm);
-        }else if (tvPlanDate.equals(v)) {
+        } else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
-        }else if (tvDelete.equals(v)) {
-           delete();
+        } else if (tvDelete.equals(v)) {
+            delete();
         }
 
     }
@@ -204,18 +203,13 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         String timeError = "Mời chọn thời gian";
         String dateError = "Mời chọn ngày";
         String dateError2 = "Mời chọn ngày sau ngày " + CurrentDateTime.getCurrentDate();
+
+
         if (title.isEmpty()) {
             edtTitle.setError("Mời nhập tên tên kế hoạch, công việc");
             edtTitle.setFocusable(true);
             return;
         }
-        if (time.isEmpty() || time.equals(timeError)) {
-            tvPlanTime.setText(timeError);
-            return;
-        }
-//        if (timeAlarm.isEmpty()) {
-//            tvPlanTimeAlarm.setText(time);
-//        }
         if (date.isEmpty() || date.equals(dateError) || date.equals(dateError2)) {
             tvPlanDate.setText(dateError);
             return;
@@ -225,22 +219,65 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             return;
         }
 
+        if (time.isEmpty() || time.equals(timeError)) {
+            tvPlanTime.setText(timeError);
+            return;
+        }
+
+
         if (description.isEmpty()) {
             description = " ";
         }
 
+        assert getArguments() != null;
         Plan plan = (Plan) getArguments().get("plan");
+        assert plan != null;
+
+        // ktra tgian gian thay dooi
+        if (!time.equals(plan.getTime())) {
+            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
+                if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+                    plan.setAlarmed(0);
+                } else {
+                    if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) > 0) {
+                        plan.setAlarmed(1);
+                    } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+                        plan.setAlarmed(0);
+                    }
+                }
+            }
+        }
+
+
+        if (!timeAlarm.equals(plan.getTimeAlarm())) {
+            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
+
+                if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+                    plan.setAlarmed(0);
+                } else {
+                    if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) > 0) {
+                        plan.setAlarmed(1);
+                    } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) < 0) {
+                        plan.setAlarmed(0);
+                    }
+                }
+
+
+            } else if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) > 0) {
+                plan.setAlarmed(1);
+            }
+        }
         plan.setPlanName(title);
         plan.setDate(date);
         plan.setTime(time);
         plan.setTimeAlarm(timeAlarm);
         plan.setDescribe(description);
         plansDAO.updateData(plan);
-        Toast.makeText(getActivity(),"Cập nhật thành công",Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_LONG).show();
 
     }
 
-    private void delete(){
+    private void delete() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Bạn muốn xóa công việc  này?");
@@ -256,7 +293,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             public void onClick(DialogInterface dialog, int which) {
                 Plan plan = (Plan) getArguments().get("plan");
                 plansDAO.deleteData(plan);
-                Toast.makeText(getActivity(),"Xóa thành công",Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Xóa thành công", Toast.LENGTH_LONG).show();
                 back();
             }
 
@@ -266,7 +303,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 
     }
 
-    private void back(){
+    private void back() {
         if (getArguments().getString(keyName).equals(MainPlansFragment.FRAG_NAME)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_plans_root, new MainPlansFragment()).commit();
