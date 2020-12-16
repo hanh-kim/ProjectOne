@@ -170,7 +170,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Note note = (Note) getArguments().get(keyNote);
-                note.setIsDeleted(1);
+                note.setDeleted(1);
                 notesDAO.updateData(note);
                 Toast.makeText(getActivity(), "Ghi chú được chuyển đến thùng rác!", Toast.LENGTH_SHORT).show();
                 getActivity().getSupportFragmentManager().beginTransaction()
@@ -183,7 +183,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
 
     private void restoreNote() {
         Note note = (Note) getArguments().get(keyNote);
-        note.setIsDeleted(0);
+        note.setDeleted(0);
         notesDAO.updateData(note);
         Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
         getActivity().getSupportFragmentManager().beginTransaction()
@@ -196,7 +196,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
         tvBack = view.findViewById(R.id.tvBack);
         edtTitle = view.findViewById(R.id.edtNoteTitle);
         edtContent = view.findViewById(R.id.edtNoteContent);
-        tvDateTime = view.findViewById(R.id.tvDateTime);
+        tvDateTime = view.findViewById(R.id.tvDate);
         tvRestore = view.findViewById(R.id.tvRestore);
     }
 
@@ -215,10 +215,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
             isEditing = 1;
 
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            edtTitle.setEnabled(false);
-            edtContent.setEnabled(false);
-            isEditing = 0;
+
             Note note = (Note) getArguments().get(keyNote);
             String title = edtTitle.getText().toString().trim();
             String content = edtContent.getText().toString().trim();
@@ -234,9 +231,13 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
                 note.setContent(" ");
             } else note.setContent(content);
 
-            note.setIsDeleted(0);
+            note.setDeleted(0);
             notesDAO.updateData(note);
             Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
+            tvEdit.setText("Sửa");
+            edtTitle.setEnabled(false);
+            edtContent.setEnabled(false);
+            isEditing = 0;
         }
 
     }

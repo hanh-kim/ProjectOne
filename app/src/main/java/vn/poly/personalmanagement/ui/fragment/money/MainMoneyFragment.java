@@ -16,11 +16,11 @@ import vn.poly.personalmanagement.database.dao.IncomesDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.ui.fragment.money.expenses.ExpenseFragment;
+import vn.poly.personalmanagement.ui.fragment.money.expenses.MainExpenseFragment;
 import vn.poly.personalmanagement.ui.fragment.money.incomes.IncomeFragment;
 
 
-public class MoneyFragment extends Fragment implements Initialize, View.OnClickListener {
+public class MainMoneyFragment extends Fragment implements Initialize, View.OnClickListener {
 
     CardView card_income, card_expense, card_statistic;
     TextView tvCurrentDate, tvCountIncomes, tvCountExpenses;
@@ -28,7 +28,7 @@ public class MoneyFragment extends Fragment implements Initialize, View.OnClickL
     IncomesDAO incomesDAO;
     ExpensesDAO expensesDAO;
 
-    public MoneyFragment() {
+    public MainMoneyFragment() {
         // Required empty public constructor
     }
 
@@ -43,7 +43,7 @@ public class MoneyFragment extends Fragment implements Initialize, View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_money, container, false);
+        View view = inflater.inflate(R.layout.fragment_money_main, container, false);
         initializeViews(view);
         initializeDatabase();
         card_expense.setOnClickListener(this);
@@ -59,7 +59,7 @@ public class MoneyFragment extends Fragment implements Initialize, View.OnClickL
     @Override
     public void onClick(View view) {
         if (card_expense.equals(view)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_money_root, new ExpenseFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_money_root, new MainExpenseFragment()).commit();
         } else if (card_income.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_money_root, new IncomeFragment()).commit();
         } else if (card_statistic.equals(view)) {

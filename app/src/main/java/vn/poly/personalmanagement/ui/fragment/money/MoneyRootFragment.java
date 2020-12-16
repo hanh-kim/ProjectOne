@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.ui.fragment.timetable.TimetableFragment;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +62,7 @@ public class MoneyRootFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_money_root,new MoneyFragment()).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().add(R.id.fragment_money_root,new MainMoneyFragment()).commit();
         return inflater.inflate(R.layout.fragment_money_root, container, false);
     }
 }

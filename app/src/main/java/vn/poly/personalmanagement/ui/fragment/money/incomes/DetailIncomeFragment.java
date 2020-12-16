@@ -32,6 +32,7 @@ public class DetailIncomeFragment extends Fragment
     IncomesDAO incomesDAO;
     List<Income> incomeList;
     Bundle bundle;
+
     public DetailIncomeFragment() {
         // Required empty public constructor
     }
@@ -70,7 +71,6 @@ public class DetailIncomeFragment extends Fragment
         return view;
     }
 
-
     @Override
     public void onClick(View v) {
         if (tvBack.equals(v)) {
@@ -78,13 +78,13 @@ public class DetailIncomeFragment extends Fragment
                     replace(R.id.fragment_money_root, new IncomeFragment()).commit();
         } else if (tvEdit.equals(v)) {
             edit();
-
         } else if (tvChooseDate.equals(v)) {
             chooseDate();
         }else if (tvDelete.equals(v)) {
             deleteIncome();
         }
     }
+
 
     private void chooseDate() {
     }
@@ -99,7 +99,7 @@ public class DetailIncomeFragment extends Fragment
         tvChooseDate = view.findViewById(R.id.tvChooseDate);
         tvBack = view.findViewById(R.id.tvBack);
         tvEdit = view.findViewById(R.id.tvEdit);
-        tvDateTime = view.findViewById(R.id.tvDateTime);
+        tvDateTime = view.findViewById(R.id.tvDate);
         edtTitle = view.findViewById(R.id.edtExpenseTitle);
         edtAmount = view.findViewById(R.id.edtAmount);
         edtDescribe = view.findViewById(R.id.edtDescription);
@@ -121,17 +121,12 @@ public class DetailIncomeFragment extends Fragment
             edtDescribe.setEnabled(true);
             isEditing=1;
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            edtTitle.setEnabled(false);
-            tvChooseDate.setEnabled(false);
-            edtAmount.setEnabled(false);
-            edtDescribe.setEnabled(false);
-            isEditing=0;
             updateIncome();
-            Toast.makeText(getActivity(),"Cập nhật thành công!",Toast.LENGTH_LONG).show();
+
         }
 
     }
+
     private void updateIncome(){
         Income income= (Income) bundle.get("income");
         String title =edtTitle.getText().toString().trim();
@@ -160,6 +155,14 @@ public class DetailIncomeFragment extends Fragment
         income.setAmount(amount);
         income.setDescription(description);
         incomesDAO.updateData(income);
+
+        tvEdit.setText("Sửa");
+        edtTitle.setEnabled(false);
+        tvChooseDate.setEnabled(false);
+        edtAmount.setEnabled(false);
+        edtDescribe.setEnabled(false);
+        isEditing=0;
+        Toast.makeText(getActivity(),"Cập nhật thành công!",Toast.LENGTH_LONG).show();
 
     }
 

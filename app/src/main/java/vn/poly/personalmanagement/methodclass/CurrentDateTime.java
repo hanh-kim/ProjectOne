@@ -13,20 +13,21 @@ public class CurrentDateTime {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat();
         simpleDateFormat.applyPattern("dd/MM/yyyy");
         calendar.set(year, month, day);
-        String date = simpleDateFormat.format( calendar.getTime());
+        String date = simpleDateFormat.format(calendar.getTime());
 
-        /* format date: Jan 01,2020 */
+//        /* format date: Jan 01,2020 */
 //        SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getDateInstance();
 //        date += simpleDateFormat.format( calendar.getTime());
         return date;
     }
+
     public static String getCurrentTime() {
-        String time="";
+        String time = "";
         /* format hour:  00:00:00 */
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = (SimpleDateFormat) SimpleDateFormat.getTimeInstance();
         simpleDateFormat.applyPattern("HH:mm");
-        time += simpleDateFormat.format( calendar.getTime());
+        time += simpleDateFormat.format(calendar.getTime());
 
         return time;
 
@@ -43,4 +44,5 @@ public class CurrentDateTime {
 //        return time;
 
     }
+
 }

@@ -120,10 +120,10 @@
                     android:layout_marginRight="15dp"
                     android:textStyle="bold"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_baseline_calendar_orange"
+                    android:drawableRight="@drawable/ic_calendar_orange"
                     android:drawablePadding="5dp"
                     android:enabled="false"
-                    android:hint="dd/mmm/yyyy"
+                    android:hint="Ngày  dd/mmm/yyyy"
                     android:textColor="#000"
                     />
 
@@ -144,21 +144,21 @@
                     android:hint="Thời gian   hh:mm"
                    />
 
-                <TextView
-                    android:id="@+id/tvPlanTimeAlarm"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="10dp"
-                    android:textStyle="bold"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_baseline_access_alarms"
-                    android:drawablePadding="5dp"
-                    android:enabled="false"
-                    android:textColor="#000"
-                    android:hint="Nhắc nhở   hh:mm"
-                   />
+<!--                <TextView-->
+<!--                    android:id="@+id/tvPlanTimeAlarm"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginLeft="15dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:layout_marginRight="15dp"-->
+<!--                    android:background="@drawable/custom_edt_search"-->
+<!--                    android:drawableRight="@drawable/ic_baseline_access_alarms"-->
+<!--                    android:drawablePadding="5dp"-->
+<!--                    android:enabled="false"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:hint="Nhắc nhở   hh:mm"-->
+<!--                   />-->
 
 
                 <TextView

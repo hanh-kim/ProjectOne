@@ -23,12 +23,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.money.incomes.IncomesAdapter;
 import vn.poly.personalmanagement.adapter.notes.NotesAdapter;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.Note;
 
 import java.util.List;
@@ -194,7 +192,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Note nt = note;
-                nt.setIsDeleted(1);
+                nt.setDeleted(1);
                 notesDAO.updateData(nt);
                 list.remove(position);
                 adapter.notifyDataSetChanged();

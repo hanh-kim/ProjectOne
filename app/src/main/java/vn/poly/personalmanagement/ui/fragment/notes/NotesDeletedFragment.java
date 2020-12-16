@@ -29,7 +29,6 @@ import vn.poly.personalmanagement.database.dao.NotesDAO;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Note;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -187,7 +186,7 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
 //    }
 
     private void restoreItem(Note note, final int position,final List<Note> list) {
-        note.setIsDeleted(0);
+        note.setDeleted(0);
         notesDAO.updateData(note);
         list.remove(position);
         countItem();
@@ -252,7 +251,6 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
 
     private void showNotes() {
         noteList = notesDAO.getAllDataDeleted();
-
         adapter.setDataAdapter(noteList, new NotesAdapter.OnItemShowMenuClickListener() {
             @Override
             public void onClick(final Note note, final int position, View view) {
@@ -265,7 +263,6 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                         int itemId = item.getItemId();
                         if (itemId == R.id.item_restore) {
                             restoreItem(nt, position,noteList);
-
                         } else if (itemId == R.id.item_delete) {
                             removeItem(nt, position,noteList);
                         }
@@ -273,7 +270,6 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                     }
                 });
                 popupMenu.show();
-
             }
         });
 
@@ -337,13 +333,12 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                         int itemId = item.getItemId();
                         if (itemId == R.id.item_restore) {
 
-                            note.setIsDeleted(0);
+                            note.setDeleted(0);
                             notesDAO.updateData(note);
                             resultList.remove(position);
                             countItem();
                             adapter.notifyDataSetChanged();
                             Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
-
 
                         } else if (itemId == R.id.item_delete) {
 
@@ -367,16 +362,13 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                                 }
                             });
                             builder.create().show();
-
                         }
                         return false;
                     }
                 });
                 popupMenu.show();
-
             }
         });
-
         lvResultSearch.setAdapter(adapter);
     }
 }

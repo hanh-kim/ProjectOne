@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.ui.fragment.timetable.TimetableFragment;
+
 
 /**
  * A simple {@link Fragment} subclass.

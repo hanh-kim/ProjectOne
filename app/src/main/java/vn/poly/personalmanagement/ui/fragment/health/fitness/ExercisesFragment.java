@@ -79,7 +79,7 @@ public class ExercisesFragment extends Fragment
     public void onClick(View v) {
         if (tvBack.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
         } else if (icAdd.equals(v)) {
             addExercise();
         } else if (tvToSearch.equals(v)) {

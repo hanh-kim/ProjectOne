@@ -18,34 +18,36 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_calendar_orange"
             android:drawablePadding="@dimen/activity_horizontal_margin"
-            android:drawableLeft="@drawable/ic_baseline_plan_or"
-            android:id="@+id/tvDateTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:padding="3dp"
-            android:text="hh:mm, dd/mm/yyyy" />
+            android:text="Ngày:  dd/mm/yyyy" />
+
         <ImageView
-            android:padding="3dp"
-            android:layout_marginRight="10dp"
-            android:layout_alignParentRight="true"
+            android:id="@+id/icAlarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_notifications"
-            android:id="@+id/icNotification"/>
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_notifications" />
     </RelativeLayout>
 
 
     <TextView
-        android:id="@+id/tvTimeAlarm"
+        android:id="@+id/tvTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_baseline_access_alarms"
         android:drawablePadding="@dimen/activity_horizontal_margin"
         android:gravity="center_vertical"
         android:padding="3dp"
-        android:text="Nhắc nhở lúc" />
+        android:text="Thời gian:  hh:mm" />
 
 
 </LinearLayout>

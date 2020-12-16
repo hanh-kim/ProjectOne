@@ -61,7 +61,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_meals, container, false);
+        View view = inflater.inflate(R.layout.fragment_meals_date, container, false);
         initializeDatabase();
         initializeViews(view);
 

@@ -69,9 +69,9 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
     @Override
     public void onClick(View v) {
 
-        if (getArguments().getInt(keyName) == FitnessFragment.ID_FRAG) {
+        if (getArguments().getInt(keyName) == MainFitnessFragment.ID_FRAG) {
             if (tvBack.equals(v)) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
             } else if (tvDelete.equals(v)) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setMessage("Bạn muốn xóa ngày tập này?");
@@ -80,7 +80,7 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
                     public void onClick(DialogInterface dialog, int which) {
                         fitnessDAO.deleteDataWithDate(getArguments().getString("date"));
                         Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
                     }
                 });
                 builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {

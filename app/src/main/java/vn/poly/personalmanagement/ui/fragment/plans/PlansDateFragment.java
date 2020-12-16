@@ -1,6 +1,10 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +17,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import java.util.Calendar;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.plans.PlansAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
+import vn.poly.personalmanagement.methodclass.AlarmNotificationReceiver;
+import vn.poly.personalmanagement.methodclass.AlarmProvide;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
+import vn.poly.personalmanagement.methodclass.DateTimeFormat;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Plan;
 
@@ -42,11 +51,14 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
     PlansDAO plansDAO;
     List<Plan> planList;
     Bundle bundle;
+    Intent intent;
+    PendingIntent pendingIntent;
 
     public PlansDateFragment() {
         // Required empty public constructor
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +75,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         tvBack.setOnClickListener(this);
         tvDelete.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
+        intent = new Intent(getActivity(), AlarmNotificationReceiver.class);
 
         bundle = getArguments();
         if (getArguments() != null) {
@@ -149,7 +162,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         final PlansAdapter adapter = new PlansAdapter(plansDAO);
         adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
             @Override
-            public void onClick(final Plan plan, final int position, ImageView ic) {
+            public void onClick(final Plan plan, final int position) {
 
                 if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -171,18 +184,8 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
                     });
                     builder.create().show();
 
-                } else {
-                    if (plan.getAlarmed() == 1) {
-                        plan.setAlarmed(0);
-                        ic.setImageResource(R.drawable.ic_baseline_notifications_off);
-                    } else if (plan.getAlarmed() == 0) {
-                        plan.setAlarmed(1);
-                        ic.setImageResource(R.drawable.ic_baseline_notifications);
-                    }
-                    plansDAO.updateData(plan);
-                    adapter.notifyDataSetChanged();
-                    countItem();
                 }
+
             }
         });
         lvPlans.setAdapter(adapter);
@@ -209,6 +212,28 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
         });
         builder.create().show();
+
+
+    }
+
+    private List<Plan> getPlansFuture() {
+        return plansDAO.getAllPlansFuture();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void remindPlan() {
+        List<Plan> remindList = getPlansFuture();
+        if (remindList != null) {
+            for (Plan mPlan : remindList) {
+              //  Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
+                Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("plan_key", mPlan);
+                intent.putExtra("bundle_key", bundle);
+                pendingIntent = PendingIntent.getBroadcast(getActivity(), mPlan.getId(), intent, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmProvide.getAlarmManager(getActivity()).setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
 
 
     }

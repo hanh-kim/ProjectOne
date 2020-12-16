@@ -31,7 +31,7 @@ import vn.poly.personalmanagement.model.Plan;
 public class AddWorkFragment extends Fragment implements View.OnClickListener, Initialize {
 
 
-    TextView tvDone, tvBack, tvPlanTime, tvPlanTimeAlarm, tvPlanDate, tvDateToday;
+    TextView tvDone, tvBack, tvPlanTime,  tvPlanDate, tvDateToday;
     EditText edtTitle, edtDescription;
     MyDatabase mydatabase;
     PlansDAO plansDAO;
@@ -56,7 +56,6 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         tvDateToday.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         tvBack.setOnClickListener(this);
-        tvPlanTimeAlarm.setOnClickListener(this);
         tvPlanDate.setOnClickListener(this);
         tvPlanTime.setOnClickListener(this);
 
@@ -76,8 +75,6 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
                     .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
-        } else if (tvPlanTimeAlarm.equals(v)) {
-            chooseTime(tvPlanTimeAlarm);
         } else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
         }
@@ -91,7 +88,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
         edtTitle = view.findViewById(R.id.edtPlansTitle);
         edtDescription = view.findViewById(R.id.edtDescription);
         tvPlanTime = view.findViewById(R.id.tvPlanTime);
-        tvPlanTimeAlarm = view.findViewById(R.id.tvPlanTimeAlarm);
+
         tvPlanDate = view.findViewById(R.id.tvPlanDate);
     }
 
@@ -104,7 +101,6 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
     private void addPlans() {
         String title = edtTitle.getText().toString().trim();
         String time = tvPlanTime.getText().toString().trim();
-        String timeAlarm = tvPlanTimeAlarm.getText().toString().trim();
         String date = CurrentDateTime.getCurrentDate();
         String description = edtDescription.getText().toString().trim();
 
@@ -123,10 +119,7 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
             tvPlanTime.setText(timeError);
             return;
         }
-        if (timeAlarm.isEmpty()) {
-            tvPlanTimeAlarm.setText(time);
-            timeAlarm = time;
-        }
+
 //        if (date.isEmpty() || date.equals(dateError)) {
 //            tvPlanDate.setText(dateError);
 //            return;
@@ -136,14 +129,13 @@ public class AddWorkFragment extends Fragment implements View.OnClickListener, I
             description = " ";
         }
 
-        int isAlarm = 1;
+        int isAlarmed = 0;
         Plan plan = new Plan();
         plan.setPlanName(title);
         plan.setDate(date);
         plan.setTime(time);
-        plan.setTimeAlarm(timeAlarm);
         plan.setDescribe(description);
-        plan.setAlarmed(isAlarm);
+        plan.setAlarmed(isAlarmed);
         plansDAO.addData(plan);
         Toast.makeText(getActivity(), "Thêm thành công", Toast.LENGTH_LONG).show();
 

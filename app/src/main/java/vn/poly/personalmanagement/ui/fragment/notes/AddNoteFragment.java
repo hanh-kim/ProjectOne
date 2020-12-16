@@ -110,7 +110,7 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
             note.setContent("");
         } else note.setContent(content);
 
-        note.setIsDeleted(0);
+        note.setDeleted(0);
         notesDAO.addData(note);
         Toast.makeText(getActivity(), "Lưu thông tin thành công", Toast.LENGTH_SHORT).show();
         back();

@@ -84,7 +84,7 @@ public class ExercisesTodayFragment extends Fragment
     @Override
     public void onClick(View v) {
         if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
         } else if (icAdd.equals(v)) {
             addExercise();
 

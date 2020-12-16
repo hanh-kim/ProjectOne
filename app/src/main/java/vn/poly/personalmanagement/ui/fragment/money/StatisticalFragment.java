@@ -71,7 +71,7 @@ public class StatisticalFragment extends Fragment implements Initialize, View.On
     public void onClick(View view) {
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_money_root, new MoneyFragment()).commit();
+                    replace(R.id.fragment_money_root, new MainMoneyFragment()).commit();
         } else if (btnSearch.equals(view)) {
             search();
         } else if (tvStartDate.equals(view)) {

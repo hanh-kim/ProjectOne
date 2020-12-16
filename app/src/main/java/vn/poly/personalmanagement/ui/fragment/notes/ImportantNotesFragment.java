@@ -172,7 +172,7 @@ public class ImportantNotesFragment extends Fragment implements Initialize, View
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Note nt = note;
-                nt.setIsDeleted(1);
+                nt.setDeleted(1);
                 notesDAO.updateData(nt);
                 list.remove(position);
                 // noteList= getList();

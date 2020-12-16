@@ -34,7 +34,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 
     final String keyName = "fragName";
     TextView tvBack, tvEdit, tvPlanTime, tvDate, tvDelete;
-    TextView tvPlanTimeAlarm, tvPlanDate, tvDateToday;
+    TextView tvPlanDate, tvDateToday;
     EditText edtTitle, edtDescription;
     MyDatabase mydatabase;
     PlansDAO plansDAO;
@@ -63,7 +63,7 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         tvBack.setOnClickListener(this);
         tvPlanDate.setOnClickListener(this);
         tvPlanTime.setOnClickListener(this);
-        tvPlanTimeAlarm.setOnClickListener(this);
+
         tvDelete.setOnClickListener(this);
         tvEdit.setOnClickListener(this);
         bundle = getArguments();
@@ -79,9 +79,9 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             Plan plan = (Plan) getArguments().get("plan");
             edtTitle.setText(plan.getPlanName());
             tvPlanTime.setText(plan.getTime());
-            tvPlanTimeAlarm.setText(plan.getTimeAlarm());
+
             tvPlanDate.setText(plan.getDate());
-            edtDescription.setText(plan.getDescribe());
+            edtDescription.setText(plan.getDescription());
         }
 
 
@@ -99,8 +99,6 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             edit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
-        } else if (tvPlanTimeAlarm.equals(v)) {
-            chooseTime(tvPlanTimeAlarm);
         } else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
         } else if (tvDelete.equals(v)) {
@@ -118,7 +116,6 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 //        tvDate = view.findViewById(R.id.tvDate);
         tvPlanDate = view.findViewById(R.id.tvPlanDate);
         tvPlanTime = view.findViewById(R.id.tvPlanTime);
-        tvPlanTimeAlarm = view.findViewById(R.id.tvPlanTimeAlarm);
         edtTitle = view.findViewById(R.id.edtPlansTitle);
         edtDescription = view.findViewById(R.id.edtDescription);
 
@@ -137,7 +134,6 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
             tvEdit.setText("Xong");
             edtTitle.setEnabled(true);
             tvPlanTime.setEnabled(true);
-            tvPlanTimeAlarm.setEnabled(true);
             tvPlanDate.setEnabled(true);
             edtDescription.setEnabled(true);
             isEditing = 1;
@@ -188,7 +184,6 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
     private void updatePlans() {
         String title = edtTitle.getText().toString().trim();
         String time = tvPlanTime.getText().toString().trim();
-        String timeAlarm = tvPlanTimeAlarm.getText().toString().trim();
         String date = tvPlanDate.getText().toString().trim();
         String description = edtDescription.getText().toString().trim();
 
@@ -226,54 +221,53 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         Plan plan = (Plan) getArguments().get("plan");
         assert plan != null;
 
-        // ktra tgian gian ke hoach thay doi
-        if (!time.equals(plan.getTime())) {
-            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
-                if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
-                    plan.setAlarmed(0);
-                } else {
-                    if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) > 0) {
-                        plan.setAlarmed(1);
-                    } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
-                        plan.setAlarmed(0);
-                    }
-                }
-            }
-        }
-
-        //ktra tgian nhắc nhở
-        if (!timeAlarm.equals(plan.getTimeAlarm())) {
-            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
-
-                if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
-                    plan.setAlarmed(0);
-                } else {
-                    if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) > 0) {
-                        plan.setAlarmed(1);
-                    } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) < 0) {
-                        plan.setAlarmed(0);
-                    }
-
-                }
-
-
-            } else if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) > 0) {
+        if (!date.equals(plan.getDate())){
+            if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())>0) {
                 plan.setAlarmed(1);
             }
         }
 
+
+
+
+        // ktra tgian gian ke hoach thay doi
+        if (!time.equals(plan.getTime())) {
+            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
+                if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+                    plan.setAlarmed(1);
+                }
+            }
+        }
+
+//        //ktra tgian nhắc nhở
+//        if (!timeAlarm.equals(plan.getTimeAlarm())) {
+//            if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
+//                if (plan.getTime().compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
+//                    plan.setAlarmed(0);
+//                } else {
+//                    if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) > 0) {
+//                        plan.setAlarmed(1);
+//                    } else if (timeAlarm.compareTo(CurrentDateTime.getCurrentTime()) < 0) {
+//                        plan.setAlarmed(0);
+//                    }
+//                }
+//
+//            } else if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) > 0) {
+//                plan.setAlarmed(1);
+//            }
+//        }
+
         plan.setPlanName(title);
         plan.setDate(date);
         plan.setTime(time);
-        plan.setTimeAlarm(timeAlarm);
         plan.setDescribe(description);
         plansDAO.updateData(plan);
         Toast.makeText(getActivity(), "Cập nhật thành công", Toast.LENGTH_LONG).show();
+
         tvEdit.setText("Sửa");
         edtTitle.setEnabled(false);
         tvPlanTime.setEnabled(false);
         edtDescription.setEnabled(false);
-        tvPlanTimeAlarm.setEnabled(false);
         tvPlanDate.setEnabled(false);
         isEditing = 0;
     }

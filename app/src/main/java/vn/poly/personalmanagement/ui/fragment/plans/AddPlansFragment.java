@@ -31,7 +31,7 @@ import vn.poly.personalmanagement.model.Plan;
 public class AddPlansFragment extends Fragment implements Initialize, View.OnClickListener {
 
 
-    TextView tvDone, tvBack, tvPlanTime, tvPlanTimeAlarm, tvPlanDate, tvDateToday;
+    TextView tvDone, tvBack, tvPlanTime, tvPlanDate, tvDateToday;
     EditText edtTitle, edtDescription;
     MyDatabase mydatabase;
     PlansDAO plansDAO;
@@ -56,7 +56,6 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
         tvDateToday.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         tvBack.setOnClickListener(this);
-        tvPlanTimeAlarm.setOnClickListener(this);
         tvPlanDate.setOnClickListener(this);
         tvPlanTime.setOnClickListener(this);
 
@@ -76,8 +75,6 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
                     .replace(R.id.fragment_plans_root, new PlansTodayFragment()).commit();
         } else if (tvPlanTime.equals(v)) {
             chooseTime(tvPlanTime);
-        } else if (tvPlanTimeAlarm.equals(v)) {
-            chooseTime(tvPlanTimeAlarm);
         } else if (tvPlanDate.equals(v)) {
             chooseDate(tvPlanDate);
         }
@@ -91,7 +88,6 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
         edtTitle = view.findViewById(R.id.edtPlansTitle);
         edtDescription = view.findViewById(R.id.edtDescription);
         tvPlanTime = view.findViewById(R.id.tvPlanTime);
-        tvPlanTimeAlarm = view.findViewById(R.id.tvPlanTimeAlarm);
         tvPlanDate = view.findViewById(R.id.tvPlanDate);
     }
 
@@ -104,7 +100,6 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
     private void addPlans() {
         String title = edtTitle.getText().toString().trim();
         String time = tvPlanTime.getText().toString().trim();
-        String timeAlarm = tvPlanTimeAlarm.getText().toString().trim();
         String date = tvPlanDate.getText().toString().trim();
         String description = edtDescription.getText().toString().trim();
 
@@ -128,23 +123,18 @@ public class AddPlansFragment extends Fragment implements Initialize, View.OnCli
             tvPlanTime.setText(timeError);
             return;
         } else {
-            if (timeAlarm.isEmpty()) {
-                tvPlanTimeAlarm.setText(time);
-                timeAlarm = time;
-            }
 
             if (description.isEmpty()) {
-                description = " ";
+                description = "";
             }
 
-            int isAlarm = 1;
+            int isAlarmed = 0;
             Plan plan = new Plan();
             plan.setPlanName(title);
             plan.setDate(date);
             plan.setTime(time);
-            plan.setTimeAlarm(timeAlarm);
             plan.setDescribe(description);
-            plan.setAlarmed(isAlarm);
+            plan.setAlarmed(isAlarmed);
             plansDAO.addData(plan);
             Toast.makeText(getActivity(), "Thêm thành công", Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction()

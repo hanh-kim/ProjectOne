@@ -2,6 +2,7 @@ package vn.poly.personalmanagement.model;
 
 import java.io.Serializable;
 
+
 public class Eating implements Serializable {
     private int id;
     private String date;

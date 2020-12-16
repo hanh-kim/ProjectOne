@@ -21,7 +21,7 @@ import vn.poly.personalmanagement.ui.fragment.health.eating.MainEatingFragment;
 import vn.poly.personalmanagement.ui.fragment.health.eating.MealsTodayFragment;
 import vn.poly.personalmanagement.ui.fragment.health.fitness.ExercisesFragment;
 import vn.poly.personalmanagement.ui.fragment.health.fitness.ExercisesTodayFragment;
-import vn.poly.personalmanagement.ui.fragment.health.fitness.FitnessFragment;
+import vn.poly.personalmanagement.ui.fragment.health.fitness.MainFitnessFragment;
 
 
 public class HealthFragment extends Fragment implements Initialize, View.OnClickListener {
@@ -74,7 +74,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
                     replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
         } else if (cardTofitness.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
         } else if (cardAddMeal.equals(v)) {
 
             AddMealFragment addMealFragment = new AddMealFragment();
@@ -93,7 +93,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
                     replace(R.id.fragment_health_root, new ExercisesFragment()).commit();
         } else if (cardFitnessList.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new FitnessFragment()).commit();
+                    replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
         }
 
     }

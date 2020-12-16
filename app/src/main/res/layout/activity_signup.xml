@@ -67,17 +67,36 @@
                 android:inputType="textPassword"
                 android:maxLength="15"
                 android:padding="10dp" />
-
+            <EditText
+                android:id="@+id/edtConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:background="@drawable/custom_edt_search"
+                android:drawableLeft="@drawable/ic_lock"
+                android:drawablePadding="@dimen/activity_vertical_margin"
+                android:hint="Nhập lại mật khẩu"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:padding="10dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="30dp">
+                android:padding="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvError"
+                    android:gravity="center"
+                    android:textColor="#EC0505"/>
 
                 <RelativeLayout
                     android:id="@+id/btnSignup"
+                    android:layout_margin="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/custom_btn"

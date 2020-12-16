@@ -67,7 +67,7 @@ public class NotesAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_note, parent, false);
             viewHolder.tvTitle = convertView.findViewById(R.id.tvNoteTitle);
-            viewHolder.tvDateTime = convertView.findViewById(R.id.tvDateTime);
+            viewHolder.tvDateTime = convertView.findViewById(R.id.tvDate);
             viewHolder.tvFolderName = convertView.findViewById(R.id.tvFolderName);
             viewHolder.icInfo = convertView.findViewById(R.id.icInfo);
             convertView.setTag(viewHolder);

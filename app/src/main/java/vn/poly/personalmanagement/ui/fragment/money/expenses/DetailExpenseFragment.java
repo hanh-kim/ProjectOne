@@ -117,7 +117,7 @@ public class DetailExpenseFragment extends Fragment
         tvDelete = view.findViewById(R.id.tvDelete);
         tvBack = view.findViewById(R.id.tvBack);
         tvEdit = view.findViewById(R.id.tvEdit);
-        tvDateTime = view.findViewById(R.id.tvDateTime);
+        tvDateTime = view.findViewById(R.id.tvDate);
         edtTitle = view.findViewById(R.id.edtExpenseTitle);
         edtAmount = view.findViewById(R.id.edtAmount);
         edtDescribe = view.findViewById(R.id.edtDescription);
@@ -137,13 +137,7 @@ public class DetailExpenseFragment extends Fragment
             edtDescribe.setEnabled(true);
             isEditing = 1;
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            edtTitle.setEnabled(false);
-            edtAmount.setEnabled(false);
-            edtDescribe.setEnabled(false);
-            isEditing = 0;
             updateExpenses();
-
         }
 
     }
@@ -176,7 +170,11 @@ public class DetailExpenseFragment extends Fragment
         expense.setDescription(description);
         expensesDAO.updateData(expense);
         Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
-
+        tvEdit.setText("Sửa");
+        edtTitle.setEnabled(false);
+        edtAmount.setEnabled(false);
+        edtDescribe.setEnabled(false);
+        isEditing = 0;
     }
 
 

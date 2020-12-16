@@ -48,7 +48,6 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -139,7 +138,6 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
 
     }
 
-
     private void addMeal(Fragment fragment){
         String errorDate ="Mời chọn ngày";
         String errorTime ="Mời chọn thời gian";
@@ -198,7 +196,6 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
 
         timePickerDialog.show();
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void chooseDate(){

@@ -24,21 +24,19 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.health.fitness.FitnessAdapter;
 import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.database.dao.ExpensesDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Expense;
-import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.model.ObjectDate;
-import vn.poly.personalmanagement.ui.fragment.money.MoneyFragment;
+import vn.poly.personalmanagement.ui.fragment.money.MainMoneyFragment;
 
 
-public class ExpenseFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class MainExpenseFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
-    public static final String FRAG_NAME = ExpenseFragment.class.getName();
+    public static final String FRAG_NAME = MainExpenseFragment.class.getName();
     final String keyName = "fragName";
     TextView tvBack, tvCurrentDate, tvCountItem, tvCountExpensesToday;
     CardView cardToday;
@@ -52,7 +50,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     List<ObjectDate> objectDateList;
     List<Expense> expenseList;
 
-    public ExpenseFragment() {
+    public MainExpenseFragment() {
         // Required empty public constructor
     }
 
@@ -67,13 +65,13 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_expense, container, false);
+        View view = inflater.inflate(R.layout.fragment_expense_main, container, false);
         initializeViews(view);
         initializeDatabase();
         cardToday.setOnClickListener(this);
         tvBack.setOnClickListener(this);
         lvExpenses.setOnItemClickListener(this);
-        tvCurrentDate.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
+        tvCurrentDate.setText("Hôm nay, " + CurrentDateTime.getCurrentDate());
         lvResultSearch.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
@@ -110,7 +108,7 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     public void onClick(View view) {
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_money_root, new MoneyFragment()).commit();
+                    replace(R.id.fragment_money_root, new MainMoneyFragment()).commit();
         } else if (cardToday.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_money_root, new ExpensesTodayFragment()).commit();
@@ -128,17 +126,16 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     }
 
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-      ExpensesTodayFragment expensesTodayFragment = new ExpensesTodayFragment();
-      ObjectDate objectDate = objectDateList.get(position);
-      Bundle bundle = new Bundle();
-      bundle.putString(keyName,FRAG_NAME);
-      bundle.putString("date",objectDate.getDate());
-      expensesTodayFragment.setArguments(bundle);
+        ExpensesTodayFragment expensesTodayFragment = new ExpensesTodayFragment();
+        ObjectDate objectDate = objectDateList.get(position);
+        Bundle bundle = new Bundle();
+        bundle.putString(keyName, FRAG_NAME);
+        bundle.putString("date", objectDate.getDate());
+        expensesTodayFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_money_root,expensesTodayFragment).commit();
+                replace(R.id.fragment_money_root, expensesTodayFragment).commit();
     }
 
     private List<Expense> getExpensesListOfCurrentDate() {
@@ -149,19 +146,19 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
         return expensesDAO.getExpensetDateList();
     }
 
-    private void countItem(){
-        if (getMoneytDateList().size()==0){
+    private void countItem() {
+        if (getMoneytDateList().size() == 0) {
             tvCountItem.setText("Danh sách trống");
-        }else  tvCountItem.setText("Tất cả: "+ getMoneytDateList().size());
+        } else tvCountItem.setText("Tất cả: " + getMoneytDateList().size());
 
-        tvCountExpensesToday.setText(""+getExpensesListOfCurrentDate().size());
+        tvCountExpensesToday.setText("" + getExpensesListOfCurrentDate().size());
     }
 
-    private void countExpensesToday(){
-      tvCountExpensesToday.setText(""+getExpensesListOfCurrentDate().size());
+    private void countExpensesToday() {
+        tvCountExpensesToday.setText("" + getExpensesListOfCurrentDate().size());
     }
 
-    private void showExpenseDate(){
+    private void showExpenseDate() {
         objectDateList = getMoneytDateList();
         final MoneyAdapter adapter = new MoneyAdapter();
         adapter.setDataAdapter(objectDateList, new MoneyAdapter.OnItemRemoveListener() {
@@ -214,11 +211,13 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String sDate = edtSearch.getText().toString().trim();
                 showResultSearch(sDate);
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -227,34 +226,35 @@ public class ExpenseFragment extends Fragment implements Initialize, View.OnClic
     }
 
     private void showResultSearch(String date) {
+
         final MoneyAdapter adapter = new MoneyAdapter();
         objectDateList = expensesDAO.getResultSearched(date);
-       adapter.setDataAdapter(objectDateList, new MoneyAdapter.OnItemRemoveListener() {
-           @Override
-           public void onRemove(final ObjectDate objectDate, final int position) {
-               AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-               builder.setMessage("Bạn muốn xóa ngày tập này?");
-               builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       dialog.cancel();
-                   }
-               });
-               builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                   @Override
-                   public void onClick(DialogInterface dialog, int which) {
-                       expensesDAO.deleteDataWithDate(objectDate.getDate());
-                       objectDateList.remove(position);
-                       adapter.notifyDataSetChanged();
-                       countItem();
-                       showExpenseDate();
-                       Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
-                   }
+        adapter.setDataAdapter(objectDateList, new MoneyAdapter.OnItemRemoveListener() {
+            @Override
+            public void onRemove(final ObjectDate objectDate, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa ngày tập này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        expensesDAO.deleteDataWithDate(objectDate.getDate());
+                        objectDateList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        countItem();
+                        showExpenseDate();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
 
-               });
-               builder.create().show();
-           }
-       });
+                });
+                builder.create().show();
+            }
+        });
         lvResultSearch.setAdapter(adapter);
     }
 }

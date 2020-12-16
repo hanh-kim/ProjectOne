@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragment.money.MoneyFragment">
+    tools:context=".ui.fragment.money.MainMoneyFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -21,9 +21,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp">
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -40,7 +39,7 @@
                 android:id="@+id/tvCurrentDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:text="Hôm nay, dd/mm/yyyy"
                 android:textColor="#000"
@@ -49,7 +48,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
                 android:text="Danh mục"
                 android:textColor="#0371C8"
@@ -75,8 +74,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:id="@+id/icL1"
@@ -122,8 +120,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                       >
+                        android:gravity="center_vertical">
 
                         <ImageView
                             android:id="@+id/icL2"

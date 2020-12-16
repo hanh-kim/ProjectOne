@@ -13,8 +13,8 @@ public class InfoTable {
     public static final String COL_PLAN_NAME = "PLAN_NAME";
     public static final String COL_PLAN_DATE = "PLAN_DATE";
     public static final String COL_PLAN_TIME = "PLAN_TIME";
-    public static final String COL_PLAN_TIME_ALARM = "PLAN_TIME_ALARM";
-    public static final String COL_PLAN_ISALARM = "PLAN_TIME_ISALARM";
+ //   public static final String COL_PLAN_TIME_ALARM = "PLAN_TIME_ALARM";
+    public static final String COL_PLAN_IS_ALARMED = "PLAN_IS_ALARMED";
     public static final String COL_PLAN_DESCRIPTION = "PLAN_DESCRIPTION";
 
     public static final String TABLE_NOTES = "NOTES";
@@ -32,7 +32,7 @@ public class InfoTable {
     public static final String COL_INCOME_DATE = "INCOME_DATE";
     public static final String COL_INCOME_TIME = "INCOME_TIME";
     public static final String COL_INCOME_AMOUNT = "INCOME_AMOUNT";
-    public static final String COL_INCOME_DESCRIPTION = "INCOME_DESCRIBE";
+    public static final String COL_INCOME_DESCRIPTION = "INCOME_DESCRIPTION ";
     public static final String COL_AMOUNT = "AMOUNT";
     public static final String TABLE_EXPENSES = "EXPENSES";
     public static final String COL_EXPENSE_ID = "EXPENSE_ID";
@@ -40,7 +40,7 @@ public class InfoTable {
     public static final String COL_EXPENSE_DATE = "EXPENSE_DATE";
     public static final String COL_EXPENSE_TIME = "EXPENSE_TIME";
     public static final String COL_EXPENSE_AMOUNT = "EXPENSE_AMOUNT";
-    public static final String COL_EXPENSE_DESCRIPTION = "EXPENSE_DESCRIBE";
+    public static final String COL_EXPENSE_DESCRIPTION = "EXPENSE_DESCRIPTION ";
 
     public static final String TABLE_EXERCISES = "EXERCISES";
     public static final String COL_EXERCISE_ID = "EXERCISE_ID";
@@ -60,10 +60,6 @@ public class InfoTable {
     public static final String COL_MEAL_TIME = "MEAL_TIME";
     public static final String COL_MEAL_DETAIL = "MEAL_DETAIL";
 
-
-    public static final String TABLE_EATING = "EATING";
-    public static final String COL_EATING_ID = "EATING_ID";
-    public static final String COL_EATING_DATE = "EATING_DATE";
     public static final String COL_EATING_AMOUNT_MEAL = "MEAL_AMOUNT";
 
 
@@ -80,14 +76,12 @@ public class InfoTable {
                 COL_PLAN_NAME + " NVARCHAR(100) NOT NULL," +
                 COL_PLAN_DATE + " NCHAR(20) NOT NULL," +
                 COL_PLAN_TIME + " NCHAR(20) NOT NULL," +
-                COL_PLAN_TIME_ALARM + " NCHAR(20) NOT NULL," +
-                COL_PLAN_ISALARM + " INTEGER NOT NULL," +
-                COL_PLAN_DESCRIPTION + " TEXT NOT NULL" +
+                COL_PLAN_IS_ALARMED + " INTEGER NOT NULL," +
+                COL_PLAN_DESCRIPTION + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);
     }
-
 
     public static void createTableNotes(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_NOTES + "(" +
@@ -110,7 +104,7 @@ public class InfoTable {
                 COL_INCOME_DATE + " NCHAR(20) NOT NULL," +
                 COL_INCOME_TIME + " NCHAR(20) NOT NULL," +
                 COL_INCOME_AMOUNT + " LONG NOT NULL," +
-                COL_INCOME_DESCRIPTION + " TEXT NOT NULL" +
+                COL_INCOME_DESCRIPTION + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);
@@ -141,7 +135,7 @@ public class InfoTable {
         sqLiteDatabase.execSQL(createTable);
     }
 
-    public static void createTableFitness(SQLiteDatabase sqLiteDatabase) {
+    public static void createTableDetailExercise(SQLiteDatabase sqLiteDatabase) {
         String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_DETAIL_EXERCISE + "(" +
                 COL_DETAIL_EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 COL_DETAIL_EXERCISE_DATE + " NCHAR(20) NOT NULL," +

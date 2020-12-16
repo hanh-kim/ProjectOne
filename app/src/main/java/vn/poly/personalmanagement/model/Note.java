@@ -77,7 +77,7 @@ public class Note implements Serializable {
         return isDeleted;
     }
 
-    public void setIsDeleted(int isDelete) {
+    public void setDeleted(int isDelete) {
         this.isDeleted = isDelete;
     }
 }

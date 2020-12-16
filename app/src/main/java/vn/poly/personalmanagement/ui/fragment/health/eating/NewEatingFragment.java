@@ -77,7 +77,7 @@ public class NewEatingFragment extends Fragment implements Initialize, View.OnCl
     public void initializeViews(View view) {
 
         tvBack = view.findViewById(R.id.tvBack);
-        tvDone = view.findViewById(R.id.tvBack);
+        tvDone = view.findViewById(R.id.tvDone);
         lvMeal = view.findViewById(R.id.lvMeal);
         icAdd = view.findViewById(R.id.icAdd);
 

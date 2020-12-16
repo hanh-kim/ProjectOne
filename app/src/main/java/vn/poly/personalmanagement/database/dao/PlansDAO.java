@@ -40,9 +40,8 @@ public class PlansDAO {
         values.put(InfoTable.COL_PLAN_NAME, plan.getPlanName());
         values.put(InfoTable.COL_PLAN_DATE, plan.getDate());
         values.put(InfoTable.COL_PLAN_TIME, plan.getTime());
-        values.put(InfoTable.COL_PLAN_TIME_ALARM, plan.getTimeAlarm());
-        values.put(InfoTable.COL_PLAN_ISALARM, plan.getAlarmed());
-        values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescribe());
+        values.put(InfoTable.COL_PLAN_IS_ALARMED, plan.getAlarmed());
+        values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescription());
 
         long query = db.insert(InfoTable.TABLE_PLANS, null, values);
         if (query > 0) {
@@ -56,9 +55,8 @@ public class PlansDAO {
         values.put(InfoTable.COL_PLAN_NAME, plan.getPlanName());
         values.put(InfoTable.COL_PLAN_DATE, plan.getDate());
         values.put(InfoTable.COL_PLAN_TIME, plan.getTime());
-        values.put(InfoTable.COL_PLAN_TIME_ALARM, plan.getTimeAlarm());
-        values.put(InfoTable.COL_PLAN_ISALARM, plan.getAlarmed());
-        values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescribe());
+        values.put(InfoTable.COL_PLAN_IS_ALARMED, plan.getAlarmed());
+        values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescription());
         long query = db.update(InfoTable.TABLE_PLANS, values, InfoTable.COL_PLAN_ID + " = ?",
                 new String[]{String.valueOf(plan.getId())});
         if (query > 0) {
@@ -72,7 +70,7 @@ public class PlansDAO {
         List<Plan> planList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS + "" +
                 " WHERE " + InfoTable.COL_PLAN_DATE + " ='" + date + "'"
-             + " ORDER BY " + InfoTable.COL_PLAN_TIME;
+                + " ORDER BY " + InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -81,11 +79,10 @@ public class PlansDAO {
                 String plan_name = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_NAME));
                 String plan_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 String plan_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME));
-                String plan_time_alarm = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME_ALARM));
-                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
+                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_IS_ALARMED));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -101,9 +98,9 @@ public class PlansDAO {
         db = myDatabase.getWritableDatabase();
         List<Plan> planList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS
-                +" WHERE (" + InfoTable.COL_PLAN_DATE + " >'" + currentDate + "') "
-                +" OR (" + InfoTable.COL_PLAN_DATE + " = '" + currentDate + "'" +" AND " + InfoTable.COL_PLAN_TIME + " > '" + currentTime + "')"
-                +" ORDER BY " + InfoTable.COL_PLAN_DATE+", "+ InfoTable.COL_PLAN_TIME;
+                + " WHERE (" + InfoTable.COL_PLAN_DATE + " >'" + currentDate + "') "
+                + " OR (" + InfoTable.COL_PLAN_DATE + " = '" + currentDate + "'" + " AND " + InfoTable.COL_PLAN_TIME + " > '" + currentTime + "')"
+                + " ORDER BY " + InfoTable.COL_PLAN_DATE + ", " + InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -112,11 +109,10 @@ public class PlansDAO {
                 String plan_name = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_NAME));
                 String plan_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 String plan_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME));
-                String plan_time_alarm = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME_ALARM));
-                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
+                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_IS_ALARMED));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -132,10 +128,10 @@ public class PlansDAO {
         db = myDatabase.getWritableDatabase();
         List<Plan> planList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS
-                +" WHERE ((" + InfoTable.COL_PLAN_DATE + " >'" + currentDate + "') "
-                +" OR (" + InfoTable.COL_PLAN_DATE + " = '" + currentDate + "'" +" AND " + InfoTable.COL_PLAN_TIME + " > '" + currentTime + "')) "
-                +" AND " + InfoTable.COL_PLAN_NAME + " LIKE '" + name + "%'"
-                +" ORDER BY " + InfoTable.COL_PLAN_DATE+", "+ InfoTable.COL_PLAN_TIME;
+                + " WHERE ((" + InfoTable.COL_PLAN_DATE + " >'" + currentDate + "') "
+                + " OR (" + InfoTable.COL_PLAN_DATE + " = '" + currentDate + "'" + " AND " + InfoTable.COL_PLAN_TIME + " > '" + currentTime + "')) "
+                + " AND " + InfoTable.COL_PLAN_NAME + " LIKE '" + name + "%'"
+                + " ORDER BY " + InfoTable.COL_PLAN_DATE + ", " + InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -144,11 +140,10 @@ public class PlansDAO {
                 String plan_name = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_NAME));
                 String plan_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 String plan_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME));
-                String plan_time_alarm = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME_ALARM));
-                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
+                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_IS_ALARMED));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -164,9 +159,9 @@ public class PlansDAO {
         db = myDatabase.getWritableDatabase();
         List<Plan> planList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_PLANS
-                +" WHERE " + InfoTable.COL_PLAN_DATE + " ='" + currentDate + "' "
-                +" AND " + InfoTable.COL_PLAN_NAME + " LIKE '" + name + "%'"
-                +" ORDER BY " + InfoTable.COL_PLAN_DATE+", "+ InfoTable.COL_PLAN_TIME;
+                + " WHERE " + InfoTable.COL_PLAN_DATE + " ='" + currentDate + "' "
+                + " AND " + InfoTable.COL_PLAN_NAME + " LIKE '" + name + "%'"
+                + " ORDER BY " + InfoTable.COL_PLAN_DATE + ", " + InfoTable.COL_PLAN_TIME;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -175,11 +170,10 @@ public class PlansDAO {
                 String plan_name = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_NAME));
                 String plan_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DATE));
                 String plan_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME));
-                String plan_time_alarm = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_TIME_ALARM));
-                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_ISALARM));
+                int plan_isAlarm = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_PLAN_IS_ALARMED));
                 String plan_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_PLAN_DESCRIPTION));
 
-                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_time_alarm, plan_isAlarm, plan_description);
+                Plan plan = new Plan(plan_id, plan_name, plan_date, plan_time, plan_isAlarm, plan_description);
                 planList.add(plan);
                 cursor.moveToNext();
             }
@@ -242,7 +236,6 @@ public class PlansDAO {
         Collections.reverse(objectDateList);
         return objectDateList;
     }
-
 
 
 }

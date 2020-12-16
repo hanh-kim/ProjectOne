@@ -1,9 +1,14 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
@@ -28,7 +35,10 @@ import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlansAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
+import vn.poly.personalmanagement.methodclass.AlarmNotificationReceiver;
+import vn.poly.personalmanagement.methodclass.AlarmProvide;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
+import vn.poly.personalmanagement.methodclass.DateTimeFormat;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.model.Plan;
@@ -49,6 +59,9 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     PlansDAO plansDAO;
     List<Plan> planList;
     List<Plan> resultList;
+    Intent intent;
+    PendingIntent pendingIntent;
+
     public PlansTodayFragment() {
         // Required empty public constructor
     }
@@ -59,6 +72,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,6 +86,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
         icAdd.setOnClickListener(this);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
+        intent = new Intent(getActivity(), AlarmNotificationReceiver.class);
 
         lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,6 +103,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
 
         countItem();
         showPlansToday();
+        remindPlan();
 
         return view;
     }
@@ -153,22 +169,7 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     private void showPlansToday() {
         planList = getPlansToday();
         final PlansAdapter adapter = new PlansAdapter(plansDAO);
-        adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
-            @Override
-            public void onClick(Plan plan, int position, ImageView ic) {
-                if (plan.getAlarmed() == 1) {
-                    plan.setAlarmed(0);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
-                } else if (plan.getAlarmed() == 0) {
-                    plan.setAlarmed(1);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications);
-                }
-                plansDAO.updateData(plan);
-                adapter.notifyDataSetChanged();
-                countItem();
-            }
-        });
-
+        adapter.setDataAdapter(planList);
         lvPlansToday.setAdapter(adapter);
     }
 
@@ -197,11 +198,13 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String sDate = edtSearch.getText().toString().trim();
                 showResultSearch(sDate);
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -212,24 +215,37 @@ public class PlansTodayFragment extends Fragment implements Initialize, View.OnC
     private void showResultSearch(String name) {
         resultList = plansDAO.getPlansTodaySearched(name);
         final PlansAdapter adapter = new PlansAdapter(plansDAO);
-        adapter.setDataAdapter(resultList, new PlansAdapter.OnNotificationListener() {
-            @Override
-            public void onClick(Plan plan, int position, ImageView ic) {
-                if (plan.getAlarmed() == 1) {
-                    plan.setAlarmed(0);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
-                } else if (plan.getAlarmed() == 0) {
-                    plan.setAlarmed(1);
-                    ic.setImageResource(R.drawable.ic_baseline_notifications);
-                }
-                plansDAO.updateData(plan);
-                adapter.notifyDataSetChanged();
-                countItem();
-                showPlansToday();
-            }
-        });
+        adapter.setDataAdapter(resultList);
 
 
         lvResultSearch.setAdapter(adapter);
     }
+
+    private List<Plan> getPlansFuture() {
+        return plansDAO.getAllPlansFuture();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void remindPlan() {
+        List<Plan> remindList = getPlansToday();
+        if (remindList != null) {
+            for (Plan mPlan : remindList) {
+                //   Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
+                Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("plan_key", mPlan);
+                intent.putExtra("bundle_key", bundle);
+                pendingIntent = PendingIntent.getBroadcast(getActivity(), mPlan.getId(), intent, mPlan.getId());
+                AlarmProvide.getAlarmManager(getActivity()).setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+
+        }
+
+    }
+
 }
+
+
+
+

@@ -7,28 +7,25 @@ public class Plan implements Serializable {
     private String planName;
     private  String date;
     private String time;
-    private String timeAlarm;
-    private int isAlarm;
+    private int isAlarmed;
     private String describe;
 
     public Plan() {
     }
-    public Plan( String planName, String date, String time, String timeAlarm, int isAlarmed, String describe) {
+    public Plan( String planName, String date, String time, int isAlarmed, String describe) {
         this.planName = planName;
         this.date = date;
         this.time = time;
-        this.timeAlarm = timeAlarm;
-        this.isAlarm = isAlarmed;
+        this.isAlarmed = isAlarmed;
         this.describe = describe;
     }
 
-    public Plan(int id, String planName, String date, String time, String timeAlarm, int isAlarmed, String describe) {
+    public Plan(int id, String planName, String date, String time, int isAlarmed, String describe) {
         this.id = id;
         this.planName = planName;
         this.date = date;
         this.time = time;
-        this.timeAlarm = timeAlarm;
-        this.isAlarm = isAlarmed;
+        this.isAlarmed = isAlarmed;
         this.describe = describe;
     }
 
@@ -64,7 +61,7 @@ public class Plan implements Serializable {
         this.time = time;
     }
 
-    public String getDescribe() {
+    public String getDescription() {
         return describe;
     }
 
@@ -72,19 +69,11 @@ public class Plan implements Serializable {
         this.describe = describe;
     }
 
-    public String getTimeAlarm() {
-        return timeAlarm;
-    }
-
-    public void setTimeAlarm(String timeAlarm) {
-        this.timeAlarm = timeAlarm;
-    }
-
     public int getAlarmed() {
-        return isAlarm;
+        return isAlarmed;
     }
 
     public void setAlarmed(int isAlarmed) {
-        this.isAlarm = isAlarmed;
+        this.isAlarmed = isAlarmed;
     }
 }

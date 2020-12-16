@@ -21,9 +21,9 @@ public class MyDatabase extends SQLiteOpenHelper {
         InfoTable.createTableIncome(db);
         InfoTable.createTableExpenses(db);
         InfoTable.createTableMeal(db);
-        InfoTable.createTableFitness(db);
+        InfoTable.createTableDetailExercise(db);
         InfoTable.createTableExercises(db);
-        InfoTable.createTableAccount(db);
+       // InfoTable.createTableAccount(db);
     }
 
     @Override

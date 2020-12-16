@@ -78,6 +78,7 @@ public class ExpensesAdapter extends BaseAdapter {
         return convertView;
     }
 
+
     public class ViewHolder {
         TextView tvTitle, tvDateTime, tvAmountMoney;
         ImageView icDelete;

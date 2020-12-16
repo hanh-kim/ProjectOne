@@ -65,6 +65,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
             tvDate.setOnClickListener(this);
             tvTime.setOnClickListener(this);
             tvDelete.setOnClickListener(this);
+
             meal = (Meal) bundle.get("meal");
             edtMealTitle.setText(meal.getTitle());
             tvTime.setText(meal.getTime());
@@ -164,15 +165,8 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
             edtDesciption.setEnabled(true);
             isEditing = 1;
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            edtMealTitle.setEnabled(false);
-            tvDate.setEnabled(false);
-            tvTime.setEnabled(false);
-            edtDesciption.setEnabled(false);
-            isEditing = 0;
             updateMeal(fragment);
 
-            Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -259,6 +253,13 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
         meal.setTime(time);
         meal.setDetailMeal(description);
         eatingDAO.updateData(meal);
+        tvEdit.setText("Sửa");
+        edtMealTitle.setEnabled(false);
+        tvDate.setEnabled(false);
+        tvTime.setEnabled(false);
+        edtDesciption.setEnabled(false);
+        isEditing = 0;
+        Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
 
     }
 

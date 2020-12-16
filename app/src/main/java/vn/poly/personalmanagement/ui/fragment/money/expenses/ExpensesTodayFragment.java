@@ -97,13 +97,13 @@ public class ExpensesTodayFragment extends Fragment
     public void onClick(View view) {
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_money_root, new ExpenseFragment()).commit();
+                    replace(R.id.fragment_money_root, new MainExpenseFragment()).commit();
         } else if (icAdd.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_money_root, new AddExpenseFragment()).commit();
         } else if (tvDelete.equals(view)) {
             if (bundle != null) {
-                if (getArguments().getString(keyName).equals(ExpenseFragment.FRAG_NAME)) {
+                if (getArguments().getString(keyName).equals(MainExpenseFragment.FRAG_NAME)) {
                     deleteAll(getArguments().getString("date"));
                 } else deleteAll(CurrentDateTime.getCurrentDate());
             } else deleteAll(CurrentDateTime.getCurrentDate());
@@ -237,9 +237,9 @@ public class ExpensesTodayFragment extends Fragment
                 showExpenses();
                 Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
                 if (bundle != null) {
-                    if (getArguments().getString(keyName).equals(ExpenseFragment.FRAG_NAME)) {
+                    if (getArguments().getString(keyName).equals(MainExpenseFragment.FRAG_NAME)) {
                         getActivity().getSupportFragmentManager().beginTransaction().
-                                replace(R.id.fragment_money_root, new ExpenseFragment()).commit();
+                                replace(R.id.fragment_money_root, new MainExpenseFragment()).commit();
                     }
                 }
             }

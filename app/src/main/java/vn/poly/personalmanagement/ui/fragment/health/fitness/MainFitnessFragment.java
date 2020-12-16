@@ -36,7 +36,7 @@ import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.ui.fragment.health.HealthFragment;
 
 
-public class FitnessFragment extends Fragment
+public class MainFitnessFragment extends Fragment
         implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
     public static final int ID_FRAG = 1;
@@ -53,7 +53,7 @@ public class FitnessFragment extends Fragment
     MyDatabase mydatabase;
     List<Fitness> fitnessList;
 
-    public FitnessFragment() {
+    public MainFitnessFragment() {
         // Required empty public constructor
     }
 
@@ -71,7 +71,6 @@ public class FitnessFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_fitness, container, false);
         initializeDatabase();
         initializeViews(view);
-
 
         //  lvResultSearch.setOnItemClickListener(this);
         tvToSearch.setOnClickListener(this);
@@ -183,6 +182,7 @@ public class FitnessFragment extends Fragment
                 builder.create().show();
             }
         });
+
         lvFitness.setAdapter(fitnessAdapter);
 
     }

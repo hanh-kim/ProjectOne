@@ -1,9 +1,14 @@
 package vn.poly.personalmanagement.ui.fragment.plans;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -26,12 +31,16 @@ import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
 import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
+import vn.poly.personalmanagement.methodclass.AlarmNotificationReceiver;
+import vn.poly.personalmanagement.methodclass.AlarmProvide;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
+import vn.poly.personalmanagement.methodclass.DateTimeFormat;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.ObjectDate;
 import vn.poly.personalmanagement.model.Plan;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -52,6 +61,8 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
     PlansDAO plansDAO;
     List<ObjectDate> planDateList;
     List<ObjectDate> resultList;
+    Intent intent;
+    PendingIntent pendingIntent;
 
     public MainPlansFragment() {
         // Required empty public constructor
@@ -63,6 +74,7 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -74,7 +86,7 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         cardPlansFuture.setOnClickListener(this);
         lvPlans.setOnItemClickListener(this);
         tvCurrentDay.setText(currentDay);
-
+        intent = new Intent(getActivity(), AlarmNotificationReceiver.class);
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
         lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -91,9 +103,10 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         });
         countItem();
         showPlanDate();
-
+        remindPlan();
         return view;
     }
+
 
     @Override
     public void initializeViews(View view) {
@@ -144,7 +157,6 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, plansDateFragment).commit();
     }
-
 
 
     private List<Plan> getPlansToday() {
@@ -227,11 +239,13 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String sDate = edtSearch.getText().toString().trim();
                 showResultSearch(sDate);
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -240,7 +254,7 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
     }
 
     private void showResultSearch(String date) {
-      //  planDateList = getPlansDate();
+        //  planDateList = getPlansDate();
         resultList = plansDAO.getAllPlanDate(date);
         final PlanDateAdapter adapter = new PlanDateAdapter();
         adapter.setDataAdapter(resultList, new PlanDateAdapter.OnItemRemoveListener() {
@@ -274,5 +288,23 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         lvResultSearch.setAdapter(adapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void remindPlan() {
+      //  List<Plan> remindList = getPlansFuture();
+        List<Plan> remindList = getPlansToday();
+        if (remindList != null) {
+            for (Plan mPlan : remindList) {
 
+              //  Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
+                Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("plan_key", mPlan);
+                intent.putExtra("bundle_key", bundle);
+                pendingIntent = PendingIntent.getBroadcast(getActivity(), mPlan.getId(), intent, mPlan.getId());
+                AlarmProvide.getAlarmManager(getActivity()).setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
+
+
+    }
 }

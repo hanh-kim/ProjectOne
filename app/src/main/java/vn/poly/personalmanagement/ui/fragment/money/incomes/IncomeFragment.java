@@ -31,7 +31,7 @@ import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.Income;
 import vn.poly.personalmanagement.model.ObjectDate;
-import vn.poly.personalmanagement.ui.fragment.money.MoneyFragment;
+import vn.poly.personalmanagement.ui.fragment.money.MainMoneyFragment;
 
 
 public class IncomeFragment extends Fragment
@@ -118,7 +118,7 @@ public class IncomeFragment extends Fragment
     public void onClick(View view) {
         if (tvBack.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_money_root, new MoneyFragment()).commit();
+                    replace(R.id.fragment_money_root, new MainMoneyFragment()).commit();
         } else if (icAdd.equals(view)) {
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_money_root, new AddIncomesFragment()).commit();
