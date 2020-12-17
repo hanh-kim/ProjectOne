@@ -25,13 +25,11 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.health.eating.EatingAdapter;
 import vn.poly.personalmanagement.adapter.health.fitness.FitnessAdapter;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Fitness;
 import vn.poly.personalmanagement.ui.fragment.health.HealthFragment;
 
@@ -129,13 +127,13 @@ public class MainFitnessFragment extends Fragment
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        DetailFitnessFragment detailFitnessFragment = new DetailFitnessFragment();
+        ExerciseDateFragment exerciseDateFragment = new ExerciseDateFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(keyName, ID_FRAG);
         bundle.putString("date", fitnessList.get(position).getDate());
-        detailFitnessFragment.setArguments(bundle);
+        exerciseDateFragment.setArguments(bundle);
         getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_health_root, detailFitnessFragment).commit();
+                replace(R.id.fragment_health_root, exerciseDateFragment).commit();
     }
 
     private void cancelSearch() {

@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,6 @@ public class ExercisesTodayFragment extends Fragment
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +81,7 @@ public class ExercisesTodayFragment extends Fragment
         return view;
     }
 
+
     @Override
     public void onClick(View v) {
         if (tvBack.equals(v)) {
@@ -96,10 +97,10 @@ public class ExercisesTodayFragment extends Fragment
         }
     }
 
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+          DetailExercise detailExercise = detailExercisesList.get(position);
+          updateExercise(detailExercise);
     }
 
     @Override
@@ -116,14 +117,12 @@ public class ExercisesTodayFragment extends Fragment
         icAdd = view.findViewById(R.id.icAdd);
     }
 
-
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getActivity());
         exerciseDAO = new ExerciseDAO(mydatabase);
         fitnessDAO = new FitnessDAO(mydatabase);
     }
-
 
     private void cancelSearch() {
         layoutSearch.setVisibility(View.GONE);
@@ -150,38 +149,121 @@ public class ExercisesTodayFragment extends Fragment
         spinner.setAdapter(adapter);
 
         final EditText edtDesciption = view.findViewById(R.id.edtAmountDoExercise);
+        final TextView tvCancel = view.findViewById(R.id.tvCancel);
+        final TextView tvSave = view.findViewById(R.id.tvSave);
+        final TextView tvError = view.findViewById(R.id.tvError);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        tvError.setText("");
 
-        builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 String description = edtDesciption.getText().toString().trim();
                 String exercise = spinner.getSelectedItem().toString().trim();
                 DetailExercise detailExercise = new DetailExercise();
 
                 if (exercise.equals(spinner.getItemAtPosition(0).toString())) {
+                    tvError.setText("Mời chọn bài tập!");
                     return;
-                } else {
-                    detailExercise.setDate(CurrentDateTime.getCurrentDate());
-                    detailExercise.setExercise(exercise);
-                    if (description.isEmpty()) {
-                        detailExercise.setDescribe("Không có thông tin bài tập");
-                    } else detailExercise.setDescribe(description);
-
-                    fitnessDAO.addData(detailExercise);
-                    countItem();
-                    showExercised();
-
                 }
+                if (description.isEmpty()) {
+                    tvError.setText("Mời nhập số lượng, chi tiết bài tâp!");
+                    return;
+                }
+                tvError.setText("");
+                detailExercise.setDate(CurrentDateTime.getCurrentDate());
+                detailExercise.setExercise(exercise);
+                 detailExercise.setDescribe(description);
+                fitnessDAO.addData(detailExercise);
+                countItem();
+                showExercised();
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
+
 
             }
         });
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+
+
+    }
+
+    private void updateExercise(final DetailExercise detailExercise) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_exercise, null);
+        builder.setView(view);
+        final EditText edtDesciption = view.findViewById(R.id.edtAmountDoExercise);
+        final TextView tvCancel = view.findViewById(R.id.tvCancel);
+        final TextView tvSave = view.findViewById(R.id.tvSave);
+        final TextView tvError = view.findViewById(R.id.tvError);
+        final Spinner spinner = view.findViewById(R.id.spnSelectExercise);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        tvError.setText("");
+
+        List<Exercise> exerciseList = exerciseDAO.getAll();
+        List<String> stringList = new ArrayList<>();
+        stringList.add("Mời chọn bài tập");
+        for (Exercise exercise : exerciseList) {
+            stringList.add(exercise.getExerciseName());
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, stringList);
+        spinner.setAdapter(adapter);
+
+        //set selection for spinner
+        for (int i = 0; i < stringList.size(); i++) {
+            if (detailExercise.getExercise().equals(stringList.get(i).toString())){
+                spinner.setSelection(i);
+            }
+        }
+
+        // set detail exercise for EditText
+        edtDesciption.setText(detailExercise.getDescribe());
+
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                builder.create().dismiss();
+            public void onClick(View v) {
+                dialog.dismiss();
             }
         });
-        builder.show();
+
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String description = edtDesciption.getText().toString().trim();
+                String exercise = spinner.getSelectedItem().toString().trim();
+                if (exercise.equals(spinner.getItemAtPosition(0).toString())) {
+                    tvError.setText("Mời chọn bài tập!");
+                    return;
+                }
+                if (description.isEmpty()) {
+                    tvError.setText("Mời nhập số lượng, chi tiết bài tâp!");
+                    return;
+                }
+                tvError.setText("");
+                detailExercise.setDate(CurrentDateTime.getCurrentDate());
+                detailExercise.setExercise(exercise);
+                detailExercise.setDescribe(description);
+                fitnessDAO.updateData(detailExercise);
+                countItem();
+                showExercised();
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
     }
 
     private List<DetailExercise> getDetailExercisesList() {
@@ -233,4 +315,5 @@ public class ExercisesTodayFragment extends Fragment
         }
 
     }
+
 }

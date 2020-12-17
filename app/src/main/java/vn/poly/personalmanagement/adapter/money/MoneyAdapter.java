@@ -1,5 +1,6 @@
 package vn.poly.personalmanagement.adapter.money;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,9 +73,12 @@ public class MoneyAdapter extends BaseAdapter {
         }
 
         final ObjectDate objectDate = objectDateList.get(position);
-//        if (eating.getDate().compareTo(CurrentDateTime.getCurrentDate())<0){
-//            viewHolder.tvMain.setTextColor(Color.parseColor("red"));
-//        }
+        if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
+            // set text color : green
+            viewHolder.tvMain.setTextColor(Color.parseColor("#039E09"));
+        }else{
+            viewHolder.tvMain.setTextColor(Color.parseColor("#000"));
+        }
 
         if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
             // viewHolder.tvMain.setTextColor(Color.parseColor("green"));

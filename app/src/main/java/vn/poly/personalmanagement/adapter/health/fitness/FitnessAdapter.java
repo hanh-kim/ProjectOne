@@ -1,6 +1,6 @@
 package vn.poly.personalmanagement.adapter.health.fitness;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +11,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.health.eating.EatingAdapter;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
-import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Fitness;
 
 public class FitnessAdapter extends BaseAdapter {
@@ -66,14 +64,17 @@ public class FitnessAdapter extends BaseAdapter {
         }
 
         final Fitness fitness = fitnessList.get(position);
-//        if (eating.getDate().compareTo(CurrentDateTime.getCurrentDate())<0){
-//            viewHolder.tvMain.setTextColor(Color.parseColor("red"));
-//        }
 
         if (fitness.getDate().equals(CurrentDateTime.getCurrentDate())){
-            // viewHolder.tvMain.setTextColor(Color.parseColor("green"));
+            // set text color : green
+            viewHolder.tvMain.setTextColor(Color.parseColor("#039E09"));
             viewHolder.tvMain.setText("Hôm nay, "+fitness.getDate());
-        }else viewHolder.tvMain.setText("Ngày "+fitness.getDate());
+        }else{
+            // set text color : blue
+            viewHolder.tvMain.setTextColor(Color.parseColor("#0371C8"));
+            viewHolder.tvMain.setText("Ngày "+fitness.getDate());
+
+        }
 
         viewHolder.tvSub.setText("Số bài tập: "+fitness.getAmountExercises());
         viewHolder.icRemove.setOnClickListener(new View.OnClickListener() {

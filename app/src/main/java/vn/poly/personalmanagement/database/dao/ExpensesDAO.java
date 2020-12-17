@@ -78,8 +78,8 @@ public class ExpensesDAO {
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
                 long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
-                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
-
+             //   String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
+                String expense_description = cursor.getString(5);
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
                 expenseList.add(expense);
                 cursor.moveToNext();
@@ -105,8 +105,8 @@ public class ExpensesDAO {
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
                 long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
-                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
-
+//                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
+                String expense_description = cursor.getString(5);
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
                 expenseList.add(expense);
                 cursor.moveToNext();
@@ -131,8 +131,8 @@ public class ExpensesDAO {
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
                 long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
-                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
-
+//                String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
+                String expense_description = cursor.getString(5);
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
                 expenseList.add(expense);
                 cursor.moveToNext();

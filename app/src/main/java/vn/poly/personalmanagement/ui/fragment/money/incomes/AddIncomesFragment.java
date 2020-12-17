@@ -128,7 +128,7 @@ public class AddIncomesFragment extends Fragment
             return;
         }else amount= Long.parseLong(sAmount);
         if (description.isEmpty()){
-            description=" ";
+            description="";
         }
         Income income = new Income();
         income.setTitle(title);

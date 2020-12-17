@@ -66,8 +66,10 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
         if (getArguments()!=null){
             if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG ||
                     getArguments().getInt(keyName) == MealsDateFragment.ID_FRAG) {
+                tvCurrentDate.setVisibility(View.VISIBLE);
                 tvDate.setVisibility(View.GONE);
             } else {
+                tvCurrentDate.setVisibility(View.GONE);
                 tvDate.setVisibility(View.VISIBLE);
             }
             //.............
@@ -83,14 +85,14 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void onClick(View v) {
 
-        if (getArguments().getInt(keyName) == NewEatingFragment.ID_FRAG) {
-            if (tvBack.equals(v)) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new NewEatingFragment()).commit();
-            } else if (tvDone.equals(v)) {
-
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new NewEatingFragment()).commit();
-            }
-        } else if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG) {
+//        if (getArguments().getInt(keyName) == NewEatingFragment.ID_FRAG) {
+//            if (tvBack.equals(v)) {
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new NewEatingFragment()).commit();
+//            } else if (tvDone.equals(v)) {
+//                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new NewEatingFragment()).commit();
+//            }
+//        } else
+            if (getArguments().getInt(keyName) == MealsTodayFragment.ID_FRAG) {
             if (tvBack.equals(v)) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new MealsTodayFragment()).commit();
             } else if (tvDone.equals(v)) {

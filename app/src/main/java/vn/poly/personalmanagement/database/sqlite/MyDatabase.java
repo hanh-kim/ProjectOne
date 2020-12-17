@@ -23,7 +23,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         InfoTable.createTableMeal(db);
         InfoTable.createTableDetailExercise(db);
         InfoTable.createTableExercises(db);
-       // InfoTable.createTableAccount(db);
+
     }
 
     @Override
@@ -35,7 +35,7 @@ public class MyDatabase extends SQLiteOpenHelper {
         db.execSQL("drop table if exists " + InfoTable.TABLE_MEALS);
         db.execSQL("drop table if exists " + InfoTable.TABLE_DETAIL_EXERCISE);
         db.execSQL("drop table if exists " + InfoTable.TABLE_EXERCISES);
-        db.execSQL("drop table if exists " + InfoTable.TABLE_ACCOUNT);
+
         onCreate(db);
     }
 }

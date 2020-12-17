@@ -1,6 +1,7 @@
 package vn.poly.personalmanagement.adapter.money.expenses;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.model.Expense;
 
 import java.text.NumberFormat;
@@ -61,7 +63,7 @@ public class ExpensesAdapter extends BaseAdapter {
 
         final Expense expense = expenseList.get(position);
 
-        // format money
+        // format currency
         Locale locale = new Locale("vi", "VN");
         NumberFormat format = NumberFormat.getCurrencyInstance(locale);
         String amount = format.format(expense.getAmount());

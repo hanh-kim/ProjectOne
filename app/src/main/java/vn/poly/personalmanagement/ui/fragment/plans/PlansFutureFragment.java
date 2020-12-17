@@ -158,22 +158,13 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     private void showPlansFuture() {
         planList = getPlansFuture();
         final PlansAdapter adapter = new PlansAdapter(plansDAO);
-        adapter.setDataAdapter(planList);
-//        adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
-//            @Override
-//            public void onClick(Plan plan, int position, ImageView ic) {
-//                if (plan.getAlarmed() == 1) {
-//                    plan.setAlarmed(0);
-//                    ic.setImageResource(R.drawable.ic_baseline_notifications_off);
-//                } else if (plan.getAlarmed() == 0) {
-//                    plan.setAlarmed(1);
-//                    ic.setImageResource(R.drawable.ic_baseline_notifications);
-//                }
-//                plansDAO.updateData(plan);
-//                adapter.notifyDataSetChanged();
-//                countItem();
-//            }
-//        });
+        adapter.setDataAdapter(planList, new PlansAdapter.OnNotificationListener() {
+            @Override
+            public void onClick(Plan plan, int position) {
+
+            }
+        });
+
         lvPlans.setAdapter(adapter);
     }
 
@@ -226,11 +217,11 @@ public class PlansFutureFragment extends Fragment implements Initialize, View.On
     }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void remindPlan() {
-        List<Plan> remindList = getPlansToday();
+        List<Plan> remindList = getPlansFuture();
         if (remindList != null) {
             for (Plan mPlan : remindList) {
-              //  Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
-                Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
+                Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
+              //  Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("plan_key", mPlan);
                 intent.putExtra("bundle_key", bundle);

@@ -10,30 +10,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.fitness.DetailexerciseAdapter;
+import vn.poly.personalmanagement.database.dao.ExerciseDAO;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
+import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
 import vn.poly.personalmanagement.model.DetailExercise;
+import vn.poly.personalmanagement.model.Exercise;
 
 
-public class DetailFitnessFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
+public class ExerciseDateFragment extends Fragment implements Initialize, View.OnClickListener, AdapterView.OnItemClickListener {
 
     final String keyName = "idFrag";
     TextView tvBack, tvDate, tvCountItem, tvDelete;
     ListView lvExercises;
     FitnessDAO fitnessDAO;
+    ExerciseDAO exerciseDAO;
     MyDatabase mydatabase;
     List<DetailExercise> detailExercisesList;
 
-    public DetailFitnessFragment() {
+    public ExerciseDateFragment() {
         // Required empty public constructor
     }
 
@@ -41,7 +49,6 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -132,11 +139,13 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getActivity());
         fitnessDAO = new FitnessDAO(mydatabase);
+        exerciseDAO = new ExerciseDAO(mydatabase);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        DetailExercise detailExercise = detailExercisesList.get(position);
+        updateExercise(detailExercise);
     }
 
     private List<DetailExercise> getDetailExercisesList() {
@@ -180,4 +189,77 @@ public class DetailFitnessFragment extends Fragment implements Initialize, View.
             tvCountItem.setText("Danh sách trống ");
         } else tvCountItem.setText("Số bài tập: " + getDetailExercisesList().size());
     }
+
+    private void updateExercise(final DetailExercise detailExercise) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_exercise, null);
+        builder.setView(view);
+        final EditText edtDesciption = view.findViewById(R.id.edtAmountDoExercise);
+        final TextView tvCancel = view.findViewById(R.id.tvCancel);
+        final TextView tvSave = view.findViewById(R.id.tvSave);
+        final TextView tvError = view.findViewById(R.id.tvError);
+        final Spinner spinner = view.findViewById(R.id.spnSelectExercise);
+        builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        tvError.setText("");
+
+        List<Exercise> exerciseList = exerciseDAO.getAll();
+        List<String> stringList = new ArrayList<>();
+        stringList.add("Mời chọn bài tập");
+        for (Exercise exercise : exerciseList) {
+            stringList.add(exercise.getExerciseName());
+        }
+
+        //set spinner
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_dropdown_item_1line, stringList);
+        spinner.setAdapter(adapter);
+
+        //set selection for spinner
+        for (int i = 0; i < stringList.size(); i++) {
+            if (detailExercise.getExercise().equals(stringList.get(i).toString())){
+                spinner.setSelection(i);
+            }
+        }
+
+        // set detail exercise for EditText
+        edtDesciption.setText(detailExercise.getDescribe());
+
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String description = edtDesciption.getText().toString().trim();
+                String exercise = spinner.getSelectedItem().toString().trim();
+                if (exercise.equals(spinner.getItemAtPosition(0).toString())) {
+                    tvError.setText("Mời chọn bài tập!");
+                    return;
+                }
+                if (description.isEmpty()) {
+                    tvError.setText("Mời nhập số lượng, chi tiết bài tâp!");
+                    return;
+                }
+                tvError.setText("");
+                detailExercise.setDate(CurrentDateTime.getCurrentDate());
+                detailExercise.setExercise(exercise);
+                detailExercise.setDescribe(description);
+                fitnessDAO.updateData(detailExercise);
+                countItem();
+                showExercised();
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
+
+
+            }
+        });
+
+    }
+
 }

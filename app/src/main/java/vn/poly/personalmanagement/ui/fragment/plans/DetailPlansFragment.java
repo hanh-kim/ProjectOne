@@ -221,20 +221,13 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
         Plan plan = (Plan) getArguments().get("plan");
         assert plan != null;
 
-        if (!date.equals(plan.getDate())){
-            if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())>0) {
-                plan.setAlarmed(1);
-            }
-        }
-
-
-
-
         // ktra tgian gian ke hoach thay doi
         if (!time.equals(plan.getTime())) {
             if (plan.getDate().equals(CurrentDateTime.getCurrentDate())) {
                 if (time.compareTo(CurrentDateTime.getCurrentTime()) <= 0) {
                     plan.setAlarmed(1);
+                }else {
+                    plan.setAlarmed(0);
                 }
             }
         }
@@ -256,6 +249,11 @@ public class DetailPlansFragment extends Fragment implements Initialize, View.On
 //                plan.setAlarmed(1);
 //            }
 //        }
+        if (!date.equals(plan.getDate())){
+            if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate())>0) {
+                plan.setAlarmed(0);
+            }
+        }
 
         plan.setPlanName(title);
         plan.setDate(date);

@@ -25,7 +25,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.adapter.health.eating.EatingAdapter;
+import vn.poly.personalmanagement.adapter.health.eating.EatingDateAdapter;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
 import vn.poly.personalmanagement.database.dao.EatingDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
@@ -49,7 +49,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
     TextView tvToSearch, tvCancelSearch, tvCountMealToday, tvCountEating;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    EatingAdapter eatingAdapter;
+    EatingDateAdapter eatingDateAdapter;
     List<Eating> eatingList;
     List<Eating> eatingListSearch;
     MyDatabase mydatabase;
@@ -96,7 +96,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
 
     @Override
     public void initializeViews(View view) {
-        eatingAdapter = new EatingAdapter();
+        eatingDateAdapter = new EatingDateAdapter();
         mealAdapter = new MealAdapter();
         cardToday = view.findViewById(R.id.cardEatingToday);
         tvBack = view.findViewById(R.id.tvBack);
@@ -193,7 +193,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
 
     private void showResultSearch(String date) {
         eatingList = getEatingList(date);
-        eatingAdapter.setDataAdapter(eatingList, new EatingAdapter.OnItemRemoveListener() {
+        eatingDateAdapter.setDataAdapter(eatingList, new EatingDateAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(final Eating eating, final int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -209,7 +209,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                     public void onClick(DialogInterface dialog, int which) {
                         eatingDAO.deleteDataWithDate(eating.getDate());
                         eatingList.remove(position);
-                        eatingAdapter.notifyDataSetChanged();
+                        eatingDateAdapter.notifyDataSetChanged();
                         countItem();
                         countMealsToday();
                         Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
@@ -219,7 +219,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                 builder.create().show();
             }
         });
-        lvResultSearch.setAdapter(eatingAdapter);
+        lvResultSearch.setAdapter(eatingDateAdapter);
     }
 
 
@@ -237,7 +237,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
 
     private void showEatingList() {
         eatingList = getEatingList();
-        eatingAdapter.setDataAdapter(eatingList, new EatingAdapter.OnItemRemoveListener() {
+        eatingDateAdapter.setDataAdapter(eatingList, new EatingDateAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(final Eating eating, final int position) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -253,7 +253,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                     public void onClick(DialogInterface dialog, int which) {
                         eatingDAO.deleteDataWithDate(eating.getDate());
                         eatingList.remove(position);
-                        eatingAdapter.notifyDataSetChanged();
+                        eatingDateAdapter.notifyDataSetChanged();
                         countItem();
                         countMealsToday();
                         Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
@@ -263,7 +263,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                 builder.create().show();
             }
         });
-        lvEating.setAdapter(eatingAdapter);
+        lvEating.setAdapter(eatingDateAdapter);
     }
 
     private void countItem() {

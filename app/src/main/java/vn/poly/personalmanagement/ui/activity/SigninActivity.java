@@ -4,17 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -32,8 +29,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.regex.Pattern;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.AccountDAO;
@@ -58,7 +53,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     ImageView icSuccessful;
 
     FirebaseAuth firebaseAuth;
-    FirebaseUser firebaseUser;
+    FirebaseUser currentUser;
 
 
     @Override
@@ -72,7 +67,15 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         tvToSignup.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
 
-        //  tvForgotPassword.setOnClickListener(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
+
+        if (currentUser != null){
+            updateUI(currentUser);
+            startActivity(new Intent(SigninActivity.this, MainActivity.class));
+            SigninActivity.this.finish();
+        }
 
     }
 
@@ -105,8 +108,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         cboRememberAcc = findViewById(R.id.cboRemamberAcc);
         myDatabase = new MyDatabase(SigninActivity.this);
         accountDAO = new AccountDAO(myDatabase);
-        firebaseAuth = FirebaseAuth.getInstance();
-        firebaseUser = firebaseAuth.getCurrentUser();
+
     }
 
     private void signinWithfirebaseAuth() {
@@ -133,7 +135,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             progressBar.setVisibility(View.INVISIBLE);
             return;
         } else {
-
             // check internet is connected
             if (!checkConnected()) {
                 tvSignin.setText("ĐĂNG NHẬP");
@@ -141,10 +142,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(SigninActivity.this, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
                 return;
             }
-
-
-            saveInfoAccountRemembered();
-            saveEmailLogin();
 
             firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -166,7 +163,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                                 tvError.setTextColor(Color.parseColor("#04DA3C"));
                                 tvError.setText("");
 //                              tvError.setText("Đăng nhập thành công");
-
+                                saveInfoAccountRemembered();
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -194,72 +191,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void login() {
-        String email = edtEmail.getText().toString().trim();
-        String password = edtPassword.getText().toString().trim();
-        tvError.setText("");
-        tvError.setTextColor(Color.RED);
-        tvSignin.setText("ĐĂNG NHẬP...");
-        tvSignin.setTextColor(Color.WHITE);
-        progressBar.setVisibility(View.VISIBLE);
-        icSuccessful.setVisibility(View.INVISIBLE);
-        if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Mời nhập đầy đủ thông tin đăng nhập!", Toast.LENGTH_LONG).show();
-            if (email.isEmpty()) {
-                edtEmail.setError("Mời nhập Email!");
-                edtEmail.setFocusable(true);
 
-            } else if (password.isEmpty()) {
-                edtPassword.setError("Mời nhập mật khẩu!");
-                edtPassword.setFocusable(true);
-
-            }
-            tvSignin.setText("ĐĂNG NHẬP");
-            progressBar.setVisibility(View.INVISIBLE);
-            return;
-        } else if (!accountDAO.checkExist(email, password)) {
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tvSignin.setText("ĐĂNG NHẬP");
-                    progressBar.setVisibility(View.INVISIBLE);
-                    tvError.setText("Email hoặc Mật khẩu không chính xác!");
-                }
-            }, 2000);
-
-            return;
-        } else {
-            saveInfoAccountRemembered();
-            saveEmailLogin();
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    tvSignin.setText("ĐĂNG NHẬP THÀNH CÔNG");
-                    tvSignin.setTextColor(Color.GREEN);
-                    icSuccessful.setVisibility(View.VISIBLE);
-                    progressBar.setVisibility(View.INVISIBLE);
-
-                    tvError.setTextColor(Color.parseColor("#04DA3C"));
-                    tvError.setText("");
-//                    tvError.setText("Đăng nhập thành công");
-
-                    Handler handler1 = new Handler();
-                    handler1.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            startActivity(new Intent(SigninActivity.this, MainActivity.class));
-                            SigninActivity.this.finish();
-                        }
-                    }, 800);
-                }
-            }, 2000);
-
-        }
-
-    }
 
     public void saveInfoAccountRemembered() {
         boolean isRemember = cboRememberAcc.isChecked();
@@ -275,15 +207,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
             editor.putString(keyPassword, password);
             editor.putBoolean(keyCheck, isRemember);
         }
-        editor.commit();
-
-    }
-
-    public void saveEmailLogin() {
-        SharedPreferences sharedPreferences = getSharedPreferences("my_email", MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        String email = edtEmail.getText().toString().trim();
-        editor.putString(keyEmail, email);
         editor.commit();
 
     }

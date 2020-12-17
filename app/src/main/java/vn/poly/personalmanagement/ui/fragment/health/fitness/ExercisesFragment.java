@@ -48,11 +48,9 @@ public class ExercisesFragment extends Fragment
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -82,13 +80,8 @@ public class ExercisesFragment extends Fragment
                     replace(R.id.fragment_health_root, new MainFitnessFragment()).commit();
         } else if (icAdd.equals(v)) {
             addExercise();
-        } else if (tvToSearch.equals(v)) {
-            startSearch();
-        } else if (tvCancelSearch.equals(v)) {
-            cancelSearch();
         }
     }
-
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -113,7 +106,6 @@ public class ExercisesFragment extends Fragment
         });
         builder.create().show();
     }
-
 
     @Override
     public void initializeViews(View view) {
@@ -142,63 +134,81 @@ public class ExercisesFragment extends Fragment
         builder.setView(view);
         final Exercise exercise = exerciseList.get(position);
         final EditText edtExerciseName = view.findViewById(R.id.edtNewExerciseName);
+        final TextView tvCancel = view.findViewById(R.id.tvCancel);
+        final TextView tvSave = view.findViewById(R.id.tvSave);
+        final TextView tvError = view.findViewById(R.id.tvError);
+         builder.setCancelable(false);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        tvError.setText("");
         edtExerciseName.setText(exercise.getExerciseName());
-        builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 String name = edtExerciseName.getText().toString().trim();
+                if (name.isEmpty()){
+                    tvError.setText("Tên bài tập trống!");
+                    return;
+                }
                 exercise.setExerciseName(name);
                 exerciseDAO.updateData(exercise);
                 showExercises();
                 countItem();
-                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                builder.create().dismiss();
-            }
-        });
-        builder.show();
+
     }
 
     private void addExercise() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_new_exercise, null);
         builder.setView(view);
+        builder.setCancelable(false);
         final EditText edtAddNewExerciseName = view.findViewById(R.id.edtAddNewExercise);
+        final TextView tvCancel = view.findViewById(R.id.tvCancel);
+        final TextView tvSave = view.findViewById(R.id.tvSave);
+        final TextView tvError = view.findViewById(R.id.tvError);
 
-        builder.setPositiveButton("Lưu", new DialogInterface.OnClickListener() {
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+        tvError.setText("");
+        tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        tvSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
                 String name = edtAddNewExerciseName.getText().toString().trim();
+                if (name.isEmpty()){
+                    tvError.setText("Tên bài tập trống!");
+                    return;
+                }
+                tvError.setText("");
                 Exercise exercise = new Exercise();
                 exercise.setExerciseName(name);
                 exerciseDAO.addData(exercise);
                 showExercises();
                 countItem();
+                dialog.dismiss();
+                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
             }
         });
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                builder.create().dismiss();
-            }
-        });
-        builder.show();
-    }
 
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setEnabled(false);
     }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setEnabled(true);
-    }
-
 
     private void showExercises() {
         exerciseList = exerciseDAO.getAll();
@@ -215,4 +225,15 @@ public class ExercisesFragment extends Fragment
             tvCountItem.setText("Danh sách trống ");
         } else tvCountItem.setText("Số bài tập: " + exerciseDAO.getAll().size());
     }
+
+    //    private void cancelSearch() {
+//        layoutSearch.setVisibility(View.GONE);
+//        edtSearch.setEnabled(false);
+//    }
+//
+//    private void startSearch() {
+//        layoutSearch.setVisibility(View.VISIBLE);
+//        edtSearch.setEnabled(true);
+//    }
+
 }

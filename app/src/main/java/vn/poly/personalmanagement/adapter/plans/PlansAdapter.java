@@ -114,14 +114,16 @@ public class PlansAdapter extends BaseAdapter {
             plansDAO.updateData(plan);
             viewHolder.icAlarm.setImageResource(R.drawable.ic_outline_remove);
         }
+        if (plan.getDate().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
+            viewHolder.icAlarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onNotificationListener.onClick(plan, position);
 
-        viewHolder.icAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onNotificationListener.onClick(plan, position);
+                }
+            });
+        }
 
-            }
-        });
 
         notifyDataSetChanged();
         return convertView;

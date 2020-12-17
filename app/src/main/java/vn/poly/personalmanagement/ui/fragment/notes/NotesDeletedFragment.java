@@ -240,8 +240,8 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
             public void onClick(DialogInterface dialog, int which) {
                 notesDAO.clearData();
                 noteList.clear();
-                countItem();
                 adapter.notifyDataSetChanged();
+                countItem();
                 //  Toast.makeText(getActivity(), "Đã xóa tất cả!", Toast.LENGTH_LONG).show();
 
             }

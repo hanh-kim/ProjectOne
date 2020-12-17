@@ -59,7 +59,6 @@ public class InfoTable {
     public static final String COL_MEAL_DATE = "MEAL_DATE";
     public static final String COL_MEAL_TIME = "MEAL_TIME";
     public static final String COL_MEAL_DETAIL = "MEAL_DETAIL";
-
     public static final String COL_EATING_AMOUNT_MEAL = "MEAL_AMOUNT";
 
 
@@ -117,7 +116,7 @@ public class InfoTable {
                 COL_EXPENSE_DATE + " NCHAR(20) NOT NULL," +
                 COL_EXPENSE_TIME + " NCHAR(20) NOT NULL," +
                 COL_EXPENSE_AMOUNT + " LONG NOT NULL," +
-                COL_EXPENSE_DESCRIPTION + " TEXT NOT NULL" +
+                COL_EXPENSE_DESCRIPTION + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);
@@ -129,7 +128,7 @@ public class InfoTable {
                 COL_MEAL_TITLE + " NVARCHAR(100) NOT NULL," +
                 COL_MEAL_DATE + " NCHAR(20) NOT NULL," +
                 COL_MEAL_TIME + " NCHAR(20) NOT NULL," +
-                COL_MEAL_DETAIL + " TEXT NOT NULL" +
+                COL_MEAL_DETAIL + " TEXT " +
                 ")";
 
         sqLiteDatabase.execSQL(createTable);

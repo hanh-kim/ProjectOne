@@ -1,6 +1,7 @@
 package vn.poly.personalmanagement.adapter.health.eating;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import vn.poly.personalmanagement.R;
+import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.model.Eating;
 import vn.poly.personalmanagement.model.Meal;
 import vn.poly.personalmanagement.model.Note;
@@ -86,6 +88,7 @@ public class MealAdapter extends BaseAdapter {
         }
 
         final Meal meal = mealList.get(position);
+
         viewHolder.tvMain.setText(meal.getTitle());
         viewHolder.tvSub.setText(meal.getTime()+", ngày "+meal.getDate());
         viewHolder.icRemove.setOnClickListener(new View.OnClickListener() {

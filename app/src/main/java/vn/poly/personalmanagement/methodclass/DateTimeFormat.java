@@ -24,7 +24,7 @@ public class DateTimeFormat {
         Calendar calendar = Calendar.getInstance();
         String[] arrDate = date.split("/");
         int day = Integer.parseInt(arrDate[0]);
-        int month = Integer.parseInt(arrDate[1]);
+        int month = Integer.parseInt(arrDate[1])-1;
         int year = Integer.parseInt(arrDate[2]);
         //   calendar.set(year, month, day, 0, 0, 0);
         calendar.set(Calendar.YEAR, year);
@@ -52,7 +52,7 @@ public class DateTimeFormat {
         int hour = Integer.parseInt(arrTime[0]);
         int minute = Integer.parseInt(arrTime[1]);
         int day = Integer.parseInt(arrDate[0]);
-        int month = Integer.parseInt(arrDate[1]);
+        int month = Integer.parseInt(arrDate[1])-1;
         int year = Integer.parseInt(arrDate[2]);
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month);

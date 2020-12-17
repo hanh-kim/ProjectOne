@@ -128,14 +128,20 @@ public class MainExpenseFragment extends Fragment implements Initialize, View.On
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ExpensesTodayFragment expensesTodayFragment = new ExpensesTodayFragment();
         ObjectDate objectDate = objectDateList.get(position);
-        Bundle bundle = new Bundle();
-        bundle.putString(keyName, FRAG_NAME);
-        bundle.putString("date", objectDate.getDate());
-        expensesTodayFragment.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_money_root, expensesTodayFragment).commit();
+        if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_money_root, new ExpensesTodayFragment()).commit();
+        }else {
+            ExpensesTodayFragment expensesTodayFragment = new ExpensesTodayFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString(keyName, FRAG_NAME);
+            bundle.putString("date", objectDate.getDate());
+            expensesTodayFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_money_root, expensesTodayFragment).commit();
+        }
+
     }
 
     private List<Expense> getExpensesListOfCurrentDate() {

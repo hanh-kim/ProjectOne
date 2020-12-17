@@ -65,6 +65,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
 
             countItem();
             showPlans();
-
+            remindPlan();
         }
 
         return view;
@@ -225,8 +226,8 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         List<Plan> remindList = getPlansFuture();
         if (remindList != null) {
             for (Plan mPlan : remindList) {
-              //  Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
-                Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
+                Calendar calendar = DateTimeFormat.parseCalendar(mPlan.getTime(), mPlan.getDate());
+           //     Calendar calendar = DateTimeFormat.parseTimeToCalendar(mPlan.getTime());
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("plan_key", mPlan);
                 intent.putExtra("bundle_key", bundle);

@@ -21,4 +21,46 @@
         android:background="@drawable/custom_edt_search"
         android:hint="Tên bài tập mới" />
 
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="13dp"
+        android:textColor="#E40606"
+       />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvError"
+        android:layout_gravity="right"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/tvCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="Hủy"
+            android:textColor="#2196F3"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:text="Lưu"
+            android:textColor="#2196F3"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+    </LinearLayout>
 </LinearLayout>
