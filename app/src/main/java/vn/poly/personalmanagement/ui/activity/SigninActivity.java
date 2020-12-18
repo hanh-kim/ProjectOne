@@ -1,10 +1,10 @@
 package vn.poly.personalmanagement.ui.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,10 +29,33 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.database.dao.AccountDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
+import vn.poly.personalmanagement.database.dao.ExerciseDAO;
+import vn.poly.personalmanagement.database.dao.ExpensesDAO;
+import vn.poly.personalmanagement.database.dao.FitnessDAO;
+import vn.poly.personalmanagement.database.dao.IncomesDAO;
+import vn.poly.personalmanagement.database.dao.NotesDAO;
+import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
+import vn.poly.personalmanagement.model.DetailExercise;
+import vn.poly.personalmanagement.model.Exercise;
+import vn.poly.personalmanagement.model.Expense;
+import vn.poly.personalmanagement.model.Income;
+import vn.poly.personalmanagement.model.Meal;
+import vn.poly.personalmanagement.model.Note;
+import vn.poly.personalmanagement.model.Plan;
 
 public class SigninActivity extends AppCompatActivity implements View.OnClickListener {
     EditText edtEmail, edtPassword;
@@ -40,12 +63,10 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     RelativeLayout btnSignin;
 
     CheckBox cboRememberAcc;
-    private String fileName = "account.txt";
-    private String filePath = "MyAccount";
     private String keyEmail = "email";
     private String keyPassword = "password";
     private String keyCheck = "isRemember";
-    ProgressDialog progressDialog;
+
     ProgressBar progressBar;
     MyDatabase myDatabase;
     AccountDAO accountDAO;
@@ -54,48 +75,55 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     FirebaseAuth firebaseAuth;
     FirebaseUser currentUser;
+    DatabaseReference databaseReference;
+
+    PlansDAO plansDAO;
+    NotesDAO notesDAO;
+    IncomesDAO incomesDAO;
+    ExpensesDAO expensesDAO;
+    MealsDAO mealsDAO;
+    FitnessDAO fitnessDAO;
+    ExerciseDAO exerciseDAO;
+
+    List<Plan> planList;
+    List<Note> noteList;
+    List<Income> incomeList;
+    List<Expense> expenseList;
+    List<Meal> mealList;
+    List<DetailExercise> fitnessList;
+    List<Exercise> exerciseList;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        initViews();
+        initialize();
         restoreInfoAccountRemembered();
         // views on click
         btnSignin.setOnClickListener(this);
         tvToSignup.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
 
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
-
-        if (currentUser != null){
-            updateUI(currentUser);
+        if (currentUser != null) {
+            if (!checkConnected()) {
+                progressBar.setVisibility(View.INVISIBLE);
+                Toast.makeText(SigninActivity.this, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
+                return;
+            }
             startActivity(new Intent(SigninActivity.this, MainActivity.class));
             SigninActivity.this.finish();
+           
         }
 
     }
 
-    @Override
-    public void onClick(View v) {
-        if (btnSignin.equals(v)) {
-            hideSoftKeyboard();
-            signinWithfirebaseAuth(); // sign in with firebase
-
-            // login();
-
-        } else if (tvToSignup.equals(v)) {
-            startActivity(new Intent(SigninActivity.this, SignupActivity.class));
-            this.finish();
-        } else if (tvForgotPassword.equals(v)) {
-            forgotPassword();
-        }
-    }
-
-    private void initViews() {
+    private void initialize() {
+        // init firebase
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        // init views
         icSuccessful = findViewById(R.id.icSuccessful);
         progressBar = findViewById(R.id.progressBar);
         tvSignin = findViewById(R.id.tvSignin);
@@ -106,9 +134,33 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         tvForgotPassword = findViewById(R.id.tvForgotPassword);
         tvToSignup = findViewById(R.id.tvToSignup);
         cboRememberAcc = findViewById(R.id.cboRemamberAcc);
+        // init database
         myDatabase = new MyDatabase(SigninActivity.this);
         accountDAO = new AccountDAO(myDatabase);
+        plansDAO = new PlansDAO(myDatabase);
+        notesDAO = new NotesDAO(myDatabase);
+        incomesDAO = new IncomesDAO(myDatabase);
+        expensesDAO = new ExpensesDAO(myDatabase);
+        mealsDAO = new MealsDAO(myDatabase);
+        fitnessDAO = new FitnessDAO(myDatabase);
+        exerciseDAO = new ExerciseDAO(myDatabase);
+        // init list
 
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (btnSignin.equals(v)) {
+            hideSoftKeyboard();
+            signinWithfirebaseAuth(); // sign in with firebase
+
+        } else if (tvToSignup.equals(v)) {
+            startActivity(new Intent(SigninActivity.this, SignupActivity.class));
+            this.finish();
+        } else if (tvForgotPassword.equals(v)) {
+            forgotPassword();
+        }
     }
 
     private void signinWithfirebaseAuth() {
@@ -148,7 +200,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                             // get current user
+                                // get current user
                                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                                 updateUI(currentUser);
                                 // check email is verified
@@ -190,8 +242,6 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
-
-
 
     public void saveInfoAccountRemembered() {
         boolean isRemember = cboRememberAcc.isChecked();
@@ -309,8 +359,263 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    private void updateUI(FirebaseUser currentUser){
+    // get user's data on firebase
+
+    private void clearDatabase() {
+        plansDAO.clearAllData();
+        notesDAO.clearAllData();
+        incomesDAO.clearAllData();
+        expensesDAO.clearAllData();
+        mealsDAO.clearAllData();
+        fitnessDAO.clearAllData();
+        exerciseDAO.clearAllData();
+
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+        String uid = currentUser.getUid();
+        clearDatabase();
+        restorePlans(uid);
+        restoreNotes(uid);
+        restoreIncomes(uid);
+        restoreExpenses(uid);
+        restoreMeals(uid);
+        restoreFitness(uid);
+        restoreExercises(uid);
+
+    }
+
+    private void restorePlans(String uid) {
+       List<Plan>   planList1 = new ArrayList<>();
+        databaseReference.child(uid).child("Plans")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Plan plan = snapshot.getValue(Plan.class);
+                      //  planList.add(plan);
+                        plansDAO.addData(plan);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    private void restoreNotes(String uid) {
+        databaseReference.child(uid).child("Notes").
+                addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Note note = snapshot.getValue(Note.class);
+                        notesDAO.addData(note);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+    }
+
+    private void restoreIncomes(String uid) {
+        databaseReference.child(uid).child("Incomes")
+               .addChildEventListener(new ChildEventListener() {
+                   @Override
+                   public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                       Income income = snapshot.getValue(Income.class);
+                       incomesDAO.addData(income);
+                   }
+
+                   @Override
+                   public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                   }
+
+                   @Override
+                   public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError error) {
+
+                   }
+               });
+
+
+    }
+
+    private void restoreExpenses(String uid) {
+
+        databaseReference.child(uid).child("Expenses")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Expense expense = snapshot.getValue(Expense.class);
+                        expensesDAO.addData(expense);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    private void restoreMeals(String uid) {
+        databaseReference.child(uid).child("Meals")
+               .addChildEventListener(new ChildEventListener() {
+                   @Override
+                   public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                       Meal meal = snapshot.getValue(Meal.class);
+                       mealsDAO.addData(meal);
+                   }
+
+                   @Override
+                   public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                   }
+
+                   @Override
+                   public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError error) {
+
+                   }
+               });
+
+    }
+
+    private void restoreFitness(String uid) {
+
+        databaseReference.child(uid).child("Fitness")
+               .addChildEventListener(new ChildEventListener() {
+                   @Override
+                   public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                       DetailExercise exercise = snapshot.getValue(DetailExercise.class);
+                       fitnessDAO.addData(exercise);
+                   }
+
+                   @Override
+                   public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                   }
+
+                   @Override
+                   public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                   }
+
+                   @Override
+                   public void onCancelled(@NonNull DatabaseError error) {
+
+                   }
+               });
+
+
+    }
+
+    private void restoreExercises(String uid) {
+        databaseReference.child(uid).child("Exercises")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Exercise exercise = snapshot.getValue(Exercise.class);
+                        exerciseDAO.addData(exercise);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
     }
 
 }
+
+

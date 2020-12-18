@@ -22,7 +22,7 @@ import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -38,7 +38,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
     ListView lvMeal;
     ImageView icAdd;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
     MealAdapter mealAdapter;
     List<Meal> mealList;
 
@@ -96,7 +96,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getContext());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
     }
 
     @Override
@@ -111,7 +111,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
     }
 
     private List<Meal> getMealList() {
-        return eatingDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate());
+        return mealsDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate());
     }
 
     private void showMealList() {
@@ -132,7 +132,7 @@ public class MealsTodayFragment extends Fragment implements Initialize, View.OnC
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eatingDAO.deleteData(meal);
+                        mealsDAO.deleteData(meal);
                         mealList.remove(position);
                         mealAdapter.notifyDataSetChanged();
                         countItem();

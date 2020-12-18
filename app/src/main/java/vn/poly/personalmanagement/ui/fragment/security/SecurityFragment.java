@@ -23,9 +23,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.dao.AccountDAO;
+import vn.poly.personalmanagement.database.dao.ExerciseDAO;
+import vn.poly.personalmanagement.database.dao.ExpensesDAO;
+import vn.poly.personalmanagement.database.dao.FitnessDAO;
+import vn.poly.personalmanagement.database.dao.IncomesDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
+import vn.poly.personalmanagement.database.dao.NotesDAO;
+import vn.poly.personalmanagement.database.dao.PlansDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.Initialize;
+import vn.poly.personalmanagement.model.DetailExercise;
+import vn.poly.personalmanagement.model.Exercise;
+import vn.poly.personalmanagement.model.Expense;
+import vn.poly.personalmanagement.model.Income;
+import vn.poly.personalmanagement.model.Meal;
+import vn.poly.personalmanagement.model.Note;
+import vn.poly.personalmanagement.model.Plan;
 import vn.poly.personalmanagement.model.User;
 import vn.poly.personalmanagement.ui.activity.MainActivity;
 import vn.poly.personalmanagement.ui.activity.SigninActivity;
@@ -41,11 +54,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 
 public class SecurityFragment extends Fragment
         implements Initialize, View.OnClickListener {
-    MyDatabase myDatabase;
-    AccountDAO accountDAO;
+
+
     TextView tvLogout, tvResetEmail;
     TextInputLayout edtLEmail, edtLPassword, edtlUsername;
     MainActivity mainActivity;
@@ -56,6 +71,23 @@ public class SecurityFragment extends Fragment
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
+
+    MyDatabase myDatabase;
+    PlansDAO plansDAO;
+    NotesDAO notesDAO;
+    IncomesDAO incomesDAO;
+    ExpensesDAO expensesDAO;
+    MealsDAO mealsDAO;
+    FitnessDAO fitnessDAO;
+    ExerciseDAO exerciseDAO;
+
+    List<Plan> planList;
+    List<Note> noteList;
+    List<Income> incomeList;
+    List<Expense> expenseList;
+    List<Meal> mealList;
+    List<DetailExercise> fitnessList;
+    List<Exercise> exerciseList;
 
     public SecurityFragment() {
         // Required empty public constructor
@@ -86,25 +118,12 @@ public class SecurityFragment extends Fragment
         currentUser = firebaseAuth.getCurrentUser();
         String userId = currentUser.getUid();
 
-        showCurrentUser();
         if (!checkConnected()) {
             progressBar.setVisibility(View.INVISIBLE);
             Toast.makeText(mainActivity, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
         }
 
-        // có thể bỏ
-
-//        String emailSaved = mainActivity.getEmailSaved();
-//        User user = accountDAO.getUserWithEmail(emailSaved);
-
-        //...
-
-//        if (user.getUsername().isEmpty()){
-//            edtlUsername.getEditText().setText("Chưa có tên người dùng");
-//        }else edtlUsername.getEditText().setText(user.getUsername());
-
-//        edtLEmail.getEditText().setText(emailSaved);
-//        edtLPassword.getEditText().setText(user.getPassword());
+        showCurrentUser();
 
 
         return view;
@@ -113,12 +132,10 @@ public class SecurityFragment extends Fragment
     @Override
     public void onClick(View v) {
         if (tvLogout.equals(v)) {
-
-            logout();
+            uSignOut();
         } else if (tvChangePassword.equals(v)) {
             getActivity().getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_security_root, new ChangePasswordFragment()).commit();
-
             //    changePassword();
         } else if (tvResetEmail.equals(v)) {
             resetEmail();
@@ -134,12 +151,29 @@ public class SecurityFragment extends Fragment
         edtLEmail = view.findViewById(R.id.edtlEmail);
         tvChangePassword = view.findViewById(R.id.tvChangePassword);
 //        edtlUsername=view.findViewById(R.id.edtlUsername);
+
+        // init list
+        planList = plansDAO.getAllData();
+        noteList = notesDAO.getAllData();
+        incomeList = incomesDAO.getAllIncomes();
+        expenseList =expensesDAO.getAllExpenses();
+        mealList = mealsDAO.getAllData();
+        fitnessList = fitnessDAO.getAllData();
+        exerciseList = exerciseDAO.getAllData();
     }
 
     @Override
     public void initializeDatabase() {
         myDatabase = new MyDatabase(getActivity());
-        accountDAO = new AccountDAO(myDatabase);
+        // init database
+        plansDAO = new PlansDAO(myDatabase);
+        notesDAO = new NotesDAO(myDatabase);
+        incomesDAO = new IncomesDAO(myDatabase);
+        expensesDAO = new ExpensesDAO(myDatabase);
+        mealsDAO = new MealsDAO(myDatabase);
+        fitnessDAO = new FitnessDAO(myDatabase);
+        exerciseDAO = new ExerciseDAO(myDatabase);
+
     }
 
     private void hideSoftKeyboard() {
@@ -287,7 +321,7 @@ public class SecurityFragment extends Fragment
         });
     }
 
-    private void logout() {
+    private void uSignOut() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setCancelable(true);
         builder.setMessage("Bạn muốn đăng xuất?");
@@ -301,14 +335,23 @@ public class SecurityFragment extends Fragment
         builder.setPositiveButton("Đăng xuất", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                if (!checkConnected()) {
+                    progressBar.setVisibility(View.VISIBLE);
+                    Toast.makeText(mainActivity, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 progressBar.setVisibility(View.VISIBLE);
+
+                saveAllData(currentUser.getUid());
+
+                // current user sign out
                 FirebaseAuth.getInstance().signOut();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            Thread.sleep(1500);
-                            progressBar.setVisibility(View.VISIBLE);
+                            Thread.sleep(2000);
+                            progressBar.setVisibility(View.INVISIBLE);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -321,6 +364,17 @@ public class SecurityFragment extends Fragment
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void saveAllData(String uid) {
+
+       databaseReference.child(uid).child("Plans").setValue(planList);
+       databaseReference.child(uid).child("Notes").setValue(noteList);
+       databaseReference.child(uid).child("Incomes").setValue(incomeList);
+       databaseReference.child(uid).child("Expenses").setValue(expenseList);
+       databaseReference.child(uid).child("Meals").setValue(mealList);
+       databaseReference.child(uid).child("Fitness").setValue(fitnessList);
+       databaseReference.child(uid).child("Exercises").setValue(exerciseList);
     }
 
 }

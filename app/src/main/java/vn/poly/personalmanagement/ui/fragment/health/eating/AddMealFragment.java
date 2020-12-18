@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -37,7 +37,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     EditText edtTitle, edtDecription;
     ListView lvMeal;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
 
 
     public AddMealFragment() {
@@ -136,7 +136,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getContext());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
 
     }
 
@@ -175,7 +175,7 @@ public class AddMealFragment extends Fragment implements Initialize, View.OnClic
         meal.setDate(date);
         meal.setTime(time);
         meal.setDetailMeal(description);
-        eatingDAO.addData(meal);
+        mealsDAO.addData(meal);
         Bundle bundle = new Bundle();
         bundle.putString("date",date);
         fragment.setArguments(bundle);

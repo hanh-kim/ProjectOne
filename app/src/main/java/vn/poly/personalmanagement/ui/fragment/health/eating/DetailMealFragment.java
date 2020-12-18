@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -38,7 +38,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
     final String keyName = "idFrag";
     Meal meal;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
 
     public DetailMealFragment() {
         // Required empty public constructor
@@ -153,7 +153,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getContext());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
     }
 
     private void edit(Fragment fragment) {
@@ -221,7 +221,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
         builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                eatingDAO.deleteData(meal);
+                mealsDAO.deleteData(meal);
                 Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
                 Bundle bundle = new Bundle();
                 bundle.putString("date", meal.getDate());
@@ -252,7 +252,7 @@ public class DetailMealFragment extends Fragment implements Initialize, View.OnC
         meal.setTitle(title);
         meal.setTime(time);
         meal.setDetailMeal(description);
-        eatingDAO.updateData(meal);
+        mealsDAO.updateData(meal);
         tvEdit.setText("Sửa");
         edtMealTitle.setEnabled(false);
         tvDate.setEnabled(false);

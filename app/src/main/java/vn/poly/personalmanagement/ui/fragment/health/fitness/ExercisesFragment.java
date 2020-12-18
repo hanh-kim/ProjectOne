@@ -204,14 +204,14 @@ public class ExercisesFragment extends Fragment
                 showExercises();
                 countItem();
                 dialog.dismiss();
-                Toast.makeText(getActivity(), "Sửa thành công!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Thêm thành công!", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     private void showExercises() {
-        exerciseList = exerciseDAO.getAll();
+        exerciseList = exerciseDAO.getAllData();
         List<String> stringList = new ArrayList<>();
         for (Exercise exercise : exerciseList) {
             stringList.add(exercise.getExerciseName());
@@ -221,19 +221,11 @@ public class ExercisesFragment extends Fragment
     }
 
     private void countItem() {
-        if (exerciseDAO.getAll().size() == 0) {
+        if (exerciseDAO.getAllData().size() == 0) {
             tvCountItem.setText("Danh sách trống ");
-        } else tvCountItem.setText("Số bài tập: " + exerciseDAO.getAll().size());
+        } else tvCountItem.setText("Số bài tập: " + exerciseDAO.getAllData().size());
     }
 
-    //    private void cancelSearch() {
-//        layoutSearch.setVisibility(View.GONE);
-//        edtSearch.setEnabled(false);
-//    }
-//
-//    private void startSearch() {
-//        layoutSearch.setVisibility(View.VISIBLE);
-//        edtSearch.setEnabled(true);
-//    }
+
 
 }

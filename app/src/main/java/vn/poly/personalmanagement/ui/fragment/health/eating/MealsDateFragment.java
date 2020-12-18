@@ -26,7 +26,7 @@ import java.util.List;
 
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -43,7 +43,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
     ImageView icAdd;
     int isEditing = 0;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
     List<Meal> mealList;
     MealAdapter mealAdapter;
     Bundle bundle;
@@ -97,7 +97,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
         } else if (tvEdit.equals(v)) {
             edit();
         } else if (tvDelete.equals(v)) {
-            eatingDAO.deleteDataWithDate(tvDate.getText().toString().trim());
+            mealsDAO.deleteDataWithDate(tvDate.getText().toString().trim());
             Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
             getActivity().getSupportFragmentManager().beginTransaction().
                     replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
@@ -146,7 +146,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getContext());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
     }
 
     private void edit() {
@@ -166,7 +166,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
 
     private List<Meal> getMealList() {
         String date = tvDate.getText().toString().trim();
-        return eatingDAO.getAllMealWithDate(date);
+        return mealsDAO.getAllMealWithDate(date);
     }
 
     private void countItem() {
@@ -191,7 +191,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eatingDAO.deleteData(meal);
+                        mealsDAO.deleteData(meal);
                         mealList.remove(position);
                         mealAdapter.notifyDataSetChanged();
                         countItem();
@@ -235,7 +235,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
             Toast.makeText(getActivity(), errorDate, Toast.LENGTH_LONG).show();
             return;
         }
-        eatingDAO.updateMealDate(bundle.getString("date"),date);
+        mealsDAO.updateMealDate(bundle.getString("date"),date);
         showMealList();
         if (tvDate.getText().toString().trim().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
             icAdd.setVisibility(View.GONE);

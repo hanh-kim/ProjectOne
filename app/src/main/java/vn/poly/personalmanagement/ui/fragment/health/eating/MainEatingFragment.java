@@ -27,7 +27,7 @@ import java.util.List;
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.health.eating.EatingDateAdapter;
 import vn.poly.personalmanagement.adapter.health.eating.MealAdapter;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
 import vn.poly.personalmanagement.methodclass.Initialize;
@@ -53,7 +53,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
     List<Eating> eatingList;
     List<Eating> eatingListSearch;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
     MealAdapter mealAdapter;
     List<Meal> mealList;
 
@@ -116,7 +116,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getContext());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
     }
 
     private void countMealsToday() {
-        List<Meal> mealList = eatingDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate());
+        List<Meal> mealList = mealsDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate());
         tvCountMealToday.setText("" + mealList.size());
     }
 
@@ -207,7 +207,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eatingDAO.deleteDataWithDate(eating.getDate());
+                        mealsDAO.deleteDataWithDate(eating.getDate());
                         eatingList.remove(position);
                         eatingDateAdapter.notifyDataSetChanged();
                         countItem();
@@ -224,15 +224,15 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
 
 
     private List<Meal> getMealList(String s) {
-        return eatingDAO.getResultSearchedWithDate(s);
+        return mealsDAO.getResultSearchedWithDate(s);
     }
 
     private List<Eating> getEatingList() {
-        return eatingDAO.getEatingList();
+        return mealsDAO.getEatingList();
     }
 
     private List<Eating> getEatingList(String date) {
-        return eatingDAO.getEatingList(date);
+        return mealsDAO.getEatingList(date);
     }
 
     private void showEatingList() {
@@ -251,7 +251,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eatingDAO.deleteDataWithDate(eating.getDate());
+                        mealsDAO.deleteDataWithDate(eating.getDate());
                         eatingList.remove(position);
                         eatingDateAdapter.notifyDataSetChanged();
                         countItem();
@@ -288,7 +288,7 @@ public class MainEatingFragment extends Fragment implements Initialize, View.OnC
                 builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        eatingDAO.deleteData(meal);
+                        mealsDAO.deleteData(meal);
                         mealList.remove(position);
                         mealAdapter.notifyDataSetChanged();
                         //countItem();

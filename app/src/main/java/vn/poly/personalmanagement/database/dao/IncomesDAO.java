@@ -22,15 +22,20 @@ public class IncomesDAO {
         this.myDatabase = myDatabase;
     }
 
+    public long clearAllData() {
+        db = myDatabase.getWritableDatabase();
+        return db.delete(InfoTable.TABLE_INCOMES, null, null);
+    }
+
     public long deleteData(Income income) {
         db = myDatabase.getWritableDatabase();
-        return db.delete(InfoTable.TABLE_IMCOMES, InfoTable.COL_INCOME_ID + " = ?",
+        return db.delete(InfoTable.TABLE_INCOMES, InfoTable.COL_INCOME_ID + " = ?",
                 new String[]{String.valueOf(income.getId())});
     }
 
     public long deleteDataWithDate(String date) {
         db = myDatabase.getWritableDatabase();
-        return db.delete(InfoTable.TABLE_IMCOMES, InfoTable.COL_INCOME_DATE + " = ?", new String[]{date});
+        return db.delete(InfoTable.TABLE_INCOMES, InfoTable.COL_INCOME_DATE + " = ?", new String[]{date});
     }
 
     public long addData(Income income) {
@@ -41,7 +46,7 @@ public class IncomesDAO {
         values.put(InfoTable.COL_INCOME_TIME, income.getTime());
         values.put(InfoTable.COL_INCOME_AMOUNT, income.getAmount());
         values.put(InfoTable.COL_INCOME_DESCRIPTION, income.getDescription());
-        long query = db.insert(InfoTable.TABLE_IMCOMES, null, values);
+        long query = db.insert(InfoTable.TABLE_INCOMES, null, values);
         if (query > 0) {
             return query;
         } else return 0;
@@ -55,7 +60,7 @@ public class IncomesDAO {
         values.put(InfoTable.COL_INCOME_TIME, income.getTime());
         values.put(InfoTable.COL_INCOME_AMOUNT, income.getAmount());
         values.put(InfoTable.COL_INCOME_DESCRIPTION, income.getDescription());
-        long query = db.update(InfoTable.TABLE_IMCOMES, values, InfoTable.COL_INCOME_ID + " = ?",
+        long query = db.update(InfoTable.TABLE_INCOMES, values, InfoTable.COL_INCOME_ID + " = ?",
                 new String[]{String.valueOf(income.getId())});
         if (query > 0) {
             return query;
@@ -63,11 +68,10 @@ public class IncomesDAO {
 
     }
 
-
     public List<Income> getAllIncomes() {
         db = myDatabase.getWritableDatabase();
         List<Income> incomeList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_IMCOMES+ " ORDER BY " + InfoTable.COL_INCOME_DATE;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_INCOMES + " ORDER BY " + InfoTable.COL_INCOME_DATE;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -92,9 +96,9 @@ public class IncomesDAO {
     public List<Income> getResultSearched(String str) {
         db = myDatabase.getWritableDatabase();
         List<Income> incomeList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_IMCOMES
+        String getData = "SELECT * FROM " + InfoTable.TABLE_INCOMES
                 + " WHERE (" + InfoTable.COL_INCOME_DATE + " LIKE '" + str + "%' )"
-                +" OR ("+ InfoTable.COL_INCOME_TITLE + " LIKE '" + str + "%' )"
+                + " OR (" + InfoTable.COL_INCOME_TITLE + " LIKE '" + str + "%' )"
                 + "ORDER BY " + InfoTable.COL_INCOME_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);
@@ -123,7 +127,7 @@ public class IncomesDAO {
         List<ObjectDate> objectDateList = new ArrayList<>();
         String getData = "SELECT " + InfoTable.COL_INCOME_DATE
                 + ", COUNT(" + InfoTable.COL_INCOME_ID + ") AS '" + InfoTable.COL_AMOUNT + "'"
-                + " FROM " + InfoTable.TABLE_IMCOMES
+                + " FROM " + InfoTable.TABLE_INCOMES
                 + " GROUP BY " + InfoTable.COL_INCOME_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);
@@ -132,7 +136,7 @@ public class IncomesDAO {
             while (!cursor.isAfterLast()) {
                 String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_INCOME_DATE));
                 int amount = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_AMOUNT));
-                ObjectDate objectDate = new ObjectDate(date,amount);
+                ObjectDate objectDate = new ObjectDate(date, amount);
                 objectDateList.add(objectDate);
                 cursor.moveToNext();
             }
@@ -142,10 +146,10 @@ public class IncomesDAO {
         return objectDateList;
     }
 
-    public List<Income> getAllIncomes(String from,  String to) {
+    public List<Income> getAllIncomes(String from, String to) {
         db = myDatabase.getWritableDatabase();
         List<Income> incomeList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_IMCOMES
+        String getData = "SELECT * FROM " + InfoTable.TABLE_INCOMES
                 + " WHERE " + InfoTable.COL_INCOME_DATE + " BETWEEN '" + from + "' AND '" + to + "'";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
@@ -171,7 +175,7 @@ public class IncomesDAO {
     public List<Income> getAllIncomeWithDate(String date) {
         db = myDatabase.getWritableDatabase();
         List<Income> incomeList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_IMCOMES + "" +
+        String getData = "SELECT * FROM " + InfoTable.TABLE_INCOMES + "" +
                 " WHERE " + InfoTable.COL_INCOME_DATE + " ='" + date + "'";
         //     + " ORDER BY " + InfoTable.COL_DETAIL_EXERCISE_DATE;
         Cursor cursor = db.rawQuery(getData, null);
@@ -193,6 +197,23 @@ public class IncomesDAO {
         }
 //        Collections.reverse(mealList);
         return incomeList;
+    }
+
+    public long saveDataFromFirebase(List<Income> incomeList) {
+        for (Income income : incomeList) {
+            db = myDatabase.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(InfoTable.COL_INCOME_TITLE, income.getTitle());
+            values.put(InfoTable.COL_INCOME_DATE, income.getDate());
+            values.put(InfoTable.COL_INCOME_TIME, income.getTime());
+            values.put(InfoTable.COL_INCOME_AMOUNT, income.getAmount());
+            values.put(InfoTable.COL_INCOME_DESCRIPTION, income.getDescription());
+            long query = db.insert(InfoTable.TABLE_INCOMES, null, values);
+            if (query > 0) {
+                return query;
+            } else return 0;
+        }
+        return 0;
     }
 
 }

@@ -14,7 +14,6 @@ public class Note implements Serializable {
     public Note() {
     }
 
-
     public Note(int id, String title, int folderID, String date, String time, String content, int isDeleted) {
         this.id = id;
         this.title = title;

@@ -5,14 +5,15 @@ import java.io.Serializable;
 public class Plan implements Serializable {
     private int id;
     private String planName;
-    private  String date;
+    private String date;
     private String time;
     private int isAlarmed;
     private String describe;
 
     public Plan() {
     }
-    public Plan( String planName, String date, String time, int isAlarmed, String describe) {
+
+    public Plan(String planName, String date, String time, int isAlarmed, String describe) {
         this.planName = planName;
         this.date = date;
         this.time = time;

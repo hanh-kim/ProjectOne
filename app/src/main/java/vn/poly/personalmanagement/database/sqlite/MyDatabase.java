@@ -30,7 +30,7 @@ public class MyDatabase extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists " + InfoTable.TABLE_PLANS);
         db.execSQL("drop table if exists " + InfoTable.TABLE_NOTES);
-        db.execSQL("drop table if exists " + InfoTable.TABLE_IMCOMES);
+        db.execSQL("drop table if exists " + InfoTable.TABLE_INCOMES);
         db.execSQL("drop table if exists " + InfoTable.TABLE_EXPENSES);
         db.execSQL("drop table if exists " + InfoTable.TABLE_MEALS);
         db.execSQL("drop table if exists " + InfoTable.TABLE_DETAIL_EXERCISE);

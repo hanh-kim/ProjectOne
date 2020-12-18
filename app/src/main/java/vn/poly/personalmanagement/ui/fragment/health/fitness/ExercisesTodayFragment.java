@@ -138,7 +138,7 @@ public class ExercisesTodayFragment extends Fragment
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_add_exercise, null);
         builder.setView(view);
-        List<Exercise> exerciseList = exerciseDAO.getAll();
+        List<Exercise> exerciseList = exerciseDAO.getAllData();
         List<String> stringList = new ArrayList<>();
         stringList.add("Mời chọn bài tập");
         for (Exercise exercise : exerciseList) {
@@ -210,7 +210,7 @@ public class ExercisesTodayFragment extends Fragment
         dialog.show();
         tvError.setText("");
 
-        List<Exercise> exerciseList = exerciseDAO.getAll();
+        List<Exercise> exerciseList = exerciseDAO.getAllData();
         List<String> stringList = new ArrayList<>();
         stringList.add("Mời chọn bài tập");
         for (Exercise exercise : exerciseList) {

@@ -26,7 +26,7 @@ public class InfoTable {
     public static final String COL_NOTE_CONTENT = "NOTE_CONTENT";
     public static final String COL_NOTE_IS_DELETED = "IS_DELETED";
 
-    public static final String TABLE_IMCOMES = "INCOME";
+    public static final String TABLE_INCOMES = "INCOME";
     public static final String COL_INCOME_ID = "INCOME_ID";
     public static final String COL_INCOME_TITLE = "INCOME_TITLE";
     public static final String COL_INCOME_DATE = "INCOME_DATE";
@@ -97,7 +97,7 @@ public class InfoTable {
     }
 
     public static void createTableIncome(SQLiteDatabase sqLiteDatabase) {
-        String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_IMCOMES + "(" +
+        String createTable = "CREATE TABLE IF NOT EXISTS " + TABLE_INCOMES + "(" +
                 COL_INCOME_ID + " INTEGER PRIMARY KEY AUTOINCREMENT  ," +
                 COL_INCOME_TITLE + " NVARCHAR(100) NOT NULL," +
                 COL_INCOME_DATE + " NCHAR(20) NOT NULL," +

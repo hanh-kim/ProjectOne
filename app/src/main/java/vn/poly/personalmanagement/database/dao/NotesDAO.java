@@ -20,6 +20,11 @@ public class NotesDAO {
         this.myDatabase = myDatabase;
     }
 
+    public long clearAllData() {
+        db = myDatabase.getWritableDatabase();
+        return db.delete(InfoTable.TABLE_NOTES, null, null);
+    }
+
     public long deleteData(Note note) {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_NOTES, InfoTable.COL_NOTE_ID + " = ?", new String[]{String.valueOf(note.getId())});
@@ -45,6 +50,24 @@ public class NotesDAO {
         } else return 0;
     }
 
+    public long saveDataFromFirebase(List<Note> noteList) {
+        for (Note note : noteList) {
+            db = myDatabase.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(InfoTable.COL_NOTE_TITLE, note.getTitle());
+            values.put(InfoTable.COL_NOTE_FOLDER_ID, note.getFolderID());
+            values.put(InfoTable.COL_NOTE_DATE, note.getDate());
+            values.put(InfoTable.COL_NOTE_TIME, note.getTime());
+            values.put(InfoTable.COL_NOTE_CONTENT, note.getContent());
+            values.put(InfoTable.COL_NOTE_IS_DELETED, note.getIsDeleted());
+            long query = db.insert(InfoTable.TABLE_NOTES, null, values);
+            if (query > 0) {
+                return query;
+            } else return 0;
+        }
+       return 0;
+    }
+
     public long updateData(Note note) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -65,9 +88,9 @@ public class NotesDAO {
     public List<Note> getAllData(int fragId) {
         db = myDatabase.getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE "+ InfoTable.COL_NOTE_IS_DELETED+"=0 " +
-                " AND "+InfoTable.COL_NOTE_FOLDER_ID+"="+fragId+"" ;
-              //  +"  ORDER BY " + InfoTable.COL_NOTE_DATE + " DESC";
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_IS_DELETED + "=0 " +
+                " AND " + InfoTable.COL_NOTE_FOLDER_ID + "=" + fragId + "";
+        //  +"  ORDER BY " + InfoTable.COL_NOTE_DATE + " DESC";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -93,8 +116,8 @@ public class NotesDAO {
     public List<Note> getAllDataDeleted() {
         db = myDatabase.getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE "+ InfoTable.COL_NOTE_IS_DELETED+"=1" ;
-           //   +  " ORDER BY " + InfoTable.COL_NOTE_DATE + " DESC ";
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_IS_DELETED + "=1";
+        //   +  " ORDER BY " + InfoTable.COL_NOTE_DATE + " DESC ";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -142,7 +165,7 @@ public class NotesDAO {
         db = myDatabase.getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_TITLE + " LIKE '" + text + "%' " +
-                "AND "+InfoTable.COL_NOTE_IS_DELETED +"= 0 ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
+                "AND " + InfoTable.COL_NOTE_IS_DELETED + "= 0 ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -168,9 +191,9 @@ public class NotesDAO {
         db = myDatabase.getWritableDatabase();
         List<Note> noteList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + ""
-                +" WHERE " + InfoTable.COL_NOTE_TITLE + " LIKE '" + text + "%' "
-                +" AND "+InfoTable.COL_NOTE_IS_DELETED +" = 1 "
-                +" ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
+                + " WHERE " + InfoTable.COL_NOTE_TITLE + " LIKE '" + text + "%' "
+                + " AND " + InfoTable.COL_NOTE_IS_DELETED + " = 1 "
+                + " ORDER BY " + InfoTable.COL_NOTE_FOLDER_ID + " ASC ";
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -192,11 +215,11 @@ public class NotesDAO {
         return noteList;
     }
 
-    public int countNotes(int fragId){
-        int count=0;
+    public int countNotes(int fragId) {
+        int count = 0;
         db = myDatabase.getWritableDatabase();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE "+ InfoTable.COL_NOTE_IS_DELETED+"=0 " +
-                " AND "+InfoTable.COL_NOTE_FOLDER_ID+"="+fragId;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_IS_DELETED + "=0 " +
+                " AND " + InfoTable.COL_NOTE_FOLDER_ID + "=" + fragId;
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
@@ -206,13 +229,13 @@ public class NotesDAO {
             }
             cursor.close();
         }
-       return count;
+        return count;
     }
 
-    public int countNoteDeleted(){
-        int count=0;
+    public int countNoteDeleted() {
+        int count = 0;
         db = myDatabase.getWritableDatabase();
-        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE "+ InfoTable.COL_NOTE_IS_DELETED+"=1 " ;
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES + " WHERE " + InfoTable.COL_NOTE_IS_DELETED + "=1 ";
 
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {
@@ -227,5 +250,30 @@ public class NotesDAO {
     }
 
 
+    public List<Note> getAllData() {
+        db = myDatabase.getWritableDatabase();
+        List<Note> noteList = new ArrayList<>();
+        String getData = "SELECT * FROM " + InfoTable.TABLE_NOTES ;
+        //  +"  ORDER BY " + InfoTable.COL_NOTE_DATE + " DESC";
+        Cursor cursor = db.rawQuery(getData, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                int noteId = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_ID));
+                String noteTitle = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_TITLE));
+                int folderId = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_FOLDER_ID));
+                String date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_DATE));
+                String time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_TIME));
+                String content = cursor.getString(cursor.getColumnIndex(InfoTable.COL_NOTE_CONTENT));
+                int isDeleted = cursor.getInt(cursor.getColumnIndex(InfoTable.COL_NOTE_IS_DELETED));
+                Note note = new Note(noteId, noteTitle, folderId, date, time, content, isDeleted);
+                noteList.add(note);
+                cursor.moveToNext();
+            }
+            cursor.close();
+        }
+        Collections.reverse(noteList);
+        return noteList;
+    }
 
 }

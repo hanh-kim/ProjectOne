@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import vn.poly.personalmanagement.R;
-import vn.poly.personalmanagement.database.dao.EatingDAO;
+import vn.poly.personalmanagement.database.dao.MealsDAO;
 import vn.poly.personalmanagement.database.dao.FitnessDAO;
 import vn.poly.personalmanagement.database.sqlite.MyDatabase;
 import vn.poly.personalmanagement.methodclass.CurrentDateTime;
@@ -32,7 +32,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
             cardExercisesToday, cardExercisesList, cardMealList, cardFitnessList;
     TextView tvCountMeal, tvCountExerciseToday;
     MyDatabase mydatabase;
-    EatingDAO eatingDAO;
+    MealsDAO mealsDAO;
     FitnessDAO fitnessDAO;
 
     public HealthFragment() {
@@ -52,7 +52,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
         View view = inflater.inflate(R.layout.fragment_health, container, false);
         initializeDatabase();
         initializeViews(view);
-        tvCountMeal.setText("" + eatingDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate()).size());
+        tvCountMeal.setText("" + mealsDAO.getAllMealWithDate(CurrentDateTime.getCurrentDate()).size());
 
         tvCountExerciseToday.setText("" + fitnessDAO.getAllExerciseWithDate(CurrentDateTime.getCurrentDate()).size());
 
@@ -114,7 +114,7 @@ public class HealthFragment extends Fragment implements Initialize, View.OnClick
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getActivity());
-        eatingDAO = new EatingDAO(mydatabase);
+        mealsDAO = new MealsDAO(mydatabase);
         fitnessDAO = new FitnessDAO(mydatabase);
     }
 }

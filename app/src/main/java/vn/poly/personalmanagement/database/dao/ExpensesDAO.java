@@ -22,6 +22,11 @@ public class ExpensesDAO {
         this.myDatabase = myDatabase;
     }
 
+    public long clearAllData() {
+        db = myDatabase.getWritableDatabase();
+        return db.delete(InfoTable.TABLE_EXPENSES, null, null);
+    }
+
     public long deleteData(Expense expense) {
         db = myDatabase.getWritableDatabase();
         return db.delete(InfoTable.TABLE_EXPENSES, InfoTable.COL_EXPENSE_ID + " = ?",
@@ -45,6 +50,23 @@ public class ExpensesDAO {
         if (query > 0) {
             return query;
         } else return 0;
+    }
+
+    public long saveDataFromFirebase(List<Expense> expenseList) {
+        for (Expense expense : expenseList) {
+            db = myDatabase.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(InfoTable.COL_EXPENSE_TITLE, expense.getTitle());
+            values.put(InfoTable.COL_EXPENSE_DATE, expense.getDate());
+            values.put(InfoTable.COL_EXPENSE_TIME, expense.getTime());
+            values.put(InfoTable.COL_EXPENSE_AMOUNT, expense.getAmount());
+            values.put(InfoTable.COL_EXPENSE_DESCRIPTION, expense.getDescription());
+            long query = db.insert(InfoTable.TABLE_EXPENSES, null, values);
+            if (query > 0) {
+                return query;
+            } else return 0;
+        }
+        return 0;
     }
 
     public long updateData(Expense expense) {
@@ -78,7 +100,7 @@ public class ExpensesDAO {
                 String expense_date = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DATE));
                 String expense_time = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_TIME));
                 long expense_amount = cursor.getLong(cursor.getColumnIndex(InfoTable.COL_EXPENSE_AMOUNT));
-             //   String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
+                //   String expense_description = cursor.getString(cursor.getColumnIndex(InfoTable.COL_EXPENSE_DESCRIPTION));
                 String expense_description = cursor.getString(5);
                 Expense expense = new Expense(expense_id, expense_title, expense_date, expense_time, expense_amount, expense_description);
                 expenseList.add(expense);
@@ -94,7 +116,7 @@ public class ExpensesDAO {
         db = myDatabase.getWritableDatabase();
         List<Expense> expenseList = new ArrayList<>();
         String getData = "SELECT * FROM " + InfoTable.TABLE_EXPENSES
-                +" ORDER BY "+InfoTable.COL_EXPENSE_DATE;
+                + " ORDER BY " + InfoTable.COL_EXPENSE_DATE;
 
         Cursor cursor = db.rawQuery(getData, null);
         if (cursor.getCount() > 0) {

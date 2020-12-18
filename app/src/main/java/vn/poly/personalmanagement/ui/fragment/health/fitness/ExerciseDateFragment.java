@@ -204,7 +204,7 @@ public class ExerciseDateFragment extends Fragment implements Initialize, View.O
         dialog.show();
         tvError.setText("");
 
-        List<Exercise> exerciseList = exerciseDAO.getAll();
+        List<Exercise> exerciseList = exerciseDAO.getAllData();
         List<String> stringList = new ArrayList<>();
         stringList.add("Mời chọn bài tập");
         for (Exercise exercise : exerciseList) {
