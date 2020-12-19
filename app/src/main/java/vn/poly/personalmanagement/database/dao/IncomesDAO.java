@@ -199,21 +199,6 @@ public class IncomesDAO {
         return incomeList;
     }
 
-    public long saveDataFromFirebase(List<Income> incomeList) {
-        for (Income income : incomeList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_INCOME_TITLE, income.getTitle());
-            values.put(InfoTable.COL_INCOME_DATE, income.getDate());
-            values.put(InfoTable.COL_INCOME_TIME, income.getTime());
-            values.put(InfoTable.COL_INCOME_AMOUNT, income.getAmount());
-            values.put(InfoTable.COL_INCOME_DESCRIPTION, income.getDescription());
-            long query = db.insert(InfoTable.TABLE_INCOMES, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-        return 0;
-    }
+
 
 }

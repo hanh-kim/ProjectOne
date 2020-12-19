@@ -50,22 +50,6 @@ public class MealsDAO {
         } else return 0;
     }
 
-    public long saveDataFromFirebase(List<Meal> mealList) {
-        for (Meal meal : mealList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_MEAL_TITLE, meal.getTitle());
-            values.put(InfoTable.COL_MEAL_TIME, meal.getTime());
-            values.put(InfoTable.COL_MEAL_DATE, meal.getDate());
-            values.put(InfoTable.COL_MEAL_DETAIL, meal.getDetailMeal());
-
-            long query = db.insert(InfoTable.TABLE_MEALS, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-       return 0;
-    }
 
     public long updateData(Meal meal) {
         db = myDatabase.getWritableDatabase();

@@ -52,23 +52,6 @@ public class ExpensesDAO {
         } else return 0;
     }
 
-    public long saveDataFromFirebase(List<Expense> expenseList) {
-        for (Expense expense : expenseList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_EXPENSE_TITLE, expense.getTitle());
-            values.put(InfoTable.COL_EXPENSE_DATE, expense.getDate());
-            values.put(InfoTable.COL_EXPENSE_TIME, expense.getTime());
-            values.put(InfoTable.COL_EXPENSE_AMOUNT, expense.getAmount());
-            values.put(InfoTable.COL_EXPENSE_DESCRIPTION, expense.getDescription());
-            long query = db.insert(InfoTable.TABLE_EXPENSES, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-        return 0;
-    }
-
     public long updateData(Expense expense) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();

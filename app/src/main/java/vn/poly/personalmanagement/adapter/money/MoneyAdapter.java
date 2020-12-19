@@ -73,12 +73,12 @@ public class MoneyAdapter extends BaseAdapter {
         }
 
         final ObjectDate objectDate = objectDateList.get(position);
-        if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
-            // set text color : green
-            viewHolder.tvMain.setTextColor(Color.parseColor("#039E09"));
-        }else{
-            viewHolder.tvMain.setTextColor(Color.parseColor("#000"));
-        }
+//        if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
+//            // set text color : green
+//            viewHolder.tvMain.setTextColor(Color.parseColor("#039E09"));
+//        }else{
+//            viewHolder.tvMain.setTextColor(Color.parseColor("#000"));
+//        }
 
         if (objectDate.getDate().equals(CurrentDateTime.getCurrentDate())){
             // viewHolder.tvMain.setTextColor(Color.parseColor("green"));

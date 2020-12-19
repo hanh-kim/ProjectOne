@@ -49,21 +49,6 @@ public class FitnessDAO {
         } else return 0;
     }
 
-    public long saveDataFromFirebase(List<DetailExercise> fitnessList) {
-        for (DetailExercise exercise : fitnessList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_DETAIL_EXERCISE_DATE, exercise.getDate());
-            values.put(InfoTable.COL_DETAIL_EXERCISE_NAME, exercise.getExercise());
-            values.put(InfoTable.COL_DETAIL_EXERCISE_DESCRIPTION, exercise.getDescribe());
-            long query = db.insert(InfoTable.TABLE_DETAIL_EXERCISE, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-        return 0;
-    }
-
     public long updateData(DetailExercise exercise) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();

@@ -77,21 +77,6 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         tvCancelSearch.setOnClickListener(this);
 
 
-//        for (int i = 0; i < 10; i++) {
-//            Note note = new Note();
-//            note.setTitle("Ghi chú " + (i + 1));
-//            note.setFolderID(FRAG_ID);
-//            note.setTime(CurrentDateTime.getCurrentTime());
-//            note.setDate(CurrentDateTime.getCurrentDate());
-//            note.setContent(" tvCount =  view.findViewById(R.id.tvNoteCount);\n" +
-//                    "        lvNotes = view.findViewById(R.id.lvNotes);\n" +
-//                    "        noteList = new ArrayList<>();\n" +
-//                    "        tvBack = view.findViewById(R.id.tvBack);\n" +
-//                    "        icAddNote = view.findViewById(R.id.icAddNote);");
-//            note.setIsDeleted(0);
-//            notesDAO.addData(note);
-//        }
-
         //   noteList = getList();
         lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -85,23 +85,6 @@ public class MainFitnessFragment extends Fragment
         return view;
     }
 
-    @Override
-    public void onClick(View v) {
-        if (tvBack.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new HealthFragment()).commit();
-        } else if (cardToday.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new ExercisesTodayFragment()).commit();
-        } else if (cardExercisesList.equals(v)) {
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new ExercisesFragment()).commit();
-        } else if (tvToSearch.equals(v)) {
-            startSearch();
-        } else if (tvCancelSearch.equals(v)) {
-            hideSoftKeyboard();
-            cancelSearch();
-        }
-    }
-
 
     @Override
     public void initializeViews(View view) {
@@ -126,14 +109,39 @@ public class MainFitnessFragment extends Fragment
     }
 
     @Override
+    public void onClick(View v) {
+        if (tvBack.equals(v)) {
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_health_root, new HealthFragment()).commit();
+        } else if (cardToday.equals(v)) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new ExercisesTodayFragment()).commit();
+        } else if (cardExercisesList.equals(v)) {
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_health_root, new ExercisesFragment()).commit();
+        } else if (tvToSearch.equals(v)) {
+            startSearch();
+        } else if (tvCancelSearch.equals(v)) {
+            hideSoftKeyboard();
+            cancelSearch();
+        }
+    }
+
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        ExerciseDateFragment exerciseDateFragment = new ExerciseDateFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(keyName, ID_FRAG);
-        bundle.putString("date", fitnessList.get(position).getDate());
-        exerciseDateFragment.setArguments(bundle);
-        getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_health_root, exerciseDateFragment).commit();
+
+        Fitness fitness =  fitnessList.get(position);
+        if (fitness.getDate().equals(CurrentDateTime.getCurrentDate())){
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_health_root, new ExercisesTodayFragment()).commit();
+        }else {
+            ExerciseDateFragment exerciseDateFragment = new ExerciseDateFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt(keyName, ID_FRAG);
+            bundle.putString("date",fitness.getDate());
+            exerciseDateFragment.setArguments(bundle);
+            getActivity().getSupportFragmentManager().beginTransaction().
+                    replace(R.id.fragment_health_root, exerciseDateFragment).commit();
+        }
+
     }
 
     private void cancelSearch() {

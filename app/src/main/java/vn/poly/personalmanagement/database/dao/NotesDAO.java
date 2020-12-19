@@ -50,23 +50,6 @@ public class NotesDAO {
         } else return 0;
     }
 
-    public long saveDataFromFirebase(List<Note> noteList) {
-        for (Note note : noteList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_NOTE_TITLE, note.getTitle());
-            values.put(InfoTable.COL_NOTE_FOLDER_ID, note.getFolderID());
-            values.put(InfoTable.COL_NOTE_DATE, note.getDate());
-            values.put(InfoTable.COL_NOTE_TIME, note.getTime());
-            values.put(InfoTable.COL_NOTE_CONTENT, note.getContent());
-            values.put(InfoTable.COL_NOTE_IS_DELETED, note.getIsDeleted());
-            long query = db.insert(InfoTable.TABLE_NOTES, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-       return 0;
-    }
 
     public long updateData(Note note) {
         db = myDatabase.getWritableDatabase();

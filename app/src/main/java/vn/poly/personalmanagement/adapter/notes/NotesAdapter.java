@@ -28,6 +28,7 @@ public class NotesAdapter extends BaseAdapter {
     public NotesAdapter(Context context) {
         this.context = context;
     }
+
     public NotesAdapter(Context context,List<Note> noteList) {
         this.context = context;
         this.noteList = noteList;
@@ -85,6 +86,7 @@ public class NotesAdapter extends BaseAdapter {
         viewHolder.tvTitle.setText(note.getTitle());
         viewHolder.tvDateTime.setText(note.getTime() + ", ngày " + note.getDate());
         viewHolder.tvFolderName.setText(folderName);
+
         if(note.getIsDeleted()==1){
             viewHolder.icInfo.setImageResource(R.drawable.ic_info);
             viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {

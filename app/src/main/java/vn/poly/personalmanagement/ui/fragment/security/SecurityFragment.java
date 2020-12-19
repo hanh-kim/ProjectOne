@@ -342,7 +342,7 @@ public class SecurityFragment extends Fragment
                 }
                 progressBar.setVisibility(View.VISIBLE);
 
-                saveAllData(currentUser.getUid());
+                saveAllDataToFirebase(currentUser.getUid());
 
                 // current user sign out
                 FirebaseAuth.getInstance().signOut();
@@ -366,7 +366,7 @@ public class SecurityFragment extends Fragment
         dialog.show();
     }
 
-    private void saveAllData(String uid) {
+    private void saveAllDataToFirebase(String uid) {
 
        databaseReference.child(uid).child("Plans").setValue(planList);
        databaseReference.child(uid).child("Notes").setValue(noteList);

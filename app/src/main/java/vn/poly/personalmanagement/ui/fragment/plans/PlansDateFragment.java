@@ -21,6 +21,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -53,6 +58,9 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
     Bundle bundle;
     Intent intent;
     PendingIntent pendingIntent;
+
+    FirebaseUser currentUser;
+    DatabaseReference databaseReference;
 
     public PlansDateFragment() {
         // Required empty public constructor
@@ -106,12 +114,16 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         lvPlans = view.findViewById(R.id.lvPlans);
 
         tvCountItem = view.findViewById(R.id.tvCountItem);
+
+
     }
 
     @Override
     public void initializeDatabase() {
         mydatabase = new MyDatabase(getActivity());
         plansDAO = new PlansDAO(mydatabase);
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
     @Override
@@ -124,15 +136,6 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         }
     }
 
-//    private void cancelSearch() {
-//        layoutSearch.setVisibility(View.GONE);
-//        edtSearch.setText("");
-//    }
-//
-//    private void startSearch() {
-//        layoutSearch.setVisibility(View.VISIBLE);
-//        edtSearch.setText("");
-//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -237,6 +240,15 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         }
 
 
+    }
+
+    private List<Plan> getAllPlans() {
+        return plansDAO.getAllData();
+    }
+
+    private void saveDataToFirebase(){
+        String uid = currentUser.getUid();
+        databaseReference.child(uid).child("Plans").setValue(getAllPlans());
     }
 
 }

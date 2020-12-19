@@ -97,10 +97,28 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
         } else if (tvEdit.equals(v)) {
             edit();
         } else if (tvDelete.equals(v)) {
-            mealsDAO.deleteDataWithDate(tvDate.getText().toString().trim());
-            Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
-            getActivity().getSupportFragmentManager().beginTransaction().
-                    replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setMessage("Bạn muốn xóa những bữa ăn trong ngày này?");
+            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+
+            builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mealsDAO.deleteDataWithDate(tvDate.getText().toString().trim());
+                    Toast.makeText(getActivity(), "Xóa thành công!", Toast.LENGTH_LONG).show();
+                    getActivity().getSupportFragmentManager().beginTransaction().
+                            replace(R.id.fragment_health_root, new MainEatingFragment()).commit();
+
+                }
+            });
+            builder.create().show();
+
+
         } else if (icAdd.equals(v)) {
             FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
             AddMealFragment addMealFragment = new AddMealFragment();

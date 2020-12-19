@@ -44,9 +44,10 @@ public class AddNoteFragment extends Fragment implements Initialize, View.OnClic
         bundle = getArguments();
         initializeViews(view);
         initializeDatabase();
-        tvDate.setText(CurrentDateTime.getCurrentDate());
+        tvDate.setText("Hôm nay, "+CurrentDateTime.getCurrentDate());
         tvDone.setOnClickListener(this);
         tvBack.setOnClickListener(this);
+
 
         return view;
     }

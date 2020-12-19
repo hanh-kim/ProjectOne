@@ -54,24 +54,6 @@ public class PlansDAO {
         } else return 0;
     }
 
-    public long saveDataFromFirebase(List<Plan> planList) {
-        for (Plan plan : planList) {
-            db = myDatabase.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            values.put(InfoTable.COL_PLAN_NAME, plan.getPlanName());
-            values.put(InfoTable.COL_PLAN_DATE, plan.getDate());
-            values.put(InfoTable.COL_PLAN_TIME, plan.getTime());
-            values.put(InfoTable.COL_PLAN_IS_ALARMED, plan.getAlarmed());
-            values.put(InfoTable.COL_PLAN_DESCRIPTION, plan.getDescription());
-
-            long query = db.insert(InfoTable.TABLE_PLANS, null, values);
-            if (query > 0) {
-                return query;
-            } else return 0;
-        }
-        return 0;
-    }
-
     public long updateData(Plan plan) {
         db = myDatabase.getWritableDatabase();
         ContentValues values = new ContentValues();

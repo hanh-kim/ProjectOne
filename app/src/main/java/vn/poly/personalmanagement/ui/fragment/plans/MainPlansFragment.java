@@ -26,6 +26,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import vn.poly.personalmanagement.R;
 import vn.poly.personalmanagement.adapter.money.MoneyAdapter;
 import vn.poly.personalmanagement.adapter.plans.PlanDateAdapter;
@@ -63,6 +65,9 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
     List<ObjectDate> resultList;
     Intent intent;
     PendingIntent pendingIntent;
+
+    FirebaseUser currentUser;
+
 
     public MainPlansFragment() {
         // Required empty public constructor
@@ -157,7 +162,6 @@ public class MainPlansFragment extends Fragment implements Initialize, View.OnCl
         getActivity().getSupportFragmentManager().beginTransaction().
                 replace(R.id.fragment_plans_root, plansDateFragment).commit();
     }
-
 
     private List<Plan> getPlansToday() {
         return plansDAO.getAllPlansWithDate(CurrentDateTime.getCurrentDate());
