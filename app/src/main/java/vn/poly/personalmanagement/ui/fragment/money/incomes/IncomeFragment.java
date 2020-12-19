@@ -139,7 +139,7 @@ public class IncomeFragment extends Fragment
     }
 
     private void startSearch() {
-        edtSearch.setHint("Nhập tên khoản thu, dd/mm/yyyy");
+        edtSearch.setHint("Nhập tên, ngày dd/mm/yyyy");
         layoutSearch.setVisibility(View.VISIBLE);
         edtSearch.setEnabled(true);
         edtSearch.setText("");

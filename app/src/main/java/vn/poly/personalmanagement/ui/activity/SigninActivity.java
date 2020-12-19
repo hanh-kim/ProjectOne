@@ -157,7 +157,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (tvToSignup.equals(v)) {
             startActivity(new Intent(SigninActivity.this, SignupActivity.class));
-            this.finish();
+         //   this.finish();
         } else if (tvForgotPassword.equals(v)) {
             forgotPassword();
         }
