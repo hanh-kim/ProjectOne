@@ -138,7 +138,6 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
     }
 
 
-
     private void countItem() {
         noteList = notesDAO.getAllDataDeleted();
         if (noteList.size() == 0) {
@@ -191,6 +190,7 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                         noteList.remove(position);
                         adapter.notifyDataSetChanged();
                         countItem();
+                        showNotes();
                         Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
                     }
                 });
@@ -265,6 +265,7 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                         resultList.remove(position);
                         adapter.notifyDataSetChanged();
                         countItem();
+                        showNotes();
                         Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
                     }
                 });

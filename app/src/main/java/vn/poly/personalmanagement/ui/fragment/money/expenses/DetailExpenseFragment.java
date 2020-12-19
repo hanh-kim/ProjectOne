@@ -83,9 +83,7 @@ public class DetailExpenseFragment extends Fragment
                 expensesTodayFragment.setArguments(bundle);
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_money_root, expensesTodayFragment).commit();
-
-                getActivity().getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fragment_money_root, new ExpensesTodayFragment()).commit();
+                
             } else if (getArguments().getString(keyName).equals(ExpensesTodayFragment.FRAG_NAME)) {
                 getActivity().getSupportFragmentManager().beginTransaction().
                         replace(R.id.fragment_money_root, new ExpensesTodayFragment()).commit();

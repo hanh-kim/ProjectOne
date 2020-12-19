@@ -246,9 +246,5 @@ public class PlansDateFragment extends Fragment implements Initialize, View.OnCl
         return plansDAO.getAllData();
     }
 
-    private void saveDataToFirebase(){
-        String uid = currentUser.getUid();
-        databaseReference.child(uid).child("Plans").setValue(getAllPlans());
-    }
 
 }

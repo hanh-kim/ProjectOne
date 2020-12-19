@@ -120,54 +120,6 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
         accountDAO = new AccountDAO(myDatabase);
     }
 
-    @SuppressLint("ResourceAsColor")
-    private void savePass() {
-        String email = mainActivity.getEmailSaved();
-
-
-        tvError.setText("");
-        //  tvError.setTextColor(R.color.colorRed);
-        User user = accountDAO.getUserWithEmail(email);
-
-        String currentPassword = edtCurrentPassword.getText().toString().trim();
-        String newPass = edtNewPassword.getText().toString().trim();
-        String confirmPass = edtConfirmPassword.getText().toString().trim();
-
-
-        if (currentPassword.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-            tvError.setText("Các ô không được để trông!");
-            return;
-        }
-
-        if (!currentPassword.equals(user.getPassword())) {
-            edtCurrentPassword.setError("");
-            tvError.setText("Mật khẩu hiện tại không chính xác!");
-            return;
-        }
-
-        if (newPass.length() < 6) {
-            edtNewPassword.setError("");
-            tvError.setText("Mật khẩu mới gồm ít nhất 6 kí tự!");
-            return;
-        }
-        if (!confirmPass.equals(newPass)) {
-            edtConfirmPassword.setError("");
-            tvError.setText("Mật khẩu nhập lại không khớp!");
-            return;
-        }
-
-        String userId = currentUser.getUid();
-
-
-        tvError.setTextColor(Color.parseColor("#019807"));
-        tvError.setText("Đổi mật khẩu thành công!");
-
-        accountDAO.changePassword(email, newPass);
-        Toast.makeText(getActivity(), "Đổi mật khẩu thành công!", Toast.LENGTH_SHORT).show();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_security_root, new SecurityFragment())
-                .commit();
-    }
 
     private void hideSoftKeyboard() {
         View view = getActivity().getCurrentFocus();

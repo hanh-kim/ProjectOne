@@ -86,7 +86,6 @@ public class ExpensesTodayFragment extends Fragment
             }
 
         }
-
         countItem();
         totalExpenses();
         showExpenses();

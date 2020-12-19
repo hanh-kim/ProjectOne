@@ -173,11 +173,7 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
             tvDate.setEnabled(true);
             isEditing = 1;
         } else if (isEditing == 1) {
-            tvEdit.setText("Sửa");
-            tvDate.setEnabled(false);
-            isEditing = 0;
             update();
-
         }
 
     }
@@ -224,6 +220,24 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
         lvMeal.setAdapter(mealAdapter);
     }
 
+    private void update() {
+        String errorDate = "Mời chọn ngày";
+        String date = tvDate.getText().toString().trim();
+        if (date.isEmpty() || date.equalsIgnoreCase(errorDate)) {
+            tvDate.setText(errorDate);
+            Toast.makeText(getActivity(), errorDate, Toast.LENGTH_LONG).show();
+            return;
+        }
+        mealsDAO.updateMealDate(bundle.getString("date"), date);
+        showMealList();
+        if (tvDate.getText().toString().trim().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
+            icAdd.setVisibility(View.GONE);
+        } else icAdd.setVisibility(View.VISIBLE);
+        Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
+        tvEdit.setText("Sửa");
+        tvDate.setEnabled(false);
+        isEditing = 0;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void chooseDate() {
@@ -245,19 +259,5 @@ public class MealsDateFragment extends Fragment implements Initialize, View.OnCl
         datePickerDialog.show();
     }
 
-    private void update() {
-        String errorDate = "Mời chọn ngày";
-        String date = tvDate.getText().toString().trim();
-        if (date.isEmpty() || date.equalsIgnoreCase(errorDate)) {
-            tvDate.setText(errorDate);
-            Toast.makeText(getActivity(), errorDate, Toast.LENGTH_LONG).show();
-            return;
-        }
-        mealsDAO.updateMealDate(bundle.getString("date"),date);
-        showMealList();
-        if (tvDate.getText().toString().trim().compareTo(CurrentDateTime.getCurrentDate()) < 0) {
-            icAdd.setVisibility(View.GONE);
-        } else icAdd.setVisibility(View.VISIBLE);
-        Toast.makeText(getActivity(), "Cập nhật thành công!", Toast.LENGTH_LONG).show();
-    }
+
 }

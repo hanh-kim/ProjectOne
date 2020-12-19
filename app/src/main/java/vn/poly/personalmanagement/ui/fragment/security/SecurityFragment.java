@@ -10,6 +10,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Patterns;
@@ -156,7 +157,7 @@ public class SecurityFragment extends Fragment
         planList = plansDAO.getAllData();
         noteList = notesDAO.getAllData();
         incomeList = incomesDAO.getAllIncomes();
-        expenseList =expensesDAO.getAllExpenses();
+        expenseList = expensesDAO.getAllExpenses();
         mealList = mealsDAO.getAllData();
         fitnessList = fitnessDAO.getAllData();
         exerciseList = exerciseDAO.getAllData();
@@ -346,14 +347,13 @@ public class SecurityFragment extends Fragment
 
                 // current user sign out
                 FirebaseAuth.getInstance().signOut();
+
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            clearDatabase();
-                            Thread.sleep(2000);
+                            Thread.sleep(3000);
                             progressBar.setVisibility(View.INVISIBLE);
-
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -370,24 +370,73 @@ public class SecurityFragment extends Fragment
     }
 
     private void clearDatabase() {
-        plansDAO.clearAllData();
-        notesDAO.clearAllData();
-        incomesDAO.clearAllData();
-        expensesDAO.clearAllData();
-        mealsDAO.clearAllData();
-        fitnessDAO.clearAllData();
-        exerciseDAO.clearAllData();
 
     }
 
     private void saveAllDataToFirebase(String uid) {
-       databaseReference.child(uid).child("Plans").setValue(planList);
-       databaseReference.child(uid).child("Notes").setValue(noteList);
-       databaseReference.child(uid).child("Incomes").setValue(incomeList);
-       databaseReference.child(uid).child("Expenses").setValue(expenseList);
-       databaseReference.child(uid).child("Meals").setValue(mealList);
-       databaseReference.child(uid).child("Fitness").setValue(fitnessList);
-       databaseReference.child(uid).child("Exercises").setValue(exerciseList);
+        databaseReference.child(uid).child("Plans").setValue(planList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    plansDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Notes").setValue(noteList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    notesDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Incomes").setValue(incomeList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    incomesDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Expenses").setValue(expenseList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    expensesDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Meals").setValue(mealList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    mealsDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Fitness").setValue(fitnessList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    fitnessDAO.clearAllData();
+                }
+            }
+        });
+
+        databaseReference.child(uid).child("Exercises").setValue(exerciseList, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                if (error==null){
+                    exerciseDAO.clearAllData();
+                }
+            }
+        });
+
     }
 
 }

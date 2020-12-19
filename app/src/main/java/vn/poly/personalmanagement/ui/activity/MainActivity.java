@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,10 +17,14 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -129,10 +134,6 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public String getEmailSaved() {
-        SharedPreferences sharedPreferences = getSharedPreferences("my_email", MODE_PRIVATE);
-        return sharedPreferences.getString(keyEmail, "");
-    }
 
     private boolean checkConnected() {
         ConnectivityManager manager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -152,21 +153,33 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-//    @Override
-//    protected void onResume() {
-//        String userId = currentUser.getUid();
-//        saveAllDataToFirebase(userId);
-//        super.onResume();
-//
-//    }
+    @Override
+    protected void onResume() {
+        String userId = currentUser.getUid();
+     //   updateUI(currentUser);
+        super.onResume();
 
-//    @Override
-//    protected void onDestroy() {
-//        String userId = currentUser.getUid();
-//        saveAllDataToFirebase(userId);
-//        super.onDestroy();
-//
-//    }
+    }
+
+    @Override
+    protected void onDestroy() {
+        String userId = currentUser.getUid();
+        clearDatabase();
+        super.onDestroy();
+
+    }
+
+    private void clearDatabase() {
+        plansDAO.clearAllData();
+        notesDAO.clearAllData();
+        incomesDAO.clearAllData();
+        expensesDAO.clearAllData();
+        mealsDAO.clearAllData();
+        fitnessDAO.clearAllData();
+        exerciseDAO.clearAllData();
+
+    }
+
 
     private void saveAllDataToFirebase(String uid) {
         // init list
@@ -185,6 +198,251 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.child(uid).child("Meals").setValue(mealList);
         databaseReference.child(uid).child("Fitness").setValue(fitnessList);
         databaseReference.child(uid).child("Exercises").setValue(exerciseList);
+    }
+
+    private void updateUI(FirebaseUser currentUser) {
+        String uid = currentUser.getUid();
+        clearDatabase();
+        restorePlans(uid);
+        restoreNotes(uid);
+        restoreIncomes(uid);
+        restoreExpenses(uid);
+        restoreMeals(uid);
+        restoreFitness(uid);
+        restoreExercises(uid);
+
+    }
+
+    private void restorePlans(String uid) {
+        databaseReference.child(uid).child("Plans")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Plan plan = snapshot.getValue(Plan.class);
+                        plansDAO.addData(plan);
+                        Log.d("Plan:", "saved");
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    private void restoreNotes(String uid) {
+        databaseReference.child(uid).child("Notes")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Note note = snapshot.getValue(Note.class);
+                        notesDAO.addData(note);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+    }
+
+    private void restoreIncomes(String uid) {
+        databaseReference.child(uid).child("Incomes")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Income income = snapshot.getValue(Income.class);
+                        incomesDAO.addData(income);
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+    }
+
+    private void restoreExpenses(String uid) {
+
+        databaseReference.child(uid).child("Expenses")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Expense expense = snapshot.getValue(Expense.class);
+                        expensesDAO.addData(expense);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    private void restoreMeals(String uid) {
+        databaseReference.child(uid).child("Meals")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Meal meal = snapshot.getValue(Meal.class);
+                        mealsDAO.addData(meal);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
+
+    private void restoreFitness(String uid) {
+
+        databaseReference.child(uid).child("Fitness")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        DetailExercise exercise = snapshot.getValue(DetailExercise.class);
+                        fitnessDAO.addData(exercise);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+    }
+
+    private void restoreExercises(String uid) {
+        databaseReference.child(uid).child("Exercises")
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Exercise exercise = snapshot.getValue(Exercise.class);
+                        exerciseDAO.addData(exercise);
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
     }
 
 

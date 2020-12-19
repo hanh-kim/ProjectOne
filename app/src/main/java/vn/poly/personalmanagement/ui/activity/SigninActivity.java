@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -105,16 +106,29 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
         tvToSignup.setOnClickListener(this);
         tvForgotPassword.setOnClickListener(this);
 
-        if (currentUser != null) {
-            if (!checkConnected()) {
-                progressBar.setVisibility(View.INVISIBLE);
-                Toast.makeText(SigninActivity.this, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
-                return;
-            }
-            startActivity(new Intent(SigninActivity.this, MainActivity.class));
-            SigninActivity.this.finish();
-
-        }
+//        if (currentUser != null) {
+//            if (!checkConnected()) {
+//                progressBar.setVisibility(View.INVISIBLE);
+//                Toast.makeText(SigninActivity.this, "Không có kết nối internet !", Toast.LENGTH_LONG).show();
+//                return;
+//            }
+//            currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//            updateUI(currentUser);
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+//                    startActivity(new Intent(SigninActivity.this, MainActivity.class));
+//                    SigninActivity.this.finish();
+//                }
+//            }).start();
+//
+//        }
 
     }
 
@@ -203,6 +217,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                                 // get current user
                                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                                 updateUI(currentUser);
+
                                 // check email is verified
                                 if (!currentUser.isEmailVerified()) {
                                     currentUser.sendEmailVerification();
@@ -392,6 +407,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Plan plan = snapshot.getValue(Plan.class);
                         plansDAO.addData(plan);
+                        Log.d("Plan:", "saved");
                     }
 
                     @Override
@@ -418,12 +434,13 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void restoreNotes(String uid) {
-        databaseReference.child(uid).child("Notes").
-                addChildEventListener(new ChildEventListener() {
+        databaseReference.child(uid).child("Notes")
+               .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Note note = snapshot.getValue(Note.class);
                         notesDAO.addData(note);
+
                     }
 
                     @Override
@@ -457,6 +474,7 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                        Income income = snapshot.getValue(Income.class);
                        incomesDAO.addData(income);
+
                    }
 
                    @Override

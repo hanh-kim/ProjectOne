@@ -108,7 +108,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_baseline_calendar_orange"
+                    android:drawableRight="@drawable/ic_calendar_orange"
                     android:drawablePadding="5dp"
                     android:hint="dd/mmm/yyyy"
                      />
