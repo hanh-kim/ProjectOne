@@ -152,21 +152,21 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
-    @Override
-    protected void onResume() {
-        String userId = currentUser.getUid();
-        saveAllDataToFirebase(userId);
-        super.onResume();
+//    @Override
+//    protected void onResume() {
+//        String userId = currentUser.getUid();
+//        saveAllDataToFirebase(userId);
+//        super.onResume();
+//
+//    }
 
-    }
-
-    @Override
-    protected void onDestroy() {
-        String userId = currentUser.getUid();
-        saveAllDataToFirebase(userId);
-        super.onDestroy();
-
-    }
+//    @Override
+//    protected void onDestroy() {
+//        String userId = currentUser.getUid();
+//        saveAllDataToFirebase(userId);
+//        super.onDestroy();
+//
+//    }
 
     private void saveAllDataToFirebase(String uid) {
         // init list

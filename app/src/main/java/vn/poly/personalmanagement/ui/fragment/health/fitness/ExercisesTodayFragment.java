@@ -204,11 +204,14 @@ public class ExercisesTodayFragment extends Fragment
         final TextView tvCancel = view.findViewById(R.id.tvCancel);
         final TextView tvSave = view.findViewById(R.id.tvSave);
         final TextView tvError = view.findViewById(R.id.tvError);
+        final TextView tvLabel = view.findViewById(R.id.tvLabel);
+
         final Spinner spinner = view.findViewById(R.id.spnSelectExercise);
         builder.setCancelable(false);
         final AlertDialog dialog = builder.create();
         dialog.show();
         tvError.setText("");
+        tvLabel.setText("Sửa thông tin bài tập");
 
         List<Exercise> exerciseList = exerciseDAO.getAllData();
         List<String> stringList = new ArrayList<>();

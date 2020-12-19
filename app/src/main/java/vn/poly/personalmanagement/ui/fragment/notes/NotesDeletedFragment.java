@@ -41,7 +41,6 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
     TextView tvToSearch, tvCancelSearch, tvClearAll;
     FrameLayout layoutSearch;
     EditText edtSearch;
-    ImageView icAddNote;
     TextView tvBack, tvCount;
     List<Note> noteList;
     List<Note> resultList;
@@ -138,85 +137,7 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
                 replace(R.id.fragment_notes_root, detailNoteFragment).commit();
     }
 
-//    private void search() {
-//        final NotesAdapter adapter = new NotesAdapter(getActivity());
-//
-//        edtSearch.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                String text = edtSearch.getText().toString().trim();
-//
-//
-//                if (!text.isEmpty()) {
-//                    resultList = notesDAO.getResultSearchedNotesDeleted(text);
-//                    adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
-//                        @Override
-//                        public void onRemove(Note note, int position) {
-//                            removeItem(note, position);
-//                        }
-//                    });
-//                    lvResultSearch.setAdapter(adapter);
-//                    NotesDeletedFragment.this.adapter.notifyDataSetChanged();
-//                } else {
-//                    resultList = new ArrayList<>();
-//                    adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
-//                        @Override
-//                        public void onRemove(Note note, int position) {
-//                            removeItem(note, position);
-//                        }
-//                    });
-//                    lvResultSearch.setAdapter(adapter);
-//                    NotesDeletedFragment.this.adapter.notifyDataSetChanged();
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
-//
-//    }
 
-    private void restoreItem(Note note, final int position,final List<Note> list) {
-        note.setDeleted(0);
-        notesDAO.updateData(note);
-        list.remove(position);
-        countItem();
-        adapter.notifyDataSetChanged();
-        Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
-    }
-
-    private void removeItem(final Note note, final int position, final List<Note> list) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setMessage("Bạn muốn xóa vĩnh viễn ghi chú này?");
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                notesDAO.deleteData(note);
-                list.remove(position);
-                adapter.notifyDataSetChanged();
-                countItem();
-                Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
-            }
-        });
-        builder.create().show();
-    }
 
     private void countItem() {
         noteList = notesDAO.getAllDataDeleted();
@@ -251,25 +172,29 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
 
     private void showNotes() {
         noteList = notesDAO.getAllDataDeleted();
-        adapter.setDataAdapter(noteList, new NotesAdapter.OnItemShowMenuClickListener() {
+        adapter.setDataAdapter(noteList, new NotesAdapter.OnItemRemoveListener() {
             @Override
-            public void onClick(final Note note, final int position, View view) {
-                PopupMenu popupMenu = new PopupMenu(getContext(), view);
-                popupMenu.inflate(R.menu.menu_item_note);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public void onRemove(final Note note, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa vĩnh viễn ghi chú này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Note nt = note;
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.item_restore) {
-                            restoreItem(nt, position,noteList);
-                        } else if (itemId == R.id.item_delete) {
-                            removeItem(nt, position,noteList);
-                        }
-                        return false;
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
                 });
-                popupMenu.show();
+
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        notesDAO.deleteData(note);
+                        noteList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        countItem();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.create().show();
             }
         });
 
@@ -321,54 +246,64 @@ public class NotesDeletedFragment extends Fragment implements Initialize, View.O
     private void showResultSearch(String name) {
         resultList = notesDAO.getResultSearchedNotesDeleted(name);
 
-        adapter.setDataAdapter(resultList, new NotesAdapter.OnItemShowMenuClickListener() {
+        adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
             @Override
-            public void onClick(final Note note, final int position, View view) {
-                PopupMenu popupMenu = new PopupMenu(getContext(), view);
-                popupMenu.inflate(R.menu.menu_item_note);
-                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public void onRemove(final Note note, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Bạn muốn xóa vĩnh viễn ghi chú này?");
+                builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        Note nt = note;
-                        int itemId = item.getItemId();
-                        if (itemId == R.id.item_restore) {
-
-                            note.setDeleted(0);
-                            notesDAO.updateData(note);
-                            resultList.remove(position);
-                            countItem();
-                            adapter.notifyDataSetChanged();
-                            Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
-
-                        } else if (itemId == R.id.item_delete) {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                            builder.setMessage("Bạn muốn xóa vĩnh viễn ghi chú này?");
-                            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.cancel();
-                                }
-                            });
-
-                            builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    notesDAO.deleteData(note);
-                                    resultList.remove(position);
-                                    adapter.notifyDataSetChanged();
-                                    countItem();
-                                    Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                            builder.create().show();
-                        }
-                        return false;
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
                     }
                 });
-                popupMenu.show();
+
+                builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        notesDAO.deleteData(note);
+                        resultList.remove(position);
+                        adapter.notifyDataSetChanged();
+                        countItem();
+                        Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                builder.create().show();
             }
         });
         lvResultSearch.setAdapter(adapter);
+    }
+
+    private void restoreItem(Note note, final int position,final List<Note> list) {
+        note.setDeleted(0);
+        notesDAO.updateData(note);
+        list.remove(position);
+        countItem();
+        adapter.notifyDataSetChanged();
+        Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
+    }
+
+    private void removeItem(final Note note, final int position, final List<Note> list) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn muốn xóa vĩnh viễn ghi chú này?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                notesDAO.deleteData(note);
+                list.remove(position);
+                adapter.notifyDataSetChanged();
+                countItem();
+                Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+            }
+        });
+        builder.create().show();
     }
 }

@@ -86,24 +86,24 @@ public class NotesAdapter extends BaseAdapter {
         viewHolder.tvTitle.setText(note.getTitle());
         viewHolder.tvDateTime.setText(note.getTime() + ", ngày " + note.getDate());
         viewHolder.tvFolderName.setText(folderName);
-
-        if(note.getIsDeleted()==1){
-            viewHolder.icInfo.setImageResource(R.drawable.ic_info);
-            viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemShowMenuClickListener.onClick(note,position,viewHolder.icInfo);
-                }
-            });
-        }else {
-            viewHolder.icInfo.setImageResource(R.drawable.ic_outline_remove);
-            viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemRemoveListener.onRemove(note, position);
-                }
-            });
-        }
+        viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemRemoveListener.onRemove(note, position);
+            }
+        });
+//        if(note.getIsDeleted()==1){
+//            viewHolder.icInfo.setImageResource(R.drawable.ic_info);
+//            viewHolder.icInfo.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    onItemShowMenuClickListener.onClick(note,position,viewHolder.icInfo);
+//                }
+//            });
+//        }else {
+//            viewHolder.icInfo.setImageResource(R.drawable.ic_outline_remove);
+//
+//        }
 
         notifyDataSetChanged();
         return convertView;

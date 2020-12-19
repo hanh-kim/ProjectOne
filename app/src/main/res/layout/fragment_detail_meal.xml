@@ -113,7 +113,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="15dp"
                     android:background="@drawable/custom_edt_search"
-                    android:drawableRight="@drawable/ic_watch"
+                    android:drawableRight="@drawable/ic_outline_watch"
                     android:drawablePadding="5dp"
                     android:enabled="false"
                     android:hint="hh:mm"

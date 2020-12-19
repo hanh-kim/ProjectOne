@@ -41,7 +41,7 @@ import vn.poly.personalmanagement.ui.activity.MainActivity;
 public class ChangePasswordFragment extends Fragment implements Initialize {
 
 
-    EditText edtOldPassword, edtNewPassword, edtConfirmPassword;
+    EditText edtCurrentPassword, edtNewPassword, edtConfirmPassword;
     TextView tvBack, tvError;
     Button btnSave;
     MyDatabase myDatabase;
@@ -103,7 +103,7 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
 
     @Override
     public void initializeViews(View view) {
-        edtOldPassword = view.findViewById(R.id.edtOldPassword);
+        edtCurrentPassword = view.findViewById(R.id.edtCurrentPassword);
         edtNewPassword = view.findViewById(R.id.edtNewPassword);
         edtConfirmPassword = view.findViewById(R.id.edtConfirmPassword);
         tvBack = view.findViewById(R.id.tvBack);
@@ -129,19 +129,19 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
         //  tvError.setTextColor(R.color.colorRed);
         User user = accountDAO.getUserWithEmail(email);
 
-        String oldPass = edtOldPassword.getText().toString().trim();
+        String currentPassword = edtCurrentPassword.getText().toString().trim();
         String newPass = edtNewPassword.getText().toString().trim();
         String confirmPass = edtConfirmPassword.getText().toString().trim();
 
 
-        if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+        if (currentPassword.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
             tvError.setText("Các ô không được để trông!");
             return;
         }
 
-        if (!oldPass.equals(user.getPassword())) {
-            edtOldPassword.setError("");
-            tvError.setText("Mật khẩu cũ không chính xác!");
+        if (!currentPassword.equals(user.getPassword())) {
+            edtCurrentPassword.setError("");
+            tvError.setText("Mật khẩu hiện tại không chính xác!");
             return;
         }
 
@@ -217,7 +217,7 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
         //  tvError.setTextColor(R.color.colorRed);
 
 
-        String oldPass = edtOldPassword.getText().toString().trim();
+        String oldPass = edtCurrentPassword.getText().toString().trim();
         String newPass = edtNewPassword.getText().toString().trim();
         String confirmPass = edtConfirmPassword.getText().toString().trim();
 
@@ -230,7 +230,7 @@ public class ChangePasswordFragment extends Fragment implements Initialize {
 
         if (!oldPass.equals(user.getPassword())) {
             progressBar.setVisibility(View.INVISIBLE);
-            edtOldPassword.setError("Mời nhập lại");
+            edtCurrentPassword.setError("Mời nhập lại");
             tvError.setText("Mật khẩu không chính xác!");
             return;
         }

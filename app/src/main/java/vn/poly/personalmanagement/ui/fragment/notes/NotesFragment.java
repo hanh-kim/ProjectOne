@@ -46,9 +46,8 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
     EditText edtSearch;
     ImageView icAddNote;
     TextView tvBack, tvCount;
-    int id = FRAG_ID;
     List<Note> noteList;
-    List<Note> resultList=null;
+    List<Note> resultList = null;
     ListView lvNotes;
     NotesAdapter adapter;
 
@@ -76,8 +75,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         tvToSearch.setOnClickListener(this);
         tvCancelSearch.setOnClickListener(this);
 
-
-        //   noteList = getList();
+        // on item result list click listener
         lvResultSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -97,7 +95,6 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
 
         return view;
     }
-
 
     @Override
     public void initializeViews(View view) {
@@ -182,7 +179,7 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
                 list.remove(position);
                 adapter.notifyDataSetChanged();
                 countItem();
-                Toast.makeText(getActivity(), "Đã xóa thành công!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Ghi chú được chuyển đến thùng rác!", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -205,12 +202,12 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
         edtSearch.setText("");
     }
 
-    private void showNotes(){
+    private void showNotes() {
         noteList = getList();
         adapter.setDataAdapter(noteList, new NotesAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(Note note, int position) {
-                removeItem(note, position,noteList);
+                removeItem(note, position, noteList);
             }
         });
 
@@ -227,11 +224,13 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String name = edtSearch.getText().toString().trim();
                 showResultSearch(name);
             }
+
             @Override
             public void afterTextChanged(Editable s) {
             }
@@ -240,11 +239,11 @@ public class NotesFragment extends Fragment implements Initialize, View.OnClickL
     }
 
     private void showResultSearch(String name) {
-        resultList= notesDAO.getResultSearched(name);
+        resultList = notesDAO.getResultSearched(name);
         adapter.setDataAdapter(resultList, new NotesAdapter.OnItemRemoveListener() {
             @Override
             public void onRemove(Note note, int position) {
-                removeItem(note, position,resultList);
+                removeItem(note, position, resultList);
             }
         });
 

@@ -1,6 +1,7 @@
 package vn.poly.personalmanagement.ui.fragment.money.expenses;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -70,9 +71,8 @@ public class ExpensesTodayFragment extends Fragment
         tvDelete.setOnClickListener(this);
         lvExpenses.setOnItemClickListener(this);
         icAdd.setOnClickListener(this);
-//       lvResultSearch.setOnItemClickListener(this);
-//        tvToSearch.setOnClickListener(this);
-//        tvCancelSearch.setOnClickListener(this);
+
+
 
         bundle = getArguments();
         if (bundle != null) {
@@ -111,15 +111,6 @@ public class ExpensesTodayFragment extends Fragment
         }
     }
 
-    private void cancelSearch() {
-        layoutSearch.setVisibility(View.GONE);
-        edtSearch.setText("");
-    }
-
-    private void startSearch() {
-        layoutSearch.setVisibility(View.VISIBLE);
-        edtSearch.setText("");
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -167,12 +158,17 @@ public class ExpensesTodayFragment extends Fragment
 
     private void countItem() {
         if (getExpenseList().size() == 0) {
+            tvDelete.setEnabled(false);
+            tvDelete.setTextColor(Color.GRAY);
             tvCountItem.setText("Không có khoản chi nào");
-        } else tvCountItem.setText("Có " + getExpenseList().size() + " khoản chi");
+        } else {
+            tvDelete.setEnabled(true);
+            tvDelete.setTextColor(Color.parseColor("#0371C8"));
+            tvCountItem.setText("Có " + getExpenseList().size() + " khoản chi");
+        }
     }
 
     private void totalExpenses() {
-
         double total = 0;
         for (Expense expense : getExpenseList()) {
             total += expense.getAmount();

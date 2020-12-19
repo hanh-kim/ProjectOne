@@ -350,13 +350,16 @@ public class SecurityFragment extends Fragment
                     @Override
                     public void run() {
                         try {
+                            clearDatabase();
                             Thread.sleep(2000);
                             progressBar.setVisibility(View.INVISIBLE);
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                 });
+
                 startActivity(new Intent(getActivity(), SigninActivity.class));
                 getActivity().finish();
             }
@@ -366,8 +369,18 @@ public class SecurityFragment extends Fragment
         dialog.show();
     }
 
-    private void saveAllDataToFirebase(String uid) {
+    private void clearDatabase() {
+        plansDAO.clearAllData();
+        notesDAO.clearAllData();
+        incomesDAO.clearAllData();
+        expensesDAO.clearAllData();
+        mealsDAO.clearAllData();
+        fitnessDAO.clearAllData();
+        exerciseDAO.clearAllData();
 
+    }
+
+    private void saveAllDataToFirebase(String uid) {
        databaseReference.child(uid).child("Plans").setValue(planList);
        databaseReference.child(uid).child("Notes").setValue(noteList);
        databaseReference.child(uid).child("Incomes").setValue(incomeList);

@@ -104,7 +104,11 @@ public class AddExpenseFragment extends Fragment
             edtAmount.setError("Mời nhập số tiền đã chi");
             edtAmount.setFocusable(true);
             return;
-        }else amount= Long.parseLong(sAmount);
+        } else if (Long.parseLong(sAmount)<1000){
+            edtAmount.setError("Số tiền tối thiểu là 1000đ");
+            edtAmount.setFocusable(true);
+            return;
+        } else amount= Long.parseLong(sAmount);
         if (description.isEmpty()){
             description=" ";
         }

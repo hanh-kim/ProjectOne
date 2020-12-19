@@ -87,8 +87,44 @@ public class AddIncomesFragment extends Fragment
 
     @Override
     public void initializeDatabase() {
-        mydatabase= new MyDatabase(getActivity());
+        mydatabase = new MyDatabase(getActivity());
         incomesDAO = new IncomesDAO(mydatabase);
+    }
+
+
+    private void addIncome() {
+        String title = edtTitle.getText().toString().trim();
+        String sAmount = edtAmount.getText().toString().trim();
+        long amount = 0;
+        String description = edtDescribe.getText().toString().trim();
+        String date = CurrentDateTime.getCurrentDate();
+        String time = CurrentDateTime.getCurrentTime();
+        if (title.isEmpty()) {
+            edtTitle.setError("Mời nhập tên khoản thu");
+            edtTitle.setFocusable(true);
+            return;
+        }
+        if (sAmount.isEmpty()) {
+            edtAmount.setError("Mời nhập số tiền đã thu");
+            edtAmount.setFocusable(true);
+            return;
+        }else if (Long.parseLong(sAmount)<10000){
+            edtAmount.setError("Số tiền tối thiểu là 10.000đ");
+            edtAmount.setFocusable(true);
+            return;
+        }  else amount = Long.parseLong(sAmount);
+        if (description.isEmpty()) {
+            description = "";
+        }
+        Income income = new Income();
+        income.setTitle(title);
+        income.setTime(time);
+        income.setDate(date);
+        income.setAmount(amount);
+        income.setDescription(description);
+        incomesDAO.addData(income);
+        getActivity().getSupportFragmentManager().beginTransaction().
+                replace(R.id.fragment_money_root, new IncomeFragment()).commit();
     }
 
     private void chooseDate() {
@@ -108,36 +144,5 @@ public class AddIncomesFragment extends Fragment
             }
         }, year, month, day);
         datePickerDialog.show();
-    }
-
-    private void addIncome(){
-        String title =edtTitle.getText().toString().trim();
-        String sAmount = edtAmount.getText().toString().trim();
-        long amount =0;
-        String description = edtDescribe.getText().toString().trim();
-        String date = CurrentDateTime.getCurrentDate();
-        String time = CurrentDateTime.getCurrentTime();
-        if (title.isEmpty()){
-            edtTitle.setError("Mời nhập tên khoản thu");
-            edtTitle.setFocusable(true);
-            return;
-        }
-        if (sAmount.isEmpty()){
-            edtAmount.setError("Mời nhập số tiền đã thu");
-            edtAmount.setFocusable(true);
-            return;
-        }else amount= Long.parseLong(sAmount);
-        if (description.isEmpty()){
-            description="";
-        }
-        Income income = new Income();
-        income.setTitle(title);
-        income.setTime(time);
-        income.setDate(date);
-        income.setAmount(amount);
-        income.setDescription(description);
-        incomesDAO.addData(income);
-        getActivity().getSupportFragmentManager().beginTransaction().
-                replace(R.id.fragment_money_root, new IncomeFragment()).commit();
     }
 }

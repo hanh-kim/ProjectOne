@@ -386,13 +386,11 @@ public class SigninActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void restorePlans(String uid) {
-       List<Plan>   planList1 = new ArrayList<>();
         databaseReference.child(uid).child("Plans")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                         Plan plan = snapshot.getValue(Plan.class);
-                      //  planList.add(plan);
                         plansDAO.addData(plan);
                     }
 

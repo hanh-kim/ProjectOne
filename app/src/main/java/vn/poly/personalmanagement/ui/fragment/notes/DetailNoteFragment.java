@@ -67,16 +67,30 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
     }
 
     @Override
+    public void initializeViews(View view) {
+        tvEdit = view.findViewById(R.id.tvEdit);
+        tvBack = view.findViewById(R.id.tvBack);
+        edtTitle = view.findViewById(R.id.edtNoteTitle);
+        edtContent = view.findViewById(R.id.edtNoteContent);
+        tvDateTime = view.findViewById(R.id.tvDate);
+        tvRestore = view.findViewById(R.id.tvRestore);
+    }
+
+    @Override
+    public void initializeDatabase() {
+        mydatabase = new MyDatabase(getActivity());
+        notesDAO = new NotesDAO(mydatabase);
+    }
+
+    @Override
     public void onClick(View v) {
 
         if (getArguments().getInt(keyName) == NotesFragment.FRAG_ID) {
-            // id =1 : notes fragment
+
             if (tvEdit.equals(v)) {
                 edit();
             } else if (tvBack.equals(v)) {
-//                if (getFragmentManager()!=null){
-//                    getFragmentManager().popBackStack();
-//                }
+
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_notes_root, new NotesFragment()).commit();
 
@@ -87,7 +101,6 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
 
 
         } else if (getArguments().getInt(keyName) == ImportantNotesFragment.FRAG_ID) {
-            //id=2:  important notes fragment
 
             if (tvEdit.equals(v)) {
                 edit();
@@ -101,7 +114,7 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
 
 
         } else if (getArguments().getInt(keyName) == NotesDeletedFragment.FRAG_ID) {
-            //id=3:  deleted notes fragment
+
             if (tvEdit.equals(v)) {
                 deleteForever();
             } else if (tvBack.equals(v)) {
@@ -111,8 +124,8 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
             } else if (tvRestore.equals(v)) {
                 restoreNote();
             }
+
         }else if (getArguments().getInt(keyName) == NoteFoldersFragment.FRAG_ID) {
-            //id=2:  important notes fragment
 
             if (tvEdit.equals(v)) {
                 edit();
@@ -127,11 +140,6 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
 
         }
     }
-
-    private void updateNote() {
-
-    }
-
 
     private void deleteForever() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -182,29 +190,31 @@ public class DetailNoteFragment extends Fragment implements Initialize, View.OnC
     }
 
     private void restoreNote() {
-        Note note = (Note) getArguments().get(keyNote);
-        note.setDeleted(0);
-        notesDAO.updateData(note);
-        Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_notes_root, new NotesDeletedFragment()).commit();
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Bạn muốn khôi phục ghi chú này?");
+        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.setPositiveButton("Khôi phục", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Note note = (Note) getArguments().get(keyNote);
+                note.setDeleted(0);
+                notesDAO.updateData(note);
+                Toast.makeText(getActivity(), "Khôi phục thành công!", Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_notes_root, new NotesDeletedFragment()).commit();
+            }
+        });
+        builder.create().show();
     }
 
-    @Override
-    public void initializeViews(View view) {
-        tvEdit = view.findViewById(R.id.tvEdit);
-        tvBack = view.findViewById(R.id.tvBack);
-        edtTitle = view.findViewById(R.id.edtNoteTitle);
-        edtContent = view.findViewById(R.id.edtNoteContent);
-        tvDateTime = view.findViewById(R.id.tvDate);
-        tvRestore = view.findViewById(R.id.tvRestore);
-    }
 
-    @Override
-    public void initializeDatabase() {
-        mydatabase = new MyDatabase(getActivity());
-        notesDAO = new NotesDAO(mydatabase);
-    }
 
     private void edit() {
 
